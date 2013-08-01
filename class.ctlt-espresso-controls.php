@@ -119,9 +119,7 @@ class CTLT_Espresso_Controls {
 
 	public function admin_stylesheets() {
 		wp_register_style( 'ctlt_espresso_controls_css', CTLT_ESPRESSO_CONTROLS_CSS_URL . 'style.css', false, '1.0.0' );
-		wp_register_style( 'ctlt_espresso_bootstrap_css', CTLT_ESPRESSO_CONTROLS_CSS_URL . 'bootstrap.min.css', false, '2.3.2' );
 		wp_enqueue_style( 'ctlt_espresso_controls_css' );
-		wp_enqueue_style( 'ctlt_espresso_bootstrap_css' );
 	}
 
 	public function espresso_properties() {

@@ -1,7 +1,4 @@
-.room-setup { border: 1px solid #333; margin-top: 5px; margin-bottom: 5px; }
-.image-clip { width: 50px; height: 50px; overflow: hidden; }
-
-.ctlt-events-row { clear: both; padding-bottom: 3%; padding-top: 3%; }
+.ctlt-events-row { clear: both; padding-bottom: 1%; padding-top: 1%; height: 50px;}
 
 .ctlt-events-col { 
 	border: 0px solid rgba(0, 0, 0, 0);
@@ -19,7 +16,7 @@
  * COLUMNS *
  ***********/
 
-.ctlt-events-col { margin-left: 1%; padding: 0 0.5%; }
+.ctlt-events-col { margin-left: 1%; padding: 0 0.5%; position: relative; }
 .ctlt-events-row .ctlt-events-col:first-child { margin-left: 0;}
 
 .ctlt-colspan-12 { margin-left: 0; width: 100%; }
@@ -35,6 +32,11 @@
 .ctlt-colspan-2 { width: 15.8333333333%; }
 .ctlt-colspan-1 { width: 7.41666666667%; }
 
-/************
- * POSITION *
- ************/
+/********
+ * MISC *
+ ********/
+
+.room-setup { margin-top: 5px; margin-bottom: 5px; }
+.image-clip { width: 50px; height: 50px; overflow: hidden;}
+.ctlt-inline { display: inline-block; }
+.ctlt-align-mid { position: absolute; top: 50%; height: 25px; margin-top: -12.5px; padding-left: 20px; }

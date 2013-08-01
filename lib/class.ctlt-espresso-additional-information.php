@@ -24,56 +24,56 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes{
 
 	public function render_additional_information() {
 		?>
-		<div class="row-fluid">
-			<div class="span3">
+		<div class="ctlt-events-row">
+			<div class="ctlt-colspan-3 ctlt-events-col">
 				<label>Room Setup Notes:</label>
 			</div>
-			<div class="span3">
-				<textarea class="span12"></textarea>
+			<div class="ctlt-colspan-3 ctlt-events-col">
+				<textarea class="ctlt-colspan-12"></textarea>
 			</div>
-			<div class="span3">
+			<div class="ctlt-colspan-3 ctlt-events-col">
 				<label>Admin Support Notes</label>
 			</div>
-			<div class="span3">
-				<textarea class="span12"></textarea>
+			<div class="ctlt-colspan-3 ctlt-events-col">
+				<textarea class="ctlt-colspan-12"></textarea>
 			</div>
 		</div>
-		<div class="row-fluid">
-			<div class="span3">
+		<div class="ctlt-events-row">
+			<div class="ctlt-colspan-3 ctlt-events-col">
 				<label>A/V and Computer Requirements:</label>
 			</div>
-			<div class="span3">
-				<textarea class="span12"></textarea>
+			<div class="ctlt-colspan-3 ctlt-events-col">
+				<textarea class="ctlt-colspan-12"></textarea>
 			</div>
-			<div class="span3">
+			<div class="ctlt-colspan-3 ctlt-events-col">
 				<label>Marketing & Communication Support Notes:</label>
 			</div>
-			<div class="span3">
-				<textarea class="span12"></textarea>
+			<div class="ctlt-colspan-3 ctlt-events-col">
+				<textarea class="ctlt-colspan-12"></textarea>
 			</div>
 		</div>
-		<div class="row-fluid">
-			<div class="span3">
+		<div class="ctlt-events-row">
+			<div class="ctlt-colspan-3 ctlt-events-col">
 				<label>Catering Notes:</label>
 			</div>
-			<div class="span3">
-				<textarea class="span12"></textarea>
+			<div class="ctlt-colspan-3 ctlt-events-col">
+				<textarea class="ctlt-colspan-12"></textarea>
 			</div>
 		</div>
-		<div class="row-fluid">
-			<div class="span3">
+		<div class="ctlt-events-row">
+			<div class="ctlt-colspan-3 ctlt-events-col">
 				<label>Need Help Setting Up the Room?</label>
 			</div>
-			<div class="span3">
-				<label class="checkbox inline">
+			<div class="ctlt-colspan-3 ctlt-events-col">
+				<label class="checkbox ctlt-inline">
 					<input type="checkbox" id="help-setup-room" />
 				</label>
 			</div>
-			<div class="span3">
+			<div class="ctlt-colspan-3 ctlt-events-col">
 				<label>I Would Like Signs Posted for My Event:</label>
 			</div>
-			<div class="span3">
-				<label class="checkbox inline">
+			<div class="ctlt-colspan-3 ctlt-events-col">
+				<label class="checkbox ctlt-inline">
 					<input type="checkbox" id="post-signs" />
 				</label>
 			</div>

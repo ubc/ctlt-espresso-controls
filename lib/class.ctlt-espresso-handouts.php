@@ -31,17 +31,17 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		?>
 		<div class="ctlt-events-row">
 			<div class="ctlt-span-12">
-				<label class="radio inline ctlt-span-4 ctlt-events-col">Handouts:</label>
-				<label class="radio inline ctlt-span-2 ctlt-events-col" id="handout-radios">
+				<label class="ctlt-inline ctlt-span-4 ctlt-events-col">Handouts:</label>
+				<label class="ctlt-inline ctlt-span-2 ctlt-events-col" id="handout-radios">
 					<input type="radio" name="handouts-radio" id="handouts-radio-1" value="N/A" /> N/A
 				</label>
-				<label class="radio inline ctlt-span-2 ctlt-events-col" id="handout-radios">
+				<label class="ctlt-inline ctlt-span-2 ctlt-events-col" id="handout-radios">
 					<input type="radio" name="handouts-radio" id="handouts-radio-2" value="Expected" /> Expected
 				</label>
-				<label class="radio inline ctlt-span-2 ctlt-events-col" id="handout-radios">
+				<label class="ctlt-inline ctlt-span-2 ctlt-events-col" id="handout-radios">
 					<input type="radio" name="handouts-radio" id="handouts-radio-3" value="Received" /> Received
 				</label>
-				<label class="radio inline ctlt-span-2 ctlt-events-col" id="handout-radios">
+				<label class="ctlt-inline ctlt-span-2 ctlt-events-col" id="handout-radios">
 					<input type="radio" name="handouts-radio" id="handouts-radio-4" value="Copying Complete" /> Copying Complete
 				</label>
 			</div>

@@ -110,6 +110,7 @@ class CTLT_Espresso_Controls {
 		require_once( 'lib/class.ctlt-espresso-metaboxes.php' );
 		require_once( 'lib/class.ctlt-espresso-handouts.php' );
 		require_once( 'lib/class.ctlt-espresso-room-setup.php' );
+		require_once( 'lib/class.ctlt-espresso-additional-information.php' );
 	}
 
 	public function espresso_properties() {

@@ -29,22 +29,34 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 
 	public function handouts_radio() {
 		?>
-		<p>
-			<label>Handouts:</label>
-			<input type="radio" name="handouts-radio" id="handouts-radio-1" value="N/A" /> N/A
-			<input type="radio" name="handouts-radio" id="handouts-radio-2" value="Expected" /> Expected
-			<input type="radio" name="handouts-radio" id="handouts-radio-3" value="Received" /> Received
-			<input type="radio" name="handouts-radio" id="handouts-radio-4" value="Copying Complete" /> Copying Complete
-		</p>
+		<div class="row-fluid">
+			<div class="span12">
+			<label class="radio inline span2" for="handout-radios">Handouts:</label>
+			<label class="radio inline" id="handout-radios">
+				<input type="radio" name="handouts-radio" id="handouts-radio-1" value="N/A" /> N/A
+			</label>
+			<label class="radio inline" id="handout-radios">
+				<input type="radio" name="handouts-radio" id="handouts-radio-2" value="Expected" /> Expected
+			</label>
+			<label class="radio inline" id="handout-radios">
+				<input type="radio" name="handouts-radio" id="handouts-radio-3" value="Received" /> Received
+			</label>
+			<label class="radio inline" id="handout-radios">
+				<input type="radio" name="handouts-radio" id="handouts-radio-4" value="Copying Complete" /> Copying Complete
+			</label>
+			</div>
+		</div>
 		<?php
 	}
 
 	public function handout_upload() {
 		?>
-		<p>
-			<label>Handout File:</label>
-			<input type="file" name="document-file" id="document-file" />
-		</p>
+		<div class="row-fluid">
+			<div class="span12">
+				<label class="span2" for="handout-upload">Handout File:</label>
+				<input type="file" name="handout-upload" id="handout-upload" />
+			</div>
+		</div>
 		<?php
 	}
 

@@ -28,11 +28,7 @@ class CTLT_Espresso_Metaboxes {
 	public function save() {
 
 	}
-
-	public function admin_stylesheets() {
-		
-	}
-
+	
 }
 
 new CTLT_Espresso_Metaboxes();

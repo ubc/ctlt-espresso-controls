@@ -24,8 +24,65 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 
 	public function render_costs() {
 		?>
-		<div class="ctlt-espresso-row">
-			<div class=""
+		<div class="row-fluid">
+			<div class="span3">
+				<label>Facilitator Pay (Total)</label>
+			</div>
+			<div class="span3">
+				<div class="input-prepend">
+					<span class="add-on">$</span>
+					<input class="span5" id="facilitator-cost" type="text">
+				</div>
+			</div>
+			<div class="span3">
+				<label>TA Pay (Total)</label>
+			</div>
+			<div class="span3">
+				<div class="input-prepend">
+					<span class="add-on">$</span>
+					<input class="span5" id="ta-cost" type="text">
+				</div>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span3">
+				<label>Room Cost</label>
+			</div>
+			<div class="span3">
+				<div class="input-prepend">
+					<span class="add-on">$</span>
+					<input class="span5" id="room-cost" type="text">
+				</div>
+			</div>
+			<div class="span3">
+				<label>Ad Cost</label>
+			</div>
+			<div class="span3">
+				<div class="input-prepend">
+					<span class="add-on">$</span>
+					<input class="span5" id="ad-cost" type="text">
+				</div>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span3">
+				<label>Food Cost</label>
+			</div>
+			<div class="span3">
+				<div class="input-prepend">
+					<span class="add-on">$</span>
+					<input class="span5" id="food-cost" type="text">
+				</div>
+			</div>
+			<div class="span3">
+				<label>Other Cost</label>
+			</div>
+			<div class="span3">
+				<div class="input-prepend">
+					<span class="add-on">$</span>
+					<input class="span5" id="other-cost" type="text">
+				</div>
+			</div>
 		</div>
 		<?php
 	}

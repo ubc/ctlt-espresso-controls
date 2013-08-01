@@ -24,54 +24,58 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes{
 
 	public function render_additional_information() {
 		?>
-		<div class="ctlt-espresso-row">
-			<div class="">
+		<div class="row-fluid">
+			<div class="span3">
 				<label>Room Setup Notes:</label>
 			</div>
-			<div class="">
-				<textarea></textarea>
+			<div class="span3">
+				<textarea class="span12"></textarea>
 			</div>
-			<div class="">
+			<div class="span3">
 				<label>Admin Support Notes</label>
 			</div>
-			<div class="">
-				<textarea></textarea>
+			<div class="span3">
+				<textarea class="span12"></textarea>
 			</div>
 		</div>
-		<div class="ctlt-espresso-row">
-			<div class="">
+		<div class="row-fluid">
+			<div class="span3">
 				<label>A/V and Computer Requirements:</label>
 			</div>
-			<div class="">
-				<textarea></textarea>
+			<div class="span3">
+				<textarea class="span12"></textarea>
 			</div>
-			<div class="">
+			<div class="span3">
 				<label>Marketing & Communication Support Notes:</label>
 			</div>
-			<div class="">
-				<textarea></textarea>
+			<div class="span3">
+				<textarea class="span12"></textarea>
 			</div>
 		</div>
-		<div class="ctlt-espresso-row">
-			<div class="">
+		<div class="row-fluid">
+			<div class="span3">
 				<label>Catering Notes:</label>
 			</div>
-			<div class="">
-				<textarea></textarea>
+			<div class="span3">
+				<textarea class="span12"></textarea>
 			</div>
 		</div>
-		<div class="ctlt-espresso-row">
-			<div class="">
+		<div class="row-fluid">
+			<div class="span3">
 				<label>Need Help Setting Up the Room?</label>
 			</div>
-			<div class="">
-				<input type="checkbox" id="help-setup-room" />
+			<div class="span3">
+				<label class="checkbox inline">
+					<input type="checkbox" id="help-setup-room" />
+				</label>
 			</div>
-			<div class="">
+			<div class="span3">
 				<label>I Would Like Signs Posted for My Event:</label>
 			</div>
-			<div class="">
-				<input type="checkbox" id="post-signs" />
+			<div class="span3">
+				<label class="checkbox inline">
+					<input type="checkbox" id="post-signs" />
+				</label>
 			</div>
 		</div>
 		<?php

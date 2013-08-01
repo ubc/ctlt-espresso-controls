@@ -108,9 +108,12 @@ class CTLT_Espresso_Controls {
 
 	public function init_ctlt_espresso_controls() {
 		require_once( 'lib/class.ctlt-espresso-metaboxes.php' );
+		/** meta box ordering **/
+		// the order of the require_once statements are what the order of the meta boxes as they appear in the events admin
 		require_once( 'lib/class.ctlt-espresso-handouts.php' );
 		require_once( 'lib/class.ctlt-espresso-room-setup.php' );
 		require_once( 'lib/class.ctlt-espresso-additional-information.php' );
+		require_once( 'lib/class.ctlt-espresso-costs.php' );
 	}
 
 	public function espresso_properties() {

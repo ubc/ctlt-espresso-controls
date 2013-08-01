@@ -1,2 +1,40 @@
 .room-setup { border: 1px solid #333; margin-top: 5px; margin-bottom: 5px; }
 .image-clip { width: 50px; height: 50px; overflow: hidden; }
+
+.ctlt-events-row { clear: both; padding-bottom: 3%; padding-top: 3%; }
+
+.ctlt-events-col { 
+	border: 0px solid rgba(0, 0, 0, 0);
+	float: left;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-background-clip: padding-box !important;
+	-webkit-background-clip: padding-box !important;
+	background-clip: padding-box !important;
+}
+
+
+/***********
+ * COLUMNS *
+ ***********/
+
+.ctlt-events-col { margin-left: 1%; padding: 0 0.5%; }
+.ctlt-events-row .ctlt-events-col:first-child { margin-left: 0;}
+
+.ctlt-colspan-12 { margin-left: 0; width: 100%; }
+.ctlt-colspan-11 { width: 91.5833333333% ;}
+.ctlt-colspan-10 { width: 83.1666666667%; }
+.ctlt-colspan-9 { width: 74.75%; }
+.ctlt-colspan-8 { width: 66.3333333333%; }
+.ctlt-colspan-7 { width: 57.9166666667%; }
+.ctlt-colspan-6 { width: 49.5%; }
+.ctlt-colspan-5 { width: 41.0833333333%; }
+.ctlt-colspan-4 { width: 32.6666666667%; }
+.ctlt-colspan-3 { width: 24.25%; }
+.ctlt-colspan-2 { width: 15.8333333333%; }
+.ctlt-colspan-1 { width: 7.41666666667%; }
+
+/************
+ * POSITION *
+ ************/

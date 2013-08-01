@@ -1,3 +1,2 @@
-.room-setup {
-	
-}
+.room-setup { border: 1px solid #333; margin-top: 5px; margin-bottom: 5px; }
+.image-clip { width: 50px; height: 50px; overflow: hidden; }

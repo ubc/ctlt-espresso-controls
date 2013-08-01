@@ -65,6 +65,7 @@ class CTLT_Espresso_Controls {
 	 */
 	private function __construct() {
 		add_action( 'admin_init', array( $this, 'init_ctlt_espresso_controls' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_stylesheets' ) );		
 	}
 
 	/**
@@ -116,13 +117,18 @@ class CTLT_Espresso_Controls {
 		require_once( 'lib/class.ctlt-espresso-costs.php' );
 	}
 
+	public function admin_stylesheets() {
+		wp_register_style( 'ctlt_espresso_controls_css', CTLT_ESPRESSO_CONTROLS_CSS_URL . 'style.css', false, '1.0.0' );
+		wp_register_style( 'ctlt_espresso_bootstrap_css', CTLT_ESPRESSO_CONTROLS_CSS_URL . 'bootstrap.min.css', false, '2.3.2' );
+		wp_enqueue_style( 'ctlt_espresso_controls_css' );
+		wp_enqueue_style( 'ctlt_espresso_bootstrap_css' );
+	}
+
 	public function espresso_properties() {
 		if( !defined( 'EVENT_ESPRESSO_VERSION' ) ) {
 			add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 			deactivate_plugins( ESPRESSO_CTLT_CONTROLS_BASENAME );
 		}
-
-
 
 	}
 

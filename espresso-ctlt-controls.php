@@ -33,6 +33,7 @@ define( 'CTLT_ESPRESSO_CONTROLS_DIR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CTLT_ESPRESSO_CONTROLS_BASENAME', plugin_basename( __FILE__ ) );
 define( 'CTLT_ESPRESSO_CONTROLS_DIR_URL', plugins_url( '', CTLT_ESPRESSO_CONTROLS_BASENAME ) );
 define( 'CTLT_ESPRESSO_CONTROLS_ASSETS_URL', CTLT_ESPRESSO_CONTROLS_DIR_URL . '/assets/' );
+define( 'CTLT_ESPRESSO_CONTROLS_CSS_URL', CTLT_ESPRESSO_CONTROLS_DIR_URL . '/css/' );
 
 // TODO: replace `class-plugin-name.php` with the name of the actual plugin's class file
 require_once( CTLT_ESPRESSO_CONTROLS_DIR_PATH . 'class.ctlt-espresso-controls.php' );

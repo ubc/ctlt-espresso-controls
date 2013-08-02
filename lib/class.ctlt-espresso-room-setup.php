@@ -6,7 +6,7 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 	
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'init_assets' ) );
-		add_action( 'add_meta_boxes', array( $this, 'room_setup_metabox' ) );
+		add_action( 'add_meta_boxes_' . $this->espresso_slug, array( $this, 'room_setup_metabox' ) );
 	}
 
 	public function init_assets() {

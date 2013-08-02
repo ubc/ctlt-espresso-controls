@@ -3,7 +3,7 @@
 class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes{
 	
 	public function __construct() {
-		add_action( 'add_meta_boxes', array( $this, 'additional_information_metabox' ) );
+		add_action( 'add_meta_boxes_' . $this->espresso_slug, array( $this, 'additional_information_metabox' ) );
 	}
 
 

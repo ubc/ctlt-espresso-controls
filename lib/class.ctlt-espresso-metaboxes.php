@@ -16,6 +16,7 @@
 class CTLT_Espresso_Metaboxes {
 
 	protected $espresso_slug = 'espresso_events';
+	protected $prefix = 'ctlt_espresso_';
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'init_metaboxes' ) );
@@ -25,7 +26,7 @@ class CTLT_Espresso_Metaboxes {
 		// do some stuff here
 	}
 
-	public function save() {
+	public function load_post_meta() {
 
 	}
 	

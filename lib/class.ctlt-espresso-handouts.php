@@ -6,8 +6,10 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 
 	public function __construct() {
 		//add_action( 'plugins_loaded', array( $this, 'init_handouts_properties') );
+
 		$this->init_handouts_properties();
 		add_action( 'add_meta_boxes_' . $this->espresso_slug, array( $this, 'handouts_metabox' ) );
+		//add_action( 'add_meta_boxes', array( $this, 'handouts_metabox' ) );
 		add_action( 'save_post', array( $this, 'save' ) );
 		//var_dump( self::$radios_arr );
 	}
@@ -39,20 +41,20 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	}
 
 	public function render_handouts() {
-		$this->handouts_radio();
-		$this->handout_upload();
+		global $post;
+		echo '<input type="hidden" name="' . $this->prefix . 'handouts_noncename" value="' . wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ) . '" />';
+		$meta = get_post_meta( $post->ID, self::$radios_arr['id'], true );
+		$this->handouts_radio( $meta );
+		$this->handout_upload( $meta );
 	}
 
-	public function handouts_radio() {
-		global $post;
+	public function handouts_radio( $meta ) {
+		//global $post;
 		?>
-		<?php // nonce stuff here?>
-		<input type="hidden" name="<?php echo $this->prefix . 'handouts_noncename'; ?>" value="<?php echo wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ); ?>" />
-
 		<div class="ctlt-events-row">
 			<div class="ctlt-span-12">
 				<label class="ctlt-inline ctlt-span-4 ctlt-events-col" for="<?php echo self::$radios_arr['id']; ?>"><?php echo self::$radios_arr['name']; ?></label>
-				<?php $meta = get_post_meta( $post->ID, self::$radios_arr['id'], true); ?>
+				<?php //$meta = get_post_meta( $post->ID, self::$radios_arr['id'], true); ?>
 				<?php foreach( self::$radios_arr['options'] as $option ) { ?>
 				<?php $checked = $meta == $option['value'] ? ' checked="checked"' : ''; ?>
 				<label class="ctlt-inline ctlt-span-2 ctlt-events-col">
@@ -64,7 +66,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		<?php
 	}
 
-	public function handout_upload() {
+	public function handout_upload( $meta ) {
 		global $post;
 		?>
 		<div class="ctlt-events-row">
@@ -79,7 +81,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	public function save( $post_id ) {
 		
 		// verify the nonce
-		if( !wp_verify_nonce($_POST[$this->prefix.'handouts_noncename'], CTLT_ESPRESSO_CONTROLS_BASENAME) ) {
+		if( !wp_verify_nonce($_POST[$this->prefix .'handouts_noncename'], CTLT_ESPRESSO_CONTROLS_BASENAME) ) {
 			return $post_id;
 		}
 		// check autosave

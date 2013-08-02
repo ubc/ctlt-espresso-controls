@@ -15,8 +15,10 @@
 
 class CTLT_Espresso_Metaboxes {
 
-	protected $espresso_slug = 'espresso_events';
-	protected $prefix = 'ctlt_espresso_';
+	// post slug is for debugging purposes
+	protected $espresso_slug = 'post';
+	//protected $espresso_slug = 'espresso_event'
+	protected $prefix = '_ctlt_espresso_';
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'init_metaboxes' ) );

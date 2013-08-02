@@ -2,13 +2,29 @@
 
 class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	
+	static $radios_arr = null;
+
 	public function __construct() {
-		//add_action( 'init', array( $this, 'init_handouts_properties') );
-		add_action( 'add_meta_boxes', array( $this, 'handouts_metabox' ) );
+		//add_action( 'plugins_loaded', array( $this, 'init_handouts_properties') );
+		$this->init_handouts_properties();
+		add_action( 'add_meta_boxes_' . $this->espresso_slug, array( $this, 'handouts_metabox' ) );
+		add_action( 'save_post', array( $this, 'save' ) );
+		//var_dump( self::$radios_arr );
 	}
 
 	public function init_handouts_properties() {
-		
+
+		self::$radios_arr = array(
+			'name' => 'Handouts:',
+			'id' => $this->prefix . 'handouts_radio',
+			'type' => 'radio',
+			'options' => array(
+				array( 'name' => 'N/A', 'value' => 'n/a' ),
+				array( 'name' => 'Expected', 'value' => 'expected' ),
+				array( 'name' => 'Received', 'value' => 'received' ),
+				array( 'name' => 'Copying Complete', 'value' => 'copying-complete' )
+			)
+		);
 	}
 
 	public function handouts_metabox() {
@@ -28,28 +44,28 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	}
 
 	public function handouts_radio() {
+		global $post;
 		?>
+		<?php // nonce stuff here?>
+		<input type="hidden" name="<?php echo $this->prefix . 'handouts_noncename'; ?>" value="<?php echo wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ); ?>" />
+
 		<div class="ctlt-events-row">
 			<div class="ctlt-span-12">
-				<label class="ctlt-inline ctlt-span-4 ctlt-events-col">Handouts:</label>
-				<label class="ctlt-inline ctlt-span-2 ctlt-events-col" id="handout-radios">
-					<input type="radio" name="handouts-radio" id="handouts-radio-1" value="N/A" /> N/A
+				<label class="ctlt-inline ctlt-span-4 ctlt-events-col" for="<?php echo self::$radios_arr['id']; ?>"><?php echo self::$radios_arr['name']; ?></label>
+				<?php $meta = get_post_meta( $post->ID, self::$radios_arr['id'], true); ?>
+				<?php foreach( self::$radios_arr['options'] as $option ) { ?>
+				<?php $checked = $meta == $option['value'] ? ' checked="checked"' : ''; ?>
+				<label class="ctlt-inline ctlt-span-2 ctlt-events-col">
+					<input type="<?php echo self::$radios_arr['type']; ?>" name="<?php echo self::$radios_arr['id']; ?>" value="<?php echo $option['value']; ?>" <?php echo $checked; ?> /> <?php echo $option['name']; ?>
 				</label>
-				<label class="ctlt-inline ctlt-span-2 ctlt-events-col" id="handout-radios">
-					<input type="radio" name="handouts-radio" id="handouts-radio-2" value="Expected" /> Expected
-				</label>
-				<label class="ctlt-inline ctlt-span-2 ctlt-events-col" id="handout-radios">
-					<input type="radio" name="handouts-radio" id="handouts-radio-3" value="Received" /> Received
-				</label>
-				<label class="ctlt-inline ctlt-span-2 ctlt-events-col" id="handout-radios">
-					<input type="radio" name="handouts-radio" id="handouts-radio-4" value="Copying Complete" /> Copying Complete
-				</label>
+				<?php } ?>
 			</div>
 		</div>
 		<?php
 	}
 
 	public function handout_upload() {
+		global $post;
 		?>
 		<div class="ctlt-events-row">
 			<div class="ctlt-span-12">
@@ -58,6 +74,37 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 			</div>
 		</div>
 		<?php
+	}
+
+	public function save( $post_id ) {
+		
+		// verify the nonce
+		if( !wp_verify_nonce($_POST[$this->prefix.'handouts_noncename'], CTLT_ESPRESSO_CONTROLS_BASENAME) ) {
+			return $post_id;
+		}
+		// check autosave
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return $post_id;
+		}
+		// check permissions
+		if( 'page' == $_POST['post_type'] ) {
+			if( !current_user_can( 'edit_page', $post_id ) ) {
+				return $post_id;
+			}
+		}
+		elseif( !current_user_can( 'edit_post', $post_id ) ) {
+			return $post_id;
+		}
+		// do the actual saving here
+		$old_post_meta = get_post_meta( $post_id, self::$radios_arr['id'], true );
+		$new_post_meta = $_POST[self::$radios_arr['id']];
+		if( $new_post_meta && $new_post_meta != $old_post_meta ) {
+			update_post_meta( $post_id, self::$radios_arr['id'], $new_post_meta );
+		}
+		elseif( '' == $new_post_meta && $old_post_meta ) {
+			delete_post_meta( $post_id, self::$radios_arr['id'], $old_post_meta );
+		}
+		
 	}
 
 }

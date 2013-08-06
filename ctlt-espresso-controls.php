@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die(-1);
 }
 
-define( 'CTLT_ESPRESSO_CONTROLS_DEBUG', true );
+define( 'CTLT_ESPRESSO_CONTROLS_DEBUG', false );
 
 define( 'CTLT_ESPRESSO_CONTROLS_DIR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CTLT_ESPRESSO_CONTROLS_BASENAME', plugin_basename( __FILE__ ) );

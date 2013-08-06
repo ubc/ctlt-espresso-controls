@@ -118,7 +118,8 @@ class CTLT_Espresso_Controls {
 	}
 
 	public function admin_stylesheets() {
-		wp_register_style( 'ctlt_espresso_controls_css', CTLT_ESPRESSO_CONTROLS_CSS_URL . 'style.css', false, '1.0.0' );
+		$css = CTLT_ESPRESSO_CONTROLS_DEBUG === true ? 'style.css' : 'style.min.css';
+		wp_register_style( 'ctlt_espresso_controls_css', CTLT_ESPRESSO_CONTROLS_CSS_URL . $css, false, '1.0.0' );
 		wp_enqueue_style( 'ctlt_espresso_controls_css' );
 	}
 

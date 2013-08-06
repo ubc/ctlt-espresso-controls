@@ -41,3 +41,11 @@
 .ctlt-inline { display: inline-block; }
 .ctlt-align-mid { position: absolute; top: 50%; height: 25px; margin-top: -12.5px; padding-left: 20px; }
 .ctlt-hidden { display: none; }
+.additional-information-no-padding { padding-top: 0; padding-bottom: 0; height: 0;}
+.currency-prepend span.currency { }
+textarea.ctlt-espresso-controls-textarea { 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+}

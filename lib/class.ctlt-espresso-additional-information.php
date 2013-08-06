@@ -15,22 +15,22 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes{
 	public function init_default_assets() {
 		self::$add_info = array(
 			'name' => 'Additional Information',
-			'id' => 'additional-information',
+			'id' => $this->prefix . 'additional-information',
 			'options' => array(
-				array( 'name' => 'Room Setup Notes', 'id' => 'room-setup-notes' ),
-				array( 'name' => 'A/V and Computer Requirements', 'id' => 'av-computer-requirements' ),
-				array( 'name' => 'Admin Support Notes', 'id' => 'admin-support-notes' ),
-				array( 'name' => 'Marketing and Communication Support Notes', 'id' => 'marketing-communication' ),
-				array( 'name' => 'Catering Notes', 'id' => 'catering-notes' )
+				array( 'name' => 'Room Setup Notes', 'id' => $this->prefix . 'room-setup-notes' ),
+				array( 'name' => 'A/V and Computer Requirements', 'id' => $this->prefix . 'av-computer-requirements' ),
+				array( 'name' => 'Admin Support Notes', 'id' => $this->prefix . 'admin-support-notes' ),
+				array( 'name' => 'Marketing and Communication Support Notes', 'id' => $this->prefix . 'marketing-communication' ),
+				array( 'name' => 'Catering Notes', 'id' => $this->prefix . 'catering-notes' )
 			)
 		);
 		self::$checks = array(
 			'name' => 'Event Misc',
-			'id' => 'event-misc',
+			'id' => $this->prefix . 'event-misc',
 			'type' => 'checkbox',
 			'options' => array(
-				array( 'name' => 'Room Setup Assistance', 'id' => 'room-setup-assistance', 'checked' => 'off' ),
-				array( 'name' => 'Signs for Event', 'id' => 'signs-for-event', 'checked' => 'off' )
+				array( 'name' => 'Room Setup Assistance', 'id' => $this->prefix . 'room-setup-assistance', 'checked' => 'off' ),
+				array( 'name' => 'Signs for Event', 'id' => $this->prefix . 'signs-for-event', 'checked' => 'off' )
 			)
 		);
 	}
@@ -54,19 +54,15 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes{
 		$this->checkboxes( $meta );
 	}
 
-	public function additional_information( $meta) {
+	public function additional_information( $meta ) {
 		foreach( self::$add_info['options'] as $option ) {
 			$text = isset( $meta[$option['id']] ) ? $meta[$option['id']][0] : '';
 			?>
 			<div class="ctlt-events-row additional-information-no-padding">
-				<div class="ctlt-colspan-12 ctlt-events-col">
-					<label for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
-				</div>
-			</div>
-			<div class="ctlt-events-row">
-				<div class="ctlt-colspan-12 ctlt-events-col">
-					<textarea class="ctlt-espresso-controls-textarea" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" cols="40" rows="8"><?php echo $text; ?></textarea>
-				</div>
+				<label class="ctlt-colspan-12 ctlt-events-col"for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
+			<!--</div>
+			<div class="ctlt-events-row">-->
+				<textarea class="ctlt-colspan-12 ctlt-events-col ctlt-espresso-controls-textarea" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" cols="40" rows="8"><?php echo $text; ?></textarea>
 			</div>
 			<?php
 		}

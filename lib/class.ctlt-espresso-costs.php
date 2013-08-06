@@ -86,8 +86,8 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 		// do the actual saving here
 		foreach( self::$costs_arr['options'] as $option ) {
 			if( isset( $_POST[$option['id']] ) ) {
-				$this->create_post_meta_fields( $option['id'], $_POST[$option['id']] );
-				update_post_meta( $post_id, $option['id'], $_POST[$option['id']] );
+				$this->create_post_meta_fields( $option['id'], strip_tags( $_POST[$option['id']] ) );
+				update_post_meta( $post_id, $option['id'], strip_tags( $_POST[$option['id']] ) );
 			}
 		}
 		

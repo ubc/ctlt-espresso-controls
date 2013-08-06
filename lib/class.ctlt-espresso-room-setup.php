@@ -90,6 +90,7 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 		$old_post_meta = get_post_meta( $post_id, self::$rooms['id'], true );
 		$new_post_meta = $_POST[self::$rooms['id']];
 		if( $new_post_meta && $new_post_meta != $old_post_meta ) {
+			$this->create_post_meta_fields( self::$rooms['id'], $new_post_meta );
 			update_post_meta( $post_id, self::$rooms['id'], $new_post_meta );
 		}
 		elseif( '' == $new_post_meta && $old_post_meta ) {

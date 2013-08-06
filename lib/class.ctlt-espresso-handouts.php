@@ -107,6 +107,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		$old_post_meta = get_post_meta( $post_id, self::$radios_arr['id'], true );
 		$new_post_meta = $_POST[self::$radios_arr['id']];
 		if( $new_post_meta && $new_post_meta != $old_post_meta ) {
+			$this->create_post_meta_fields( self::$radios_arr['id'], $new_post_meta );
 			update_post_meta( $post_id, self::$radios_arr['id'], $new_post_meta );
 		}
 		elseif( '' == $new_post_meta && $old_post_meta ) {
@@ -134,6 +135,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 					wp_die( 'There was an error uploading your file. The error is: ' . $upload['error'] );
 				}
 				else {
+					$this->create_post_meta_fields( self::$handout_file['id'], $upload );
 					update_post_meta( $post_id, self::$handout_file['id'], $upload );
 				}
 

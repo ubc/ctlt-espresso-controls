@@ -106,12 +106,14 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes{
 		// saving the values of the textareas
 		foreach( self::$add_info['options'] as $option ) {
 			if( isset( $_POST[$option['id']] ) ) {
+				$this->create_post_meta_fields( $option['id'], $_POST[$option['id']] );
 				update_post_meta( $post_id, $option['id'], $_POST[$option['id']] );
 			}
 		}
 		// saving for the checkboxes
 		foreach( self::$checks['options'] as $option ) {
 			$confirm = isset( $_POST[$option['id']] ) && $_POST[$option['id']] ? 'on' : 'off';
+			$this->create_post_meta_fields( $option['id'], $confirm );
 			update_post_meta( $post_id, $option['id'], $confirm );
 		}
 		

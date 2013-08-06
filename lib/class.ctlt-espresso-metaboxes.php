@@ -28,8 +28,9 @@ class CTLT_Espresso_Metaboxes {
 		// do some stuff here
 	}
 
-	public function load_post_meta() {
-
+	public function create_post_meta_fields( $key, $value ) {
+		global $post;
+		add_post_meta( $post->ID, $key, $value, true );
 	}
 	
 }

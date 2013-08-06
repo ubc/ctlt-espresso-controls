@@ -73,10 +73,8 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes{
 		foreach( self::$checks['options'] as $option ) {
 			$checked = isset( $meta[$option['id']] ) ? esc_attr( $meta[$option['id']][0] ) : '';
 			?>
-			<div class="ctlt-colspan-3 ctlt-events-col">
-				<label for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
-			</div>
-			<div class="ctlt-colspan-3 ctlt-events-col">
+			<div class="ctlt-colspan-6 ctlt-events-col">
+				<label class="label-pad-right" for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
 				<input type="<?php echo self::$checks['type']; ?>" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" <?php checked( $checked, 'on' ); ?>>
 			</div>
 			<?php

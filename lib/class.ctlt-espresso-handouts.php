@@ -54,7 +54,6 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		<div class="ctlt-events-row">
 			<div class="ctlt-span-12">
 				<label class="ctlt-inline ctlt-span-4 ctlt-events-col" for="<?php echo self::$radios_arr['id']; ?>"><?php echo self::$radios_arr['name']; ?></label>
-				<?php //$meta = get_post_meta( $post->ID, self::$radios_arr['id'], true); ?>
 				<?php foreach( self::$radios_arr['options'] as $option ) { ?>
 				<?php $checked = $meta == $option['value'] ? ' checked="checked"' : ''; ?>
 				<label class="ctlt-inline ctlt-span-2 ctlt-events-col">

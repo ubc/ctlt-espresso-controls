@@ -16,12 +16,12 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 			'id' => $this->prefix . 'costs',
 			'type' => 'text',
 			'options' => array(
-				array( 'name' => 'Facilitator Pay (Total)', 'id' => 'facilitator-pay' ),
-				array( 'name' => 'TA Pay (Total)', 'id' => 'ta-pay' ),
-				array( 'name' => 'Room Cost', 'id' => 'room-cost' ),
-				array( 'name' => 'Ad Cost', 'id' => 'ad-cost' ),
-				array( 'name' => 'Food Cost', 'id' => 'food-cost' ),
-				array( 'name' => 'Other Cost', 'id' => 'other-cost' )
+				array( 'name' => 'Facilitator Pay (Total)', 'id' => $this->prefix . 'facilitator-pay' ),
+				array( 'name' => 'TA Pay (Total)', 'id' => $this->prefix . 'ta-pay' ),
+				array( 'name' => 'Room Cost', 'id' => $this->prefix . 'room-cost' ),
+				array( 'name' => 'Ad Cost', 'id' => $this->prefix . 'ad-cost' ),
+				array( 'name' => 'Food Cost', 'id' => $this->prefix . 'food-cost' ),
+				array( 'name' => 'Other Cost', 'id' => $this->prefix . 'other-cost' )
 			)
 		);
 	}

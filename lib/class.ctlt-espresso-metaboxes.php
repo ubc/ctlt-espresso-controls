@@ -33,6 +33,10 @@ class CTLT_Espresso_Metaboxes {
 		add_post_meta( $post->ID, $key, $value, true );
 	}
 	
+	public function back_to_edit() {
+		global $post;
+		return get_site_url() . '/wp-admin/post.php?post=' . $post->ID . '&action=edit';
+	}
 }
 
 new CTLT_Espresso_Metaboxes();

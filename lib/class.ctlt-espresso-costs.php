@@ -56,7 +56,7 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 				</div>
 				<div class="ctlt-colspan-3 ctlt-events-col currency-prepend">
 					<!--<span class="currency">$</span>-->
-					<input name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" type="text" value="<?php echo $value; ?>">
+					<input name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" type="<?php echo self::$costs_arr['type']; ?>" value="<?php echo $value; ?>">
 				</div>
 			</div>
 			<?php //echo $count % 4 === 1 ? '</div>' : '';
@@ -65,7 +65,6 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 	}
 
 	public function save( $post_id ) {
-		
 		// verify the nonce
 		if( !wp_verify_nonce($_POST[$this->prefix .'costs_noncename'], CTLT_ESPRESSO_CONTROLS_BASENAME) ) {
 			return $post_id;
@@ -85,9 +84,20 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 		}
 		// do the actual saving here
 		foreach( self::$costs_arr['options'] as $option ) {
+			$_POST[$option['id']] = empty( $_POST[$option['id']] ) ? 0 : $_POST[$option['id']];
 			if( isset( $_POST[$option['id']] ) ) {
-				$this->create_post_meta_fields( $option['id'], strip_tags( $_POST[$option['id']] ) );
-				update_post_meta( $post_id, $option['id'], strip_tags( $_POST[$option['id']] ) );
+				if( is_numeric( $_POST[$option['id']] ) ) {
+					if( $_POST[$option['id']] < 0 ) {
+						wp_die( "Please enter a non-negative number in the costs fields. <a href='" . $this->back_to_edit() . "'>Back</a>" );
+					}
+					else {
+						$this->create_post_meta_fields( $option['id'], strip_tags( $_POST[$option['id']] ) );
+						update_post_meta( $post_id, $option['id'], strip_tags( $_POST[$option['id']] ) );
+					}
+				}
+				else {
+					wp_die( "Please enter a number in the costs fields. <a href='" . $this->back_to_edit() . "'>Back</a>" );
+				}
 			}
 		}
 		

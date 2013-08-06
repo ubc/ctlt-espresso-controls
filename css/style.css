@@ -41,8 +41,10 @@
 .ctlt-inline { display: inline-block; }
 .ctlt-align-mid { position: absolute; top: 50%; height: 25px; margin-top: -12.5px; padding-left: 20px; }
 .ctlt-hidden { display: none; }
-.additional-information-no-padding { padding-top: 0; padding-bottom: 0; height: 0;}
-.currency-prepend span.currency { }
+.additional-information-no-padding { padding-top: 0; padding-bottom: 0; height: 0; }
+.label-pad-right { padding: 6px 12px;}
+.ctlt-espresso-controls-currency-prepend { position: relative; display: table; border-collapse: separate; }
+.ctlt-espresso-controls-currency-prepend span.currency { padding: 6px 12px; line-height: 1; text-align: center; }
 textarea.ctlt-espresso-controls-textarea { 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;

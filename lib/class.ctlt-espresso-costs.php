@@ -54,8 +54,8 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 				<div class="ctlt-colspan-3 ctlt-events-col">
 					<label for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?></label>
 				</div>
-				<div class="ctlt-colspan-3 ctlt-events-col currency-prepend">
-					<!--<span class="currency">$</span>-->
+				<div class="ctlt-colspan-3 ctlt-events-col ctlt-espresso-controls-currency-prepend">
+					<span class="currency">$</span>
 					<input name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" type="<?php echo self::$costs_arr['type']; ?>" value="<?php echo $value; ?>">
 				</div>
 			</div>

@@ -18,15 +18,15 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 			'id' => $this->prefix . 'room_setup',
 			'type' => 'radio',
 			'options' => array(
-				array( 'name' => 'Hollow Square', 'value' => 'hollow-square', 'image' => 'hollow-square.png' ),
-				array( 'name' => 'Classroom Style', 'value' => 'classroom-style', 'image' => 'classroom-style.png' ),
-				array( 'name' => 'Conference Style', 'value' => 'conference-style', 'image' => 'conference-style.png' ),
-				array( 'name' => 'Circle of Chairs', 'value' => 'circle-of-chairs', 'image' => 'circle-of-chairs.png' ),
-				array( 'name' => 'Theater Style', 'value' => 'theater-style', 'image' => 'theater-style.png' ),
-				array( 'name' => 'U-Shaped Style', 'value' => 'u-shaped-style', 'image' => 'u-shaped-style.png' ),
-				array( 'name' => 'Seminar Style', 'value' => 'seminar-style', 'image' => 'seminar-style.png' ),
-				array( 'name' => 'Alternate Open Space (no tables and chairs)', 'value' => 'alternate-open-space', 'image' => null ),
-				array( 'name' => 'Open Space (tables and chairs stacked to the side)', 'value' => 'open-space', 'image' => null )
+				array( 'name' => 'Hollow Square', 'value' => 'hollow-square', 'image' => 'hollow-square.png', 'alt' => 'Hollow Square' ),
+				array( 'name' => 'Classroom Style', 'value' => 'classroom-style', 'image' => 'classroom-style.png', 'alt' => 'Classroom Style' ),
+				array( 'name' => 'Conference Style', 'value' => 'conference-style', 'image' => 'conference-style.png', 'alt' => 'Conference Style' ),
+				array( 'name' => 'Circle of Chairs', 'value' => 'circle-of-chairs', 'image' => 'circle-of-chairs.png', 'alt' => 'Circle of Chairs' ),
+				array( 'name' => 'Theater Style', 'value' => 'theater-style', 'image' => 'theater-style.png', 'alt' => 'Theater Style' ),
+				array( 'name' => 'U-Shaped Style', 'value' => 'u-shaped-style', 'image' => 'u-shaped-style.png', 'alt' => 'U-Shaped Style' ),
+				array( 'name' => 'Seminar Style', 'value' => 'seminar-style', 'image' => 'seminar-style.png', 'alt' => 'Seminar Style' ),
+				array( 'name' => 'Alternate Open Space (no tables and chairs)', 'value' => 'alternate-open-space', 'image' => null, 'alt' => 'Alternate Open Space' ),
+				array( 'name' => 'Open Space (tables and chairs stacked to the side)', 'value' => 'open-space', 'image' => null, 'alt' => 'Open Space' )
 			)
 		);
 	}
@@ -57,7 +57,8 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 				<div class="ctlt-colspan-4 ctlt-events-col room-setup">
 					<?php $img_src = !empty( $option['image'] ) ? CTLT_ESPRESSO_CONTROLS_ASSETS_URL . $option['image'] : '';?>
 					<?php $checked = $meta == $option['value'] ? ' checked="checked"' : ''; ?>
-					<img src="<?php echo $img_src; ?>" class="image-clip" alt="<?php echo $option['name']; ?>" />
+					<?php $img_tag = '<img src="' . $img_src . '" class="image-clip" alt="' . $option['alt'] . '" />'; ?>
+					<?php echo !empty( $img_src ) ? $img_tag : '<div class="image-clip ctlt-inline">' . $option['alt'] . '</div>'; ?>
 					<label class="ctlt-align-mid">
 						<input type="<?php echo self::$rooms['type']; ?>" name="<?php echo self::$rooms['id']?>" value="<?php echo $option['value']; ?>" <?php echo $checked;?> /> <?php echo $option['name']; ?>
 					</label>

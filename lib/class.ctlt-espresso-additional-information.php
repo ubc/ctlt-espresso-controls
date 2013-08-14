@@ -58,10 +58,8 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes{
 		foreach( self::$add_info['options'] as $option ) {
 			$text = isset( $meta[$option['id']] ) ? $meta[$option['id']][0] : '';
 			?>
-			<div class="ctlt-events-row additional-information-no-padding">
+			<div class="ctlt-events-row">
 				<label class="ctlt-colspan-12 ctlt-events-col"for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
-			<!--</div>
-			<div class="ctlt-events-row">-->
 				<textarea class="ctlt-colspan-12 ctlt-events-col ctlt-espresso-controls-textarea" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" cols="40" rows="8"><?php echo $text; ?></textarea>
 			</div>
 			<?php

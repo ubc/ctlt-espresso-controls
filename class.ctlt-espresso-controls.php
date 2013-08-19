@@ -107,6 +107,10 @@ class CTLT_Espresso_Controls {
 		// TODO: Define deactivation functionality here
 	}
 
+	/**
+	 * init_ctlt_espresso_controls function
+	 * This function includes the necessary php files to create the metaboxes
+	 */
 	public function init_ctlt_espresso_controls() {
 		require_once( 'lib/class.ctlt-espresso-metaboxes.php' );
 		/** meta box ordering **/
@@ -117,6 +121,10 @@ class CTLT_Espresso_Controls {
 		require_once( 'lib/class.ctlt-espresso-costs.php' );
 	}
 
+	/**
+	 * admin_stylesheets function
+	 * This function enqueues the styles to the events admin page
+	 */
 	public function admin_stylesheets() {
 		$css = CTLT_ESPRESSO_CONTROLS_DEBUG === true ? 'style.css' : 'style.min.css';
 		wp_register_style( 'ctlt_espresso_controls_css', CTLT_ESPRESSO_CONTROLS_CSS_URL . $css, false, '1.0.0' );

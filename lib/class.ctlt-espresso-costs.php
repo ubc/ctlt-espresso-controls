@@ -9,6 +9,11 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 		add_action( $this->hook_name, array( $this, 'costs' ) );
 	}
 
+	/**
+	 * init_default_assets function
+	 * This function sets the form fields and their ids
+	 * Provides an easy place to change any option ids
+	 */
 	public function init_default_assets() {
 		self::$costs_arr = array(
 			'name' => 'Costs',
@@ -25,6 +30,10 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 		);
 	}
 
+	/**
+	 * costs function
+	 * This function creates the wrapper for the handout form fields
+	 */
 	public function costs() {
 		?>
 		<div id="event-costs" class="postbox">
@@ -40,6 +49,10 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 		<?php
 	}
 
+	/**
+	 * the_number_boxes function
+	 * This function renders the text boxes for the form
+	 */
 	public function the_number_boxes() {
 		foreach( self::$costs_arr['options'] as $option ) { 
 			//$value = isset( $meta[$option['id']] ) ? esc_attr( $meta[$option['id']][0] ) : '';

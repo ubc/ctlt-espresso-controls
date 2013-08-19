@@ -114,7 +114,7 @@ class CTLT_Espresso_Controls {
 		require_once( 'lib/class.ctlt-espresso-handouts.php' );
 		require_once( 'lib/class.ctlt-espresso-room-setup.php' );
 		require_once( 'lib/class.ctlt-espresso-additional-information.php' );
-		//require_once( 'lib/class.ctlt-espresso-costs.php' );
+		require_once( 'lib/class.ctlt-espresso-costs.php' );
 	}
 
 	public function admin_stylesheets() {

@@ -11,6 +11,11 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		add_action( 'post_edit_form_tag', array( $this, 'update_edit_form') );
 	}
 
+	/**
+	 * init_handout_properties function
+	 * This function sets the form fields and their ids
+	 * Provides an easy place to change any option ids
+	 */
 	public function init_handout_properties() {
 
 		self::$radios_arr = array(
@@ -31,11 +36,13 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 			);
 	}
 
-
-
+	/**
+	 * handouts function
+	 * This function creates the wrapper for the handout form fields
+	 */
 	public function handouts() {
 		?>
-		<div  id="event-handouts" class="postbox">
+		<div id="event-handouts" class="postbox">
 			<div class="handlediv" title="Click to toggle"><br>
 			</div>
 			<h3 class="hndle"> <span>
@@ -49,6 +56,10 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		<?php
 	}
 
+	/**
+	 * the_radio_buttons function
+	 * This function renders the radio buttons for the form
+	 */
 	public function the_radio_buttons() {
 		?>
 		<div class="ctlt-events-row">
@@ -65,6 +76,10 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		<?php
 	}
 
+	/**
+	 * the_file_upload function
+	 * This function renders the upload file box
+	 */
 	public function the_file_upload() {
 		?>
 		<div class="ctlt-events-row">
@@ -77,6 +92,10 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		<?php
 	}
 
+	/**
+	 * update_edit_form function
+	 * This function allows uploaded files to be uploaded
+	 */
 	public function update_edit_form() {
 		echo ' enctype="multipart/form-data"';	
 	}

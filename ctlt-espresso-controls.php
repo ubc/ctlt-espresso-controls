@@ -37,6 +37,8 @@ define( 'CTLT_ESPRESSO_CONTROLS_DIR_URL', plugins_url( '', CTLT_ESPRESSO_CONTROL
 define( 'CTLT_ESPRESSO_CONTROLS_ASSETS_URL', CTLT_ESPRESSO_CONTROLS_DIR_URL . '/assets/' );
 define( 'CTLT_ESPRESSO_CONTROLS_CSS_URL', CTLT_ESPRESSO_CONTROLS_DIR_URL . '/css/' );
 
+define( 'CTLT_ESPRESSO_EVENTS_META', $wpdb->prefix . 'events_meta' );
+
 // TODO: replace `class-plugin-name.php` with the name of the actual plugin's class file
 require_once( CTLT_ESPRESSO_CONTROLS_DIR_PATH . 'class.ctlt-espresso-controls.php' );
 

@@ -17,6 +17,9 @@ class CTLT_Espresso_Metaboxes {
 
 	protected $add_hook = 'action_hook_espresso_new_event_left_column_advanced_options_top';
 	protected $edit_hook = 'action_hook_espresso_edit_event_left_column_advanced_options_top';
+	protected $upload_hook = 'ctlt_espresso_form';
+	protected $update_hook = 'ctlt_espresso_update_event';
+	protected $insert_hook = 'ctlt_espresso_insert_event';
 
 	protected static $prefix = '_ctlt_espresso_';
 
@@ -25,7 +28,7 @@ class CTLT_Espresso_Metaboxes {
 	public function __construct() {
 		add_action( $this->add_hook, array( $this, 'nonce_input' ) );
 		add_action( $this->edit_hook, array( $this, 'nonce_input' ) );
-		add_action( $this->edit_hook, array( self, 'load_data' ) );
+		add_action( $this->edit_hook, array( $this, 'load_data' ) );
 	}
 
 	public function nonce_input( ) {

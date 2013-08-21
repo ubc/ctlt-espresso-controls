@@ -85,7 +85,17 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 		// $meta_data contains all the information that we wish to save to the db
 		// event_id = int; meta_key = varchar(255); meta_value = longtext; date_added = datetime
 
-		// before doing the saving, verify the nonce, make sure autosave is not enabled
+		// verify the nonce
+		/*if( !self::verify_nonce() )
+			return;*/
+		// check autosave
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			return;
+		// check permissions
+		// use capabilities here
+		/*if( !current_user_can( 'edit_event' ) )
+			return;*/
+
 		global $wpdb;
 
 		$date = date( "Y-m-d H:i:s", time() );
@@ -108,6 +118,17 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 	 */
 	static public function update_to_db( $event_id ) {
 		// before doing the saving, verify the nonce, make sure autosave is not enabled
+		// verify the nonce
+		/*if( !self::verify_nonce() )
+			return;*/
+		// check autosave
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			return;
+		// check permissions
+		// use capabilities here
+		/*if( !current_user_can( 'edit_event' ) )
+			return;*/
+
 		global $wpdb;
 
 		$date = date( "Y-m-d H:i:s", time() );
@@ -141,5 +162,16 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 		$results = $wpdb->get_results( $wpdb->prepare( $sql, null ), ARRAY_A );
 		//return $results;
 		return array_column( $results, 'meta_value', 'meta_key' );
+	}
+
+	/**
+	 * verify_nonce function
+	 * This function checks to see if the nonce has expired
+	 */
+	static public function verify_nonce() {
+		if( !wp_verify_nonce( $_POST[self::$prefix . CTLT_ESPRESSO_CONTROLS_BASENAME], CTLT_ESPRESSO_CONTROLS_BASENAME ) ) {
+			return false;	
+		}
+		return true;
 	}
 }

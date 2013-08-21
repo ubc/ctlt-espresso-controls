@@ -65,11 +65,11 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 	 */
 	public function the_textboxes() {
 		foreach( self::$add_info['options'] as $option ) {
-			//$text = isset( $meta[$option['id']] ) ? $meta[$option['id']][0] : '';
+			$text = isset( self::$data[$option['id']] ) ? self::$data[$option['id']] : '';
 			?>
 			<div class="ctlt-events-row">
 				<label class="ctlt-colspan-12 ctlt-events-col"for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
-				<textarea class="ctlt-colspan-12 ctlt-events-col ctlt-espresso-controls-textarea" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" cols="40" rows="8"><?php // echo $text; ?></textarea>
+				<textarea class="ctlt-colspan-12 ctlt-events-col ctlt-espresso-controls-textarea" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" cols="40" rows="8"><?php echo $text; ?></textarea>
 			</div>
 			<?php 
 		}
@@ -82,11 +82,11 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 	public function the_checkboxes() {
 		echo '<div class="ctlt-events-row">';
 		foreach( self::$checks['options'] as $option ) {
-			//$checked = isset( $meta[$option['id']] ) ? esc_attr( $meta[$option['id']][0] ) : '';
+			$checked = isset( self::$data[$option['id']] ) ? esc_attr( self::$data[$option['id']] ) : '';
 			?>
 			<div class="ctlt-colspan-6 ctlt-events-col">
 				<label class="label-pad-right" for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
-				<input type="<?php echo self::$checks['type']; ?>" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" <?php //checked( $checked, 'yes' ); ?>>
+				<input type="<?php echo self::$checks['type']; ?>" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
 			</div>
 			<?php
 		}

@@ -56,7 +56,7 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 	 */
 	public function the_number_boxes() {
 		foreach( self::$costs_arr['options'] as $option ) { 
-			//$value = isset( $meta[$option['id']] ) ? esc_attr( $meta[$option['id']][0] ) : '';
+			$value = isset( self::$data[$option['id']] ) ? esc_attr( self::$data[$option['id']] ) : '';
 			//echo $count % 4 === 0 ? '<div class="ctlt-events-row">' : ''; ?>
 			<div class="ctlt-events-row">
 				<div class="ctlt-colspan-3 ctlt-events-col">
@@ -64,11 +64,11 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 				</div>
 				<div class="ctlt-colspan-3 ctlt-events-col ctlt-espresso-controls-currency-prepend">
 					<span class="currency">$</span>
-					<input name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" type="<?php echo self::$costs_arr['type']; ?>" value="<?php //echo $value; ?>">
+					<input name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" type="<?php echo self::$costs_arr['type']; ?>" value="<?php echo $value; ?>">
 				</div>
 			</div>
 			<?php //echo $count % 4 === 1 ? '</div>' : '';
-			$count -= 1;
+			//$count -= 1;
 		}		
 	}
 

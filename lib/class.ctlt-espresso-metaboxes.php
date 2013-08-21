@@ -17,30 +17,23 @@ class CTLT_Espresso_Metaboxes {
 
 	protected $add_hook = 'action_hook_espresso_new_event_left_column_advanced_options_top';
 	protected $edit_hook = 'action_hook_espresso_edit_event_left_column_advanced_options_top';
-	//protected $hook_name = 'action_hook_espresso_new_event_left_column_advanced_options_top';
 
 	protected static $prefix = '_ctlt_espresso_';
 
+	protected static $data = null;
+
 	public function __construct() {
-		
+		add_action( $this->add_hook, array( $this, 'nonce_input' ) );
+		add_action( $this->edit_hook, array( $this, 'nonce_input' ) );
+		add_action( $this->edit_hook, array( self, 'load_data' ) );
 	}
 
-	public static function nonce_input( $nonce_name ) {
-		$nonce_box = '<input type="hidden" name="' . self::$prefix . $nonce_name . '" value="' . wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ) . '" />';
+	public function nonce_input( ) {
+		$nonce_box = '<input type="hidden" name="' . self::$prefix . CTLT_ESPRESSO_CONTROLS_BASENAME . '" value="' . wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ) . '" />';
 	}
 
-	public function get_events_meta( $event_id, $key = '', $single = false ) {
-		// events_meta table alias = CTLT_ESPRESSO_EVENTS_META
-
-	}
-
-	public function insert_events_meta( $event_id ) {
-		// check if each of the ids are set
-
-	}
-
-	public function save() {
-
+	public static function load_data( ) {
+		self::$data = CTLT_Espresso_Saving::get_from_db( $_GET['event_id'] );
 	}
 
 }

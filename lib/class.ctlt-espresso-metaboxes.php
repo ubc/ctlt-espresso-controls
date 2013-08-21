@@ -26,13 +26,11 @@ class CTLT_Espresso_Metaboxes {
 	protected static $data = null;
 
 	public function __construct() {
-		add_action( $this->add_hook, array( $this, 'nonce_input' ) );
-		add_action( $this->edit_hook, array( $this, 'nonce_input' ) );
 		add_action( $this->edit_hook, array( $this, 'load_data' ) );
 	}
 
-	public function nonce_input( ) {
-		$nonce_box = '<input type="hidden" name="' . self::$prefix . CTLT_ESPRESSO_CONTROLS_BASENAME . '" value="' . wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ) . '" />';
+	public function nonce_input( $metabox_noncename ) {
+		$nonce_box = '<input type="hidden" name="' . self::$prefix . $metabox_noncename . '" value="' . wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ) . '" />';
 	}
 
 	public static function load_data( ) {

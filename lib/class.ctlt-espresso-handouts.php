@@ -51,6 +51,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 				Handouts
 				</span> </h3>
 			<div class="inside">
+				<?php $this->nonce_input( 'handouts_noncename' ); ?>
 				<?php $this->the_radio_buttons(); ?>
 				<?php $this->the_file_upload(); ?>
 				<?php //print_r( self::$data ); ?>

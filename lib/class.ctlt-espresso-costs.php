@@ -44,6 +44,7 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 				Costs
 			</span> </h3>
 			<div class="inside">
+				<?php $this->nonce_input( 'costs_noncename' ); ?>
 				<?php $this->the_number_boxes(); ?>
 			</div>
 		</div>

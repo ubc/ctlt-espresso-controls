@@ -67,11 +67,11 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 		// event_id = int; meta_key = varchar(255); meta_value = longtext; date_added = datetime
 		global $wpdb;
 
-		$date = date( "Y-m-d H:i:s" );
+		$date = date( "Y-m-d H:i:s", time() );
 
 		foreach( self::$meta_data as $key => $value ) {
 			$sql = "INSERT INTO " . CTLT_ESPRESSO_EVENTS_META . " (event_id, meta_key, meta_value, date_added) 
-			VALUES ('" . $event_id . "', '" . $key . "', '" . $value . "', '" . $date . "')";
+			VALUES ('" . $event_id . "', '" . $key . "', '" . $value . "', '" . $date . "');";
 
 			if( !$wpdb->query( $wpdb->prepare( $sql, null ) ) ) {
 				// error goes here
@@ -80,16 +80,31 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 	}
 
-	static public function update_to_db() {
+	static public function update_to_db( $event_id ) {
+		global $wpdb;
+
+		$date = date( "Y-m-d H:i:s", time() );
+		foreach( self::$meta_data as $key => $value ) {
+			$sql = "UPDATE " . CTLT_ESPRESSO_EVENTS_META . " SET meta_value='" . $value . "' 
+			WHERE event_id='" . $event_id . "' AND meta_key='" . $key . "';";
+
+			if( !$wpdb->query( $wpdb->prepare( $sql, null ) ) ) {
+				// error goes here
+			}
+		}
 
 	}
 
-	static public function get_from_db() {
+	static public function get_from_db( $event_id ) {
+		global $wpdb;
 
+		$sql = "SELECT meta_key, meta_value 
+		FROM " . CTLT_ESPRESSO_EVENTS_META . " 
+		WHERE event_id='" . $event_id . "';";  
+		//AND meta_key='" . $meta_key ."';";
+
+		$results = $wpdb->get_results( $wpdb->prepare( $sql, null ), ARRAY_A );
+		//return $results;
+		return array_column( $results, 'meta_value', 'meta_key' );
 	}
 }
-
-
-//$event_desc			= !empty($_REQUEST['event_desc']) ? $_REQUEST['event_desc'] : '';
-
-//$add_attendee_question_groups = empty($_REQUEST['add_attendee_question_groups']) ? '' : $_REQUEST['add_attendee_question_groups'];

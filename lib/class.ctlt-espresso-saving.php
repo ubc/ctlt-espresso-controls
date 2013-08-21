@@ -5,12 +5,22 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 	static $meta_data = array(null);
 	static $file_upload = null;
 
-	static public function init( $event_id ) {
-		//self::upload_file();
+	static public function insert( $event_id ) {
+		self::upload_file();
 		self::assigning();
 		self::insert_to_db( $event_id );
 	}
 
+	static public function update( $event_id ) {
+		self::upload_file();
+		self::assigning();
+		self::update_to_db( $event_id );
+	}
+
+	/**
+	 * upload_file function
+	 * This function will handle uploading handout files to the WordPress media library
+	 */
 	static public function upload_file() {
 
 		if( !empty( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'] ) ) {
@@ -39,6 +49,10 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 	}
 
+	/**
+	 * assigning function
+	 * This function will assign the values to be inserted into the db to an array
+	 */
 	static public function assigning() {
 		self::$meta_data = array(
 			CTLT_Espresso_Handouts::$radios_arr['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] ) ? $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] : 'N/A',
@@ -62,9 +76,16 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 		}
 	}
 
+	/**
+	 * insert_to_db function
+	 * This function will take the event id as a parameter and insert data into the events_meta table
+	 * @param int (event_id)
+	 */
 	static public function insert_to_db( $event_id ) {
 		// $meta_data contains all the information that we wish to save to the db
 		// event_id = int; meta_key = varchar(255); meta_value = longtext; date_added = datetime
+
+		// before doing the saving, verify the nonce, make sure autosave is not enabled
 		global $wpdb;
 
 		$date = date( "Y-m-d H:i:s", time() );
@@ -80,7 +101,13 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 	}
 
+	/**
+	 * update_to_db function
+	 * This function will take the event id as a paramter and update the data in the events_meta table
+	 * @param int (event_id)
+	 */
 	static public function update_to_db( $event_id ) {
+		// before doing the saving, verify the nonce, make sure autosave is not enabled
 		global $wpdb;
 
 		$date = date( "Y-m-d H:i:s", time() );
@@ -95,6 +122,14 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 	}
 
+	/**
+	 * get_from_db function
+	 * This function grabs the data from the events meta table and returns an associative array
+	 * where the key = value of meta_key column and it's value = value of meta_value column
+	 * i.e. array( '_ctlt_espresso_handouts_radio' => 'Expected' ) will be a map in the array
+	 * @param int (event_id)
+	 * @return array
+	 */
 	static public function get_from_db( $event_id ) {
 		global $wpdb;
 

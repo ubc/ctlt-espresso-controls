@@ -7,7 +7,7 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 	
 	public function __construct() {
 		$this->init_default_assets();
-		add_action( $this->hook_name, array( $this, 'additional_information' ) );
+		add_action( $this->add_hook, array( $this, 'additional_information' ) );
 	}
 
 	/**
@@ -18,22 +18,22 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 	public function init_default_assets() {
 		self::$add_info = array(
 			'name' => 'Additional Information',
-			'id' => $this->prefix . 'additional-information',
+			'id' => self::$prefix . 'additional_information',
 			'options' => array(
-				array( 'name' => 'Room Setup Notes', 'id' => $this->prefix . 'room-setup-notes' ),
-				array( 'name' => 'A/V and Computer Requirements', 'id' => $this->prefix . 'av-computer-requirements' ),
-				array( 'name' => 'Admin Support Notes', 'id' => $this->prefix . 'admin-support-notes' ),
-				array( 'name' => 'Marketing and Communication Support Notes', 'id' => $this->prefix . 'marketing-communication' ),
-				array( 'name' => 'Catering Notes', 'id' => $this->prefix . 'catering-notes' )
+				array( 'name' => 'Room Setup Notes', 'id' => self::$prefix . 'room_setup_notes' ),
+				array( 'name' => 'A/V and Computer Requirements', 'id' => self::$prefix . 'av_computer_requirements' ),
+				array( 'name' => 'Admin Support Notes', 'id' => self::$prefix . 'admin_support_notes' ),
+				array( 'name' => 'Marketing and Communication Support Notes', 'id' => self::$prefix . 'marketing_communication' ),
+				array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' )
 			)
 		);
 		self::$checks = array(
 			'name' => 'Event Misc',
-			'id' => $this->prefix . 'event-misc',
+			'id' => self::$prefix . 'event-misc',
 			'type' => 'checkbox',
 			'options' => array(
-				array( 'name' => 'Room Setup Assistance', 'id' => $this->prefix . 'room-setup-assistance', 'checked' => 'off' ),
-				array( 'name' => 'Signs for Event', 'id' => $this->prefix . 'signs-for-event', 'checked' => 'off' )
+				array( 'name' => 'Room Setup Assistance', 'id' => self::$prefix . 'room_setup_assistance', 'checked' => 'no' ),
+				array( 'name' => 'Signs for Event', 'id' => self::$prefix . 'signs_for_event', 'checked' => 'no' )
 			)
 		);
 	}
@@ -85,7 +85,7 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 			?>
 			<div class="ctlt-colspan-6 ctlt-events-col">
 				<label class="label-pad-right" for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
-				<input type="<?php echo self::$checks['type']; ?>" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" <?php //checked( $checked, 'on' ); ?>>
+				<input type="<?php echo self::$checks['type']; ?>" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" <?php //checked( $checked, 'yes' ); ?>>
 			</div>
 			<?php
 		}

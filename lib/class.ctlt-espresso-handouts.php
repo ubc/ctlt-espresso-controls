@@ -7,7 +7,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 
 	public function __construct() {
 		$this->init_handout_properties();
-		add_action( $this->hook_name, array( $this, 'handouts' ) );
+		add_action( $this->add_hook, array( $this, 'handouts' ) );
 		add_action( 'post_edit_form_tag', array( $this, 'update_edit_form') );
 	}
 
@@ -20,7 +20,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 
 		self::$radios_arr = array(
 			'name' => 'Handouts:',
-			'id' => $this->prefix . 'handouts_radio',
+			'id' => self::$prefix . 'handouts_radio',
 			'type' => 'radio',
 			'options' => array(
 				array( 'name' => 'N/A', 'value' => 'n/a' ),
@@ -31,7 +31,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 			);
 		self::$handout_file = array(
 			'name' => 'Handout File',
-			'id' => $this->prefix . 'handout-upload',
+			'id' => self::$prefix . 'handouts_upload',
 			'type' => 'file'
 			);
 	}
@@ -41,6 +41,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	 * This function creates the wrapper for the handout form fields
 	 */
 	public function handouts() {
+		global $org_options;
 		?>
 		<div id="event-handouts" class="postbox">
 			<div class="handlediv" title="Click to toggle"><br>
@@ -68,7 +69,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 				<?php foreach( self::$radios_arr['options'] as $option ) { ?>
 					<?php //$checked = $meta == $option['value'] ? ' checked="checked"' : ''; ?>
 					<label class="ctlt-inline ctlt-span-2 ctlt-events-col">
-						<input type="<?php echo self::$radios_arr['type']; ?>" name="<?php echo self::$radios_arr['id']; ?>" value="<?php echo $option['value']; ?>" <?php //echo $checked; ?> /> <?php echo $option['name']; ?>
+						<input type="<?php echo self::$radios_arr['type']; ?>" name="<?php echo self::$radios_arr['id']; ?>" value="<?php echo $option['name']; ?>" <?php //echo $checked; ?> /> <?php echo $option['name']; ?>
 					</label>
 				<?php } ?>
 			</div>

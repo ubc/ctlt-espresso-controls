@@ -6,7 +6,7 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 
 	public function __construct() {
 		$this->init_assets();
-		add_action( $this->hook_name, array( $this, 'room_setup' ) );
+		add_action( $this->add_hook, array( $this, 'room_setup' ) );
 	}
 
 	/**
@@ -17,18 +17,18 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 	public function init_assets() {
 		self::$rooms = array(
 			'name' => 'Room Setup Style:',
-			'id' => $this->prefix . 'room_setup',
+			'id' => self::$prefix . 'room_setup',
 			'type' => 'radio',
 			'options' => array(
-				array( 'name' => 'Hollow Square', 'value' => 'hollow-square', 'image' => 'hollow-square.png', 'alt' => 'Hollow Square' ),
-				array( 'name' => 'Classroom Style', 'value' => 'classroom-style', 'image' => 'classroom-style.png', 'alt' => 'Classroom Style' ),
-				array( 'name' => 'Conference Style', 'value' => 'conference-style', 'image' => 'conference-style.png', 'alt' => 'Conference Style' ),
-				array( 'name' => 'Circle of Chairs', 'value' => 'circle-of-chairs', 'image' => 'circle-of-chairs.png', 'alt' => 'Circle of Chairs' ),
-				array( 'name' => 'Theater Style', 'value' => 'theater-style', 'image' => 'theater-style.png', 'alt' => 'Theater Style' ),
-				array( 'name' => 'U-Shaped Style', 'value' => 'u-shaped-style', 'image' => 'u-shaped-style.png', 'alt' => 'U-Shaped Style' ),
-				array( 'name' => 'Seminar Style', 'value' => 'seminar-style', 'image' => 'seminar-style.png', 'alt' => 'Seminar Style' ),
-				array( 'name' => 'Alternate Open Space (no tables and chairs)', 'value' => 'alternate-open-space', 'image' => null, 'alt' => 'Alternate Open Space' ),
-				array( 'name' => 'Open Space (tables and chairs stacked to the side)', 'value' => 'open-space', 'image' => null, 'alt' => 'Open Space' )
+				array( 'name' => 'Hollow Square', 'value' => 'Hollow Square', 'image' => 'hollow-square.png', 'alt' => 'Hollow Square' ),
+				array( 'name' => 'Classroom Style', 'value' => 'Classroom Style', 'image' => 'classroom-style.png', 'alt' => 'Classroom Style' ),
+				array( 'name' => 'Conference Style', 'value' => 'Conference Style', 'image' => 'conference-style.png', 'alt' => 'Conference Style' ),
+				array( 'name' => 'Circle of Chairs', 'value' => 'Circle of Chairs', 'image' => 'circle-of-chairs.png', 'alt' => 'Circle of Chairs' ),
+				array( 'name' => 'Theater Style', 'value' => 'Theater Style', 'image' => 'theater-style.png', 'alt' => 'Theater Style' ),
+				array( 'name' => 'U-Shaped Style', 'value' => 'U-Shaped Style', 'image' => 'u-shaped-style.png', 'alt' => 'U-Shaped Style' ),
+				array( 'name' => 'Seminar Style', 'value' => 'Seminar Style', 'image' => 'seminar-style.png', 'alt' => 'Seminar Style' ),
+				array( 'name' => 'Alternate Open Space (no tables and chairs)', 'value' => 'Alternate Open Space', 'image' => null, 'alt' => 'Alternate Open Space' ),
+				array( 'name' => 'Open Space (tables and chairs stacked to the side)', 'value' => 'Open Space', 'image' => null, 'alt' => 'Open Space' )
 			)
 		);
 	}

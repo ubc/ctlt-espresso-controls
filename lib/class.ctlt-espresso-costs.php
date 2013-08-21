@@ -6,7 +6,7 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 
 	public function __construct() {
 		$this->init_default_assets();
-		add_action( $this->hook_name, array( $this, 'costs' ) );
+		add_action( $this->add_hook, array( $this, 'costs' ) );
 	}
 
 	/**
@@ -17,15 +17,15 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 	public function init_default_assets() {
 		self::$costs_arr = array(
 			'name' => 'Costs',
-			'id' => $this->prefix . 'costs',
+			'id' => self::$prefix . 'costs',
 			'type' => 'text',
 			'options' => array(
-				array( 'name' => 'Facilitator Pay (Total)', 'id' => $this->prefix . 'facilitator-pay' ),
-				array( 'name' => 'TA Pay (Total)', 'id' => $this->prefix . 'ta-pay' ),
-				array( 'name' => 'Room Cost', 'id' => $this->prefix . 'room-cost' ),
-				array( 'name' => 'Ad Cost', 'id' => $this->prefix . 'ad-cost' ),
-				array( 'name' => 'Food Cost', 'id' => $this->prefix . 'food-cost' ),
-				array( 'name' => 'Other Cost', 'id' => $this->prefix . 'other-cost' )
+				array( 'name' => 'Facilitator Pay (Total)', 'id' => self::$prefix . 'facilitator_pay' ),
+				array( 'name' => 'TA Pay (Total)', 'id' => self::$prefix . 'ta_pay' ),
+				array( 'name' => 'Room Cost', 'id' => self::$prefix . 'room_cost' ),
+				array( 'name' => 'Ad Cost', 'id' => self::$prefix . 'ad_cost' ),
+				array( 'name' => 'Food Cost', 'id' => self::$prefix . 'food_cost' ),
+				array( 'name' => 'Other Cost', 'id' => self::$prefix . 'other_cost' )
 			)
 		);
 	}

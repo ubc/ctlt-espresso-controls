@@ -53,7 +53,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 			<div class="inside">
 				<?php $this->the_radio_buttons(); ?>
 				<?php $this->the_file_upload(); ?>
-				<?php print_r( self::$data ); ?>
+				<?php //print_r( self::$data ); ?>
 			</div>
 		</div>
 		<?php

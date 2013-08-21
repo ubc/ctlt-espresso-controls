@@ -8,6 +8,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	public function __construct() {
 		$this->init_handout_properties();
 		add_action( $this->add_hook, array( $this, 'handouts' ) );
+		add_action( $this->edit_hook, array( $this, 'handouts' ) );
 		add_action( 'post_edit_form_tag', array( $this, 'update_edit_form') );
 	}
 

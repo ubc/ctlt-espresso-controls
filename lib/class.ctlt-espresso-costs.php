@@ -7,6 +7,7 @@ class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 	public function __construct() {
 		$this->init_default_assets();
 		add_action( $this->add_hook, array( $this, 'costs' ) );
+		add_action( $this->edit_hook, array( $this, 'costs' ) );
 	}
 
 	/**

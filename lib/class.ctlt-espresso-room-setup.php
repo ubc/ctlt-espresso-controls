@@ -7,6 +7,7 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 	public function __construct() {
 		$this->init_assets();
 		add_action( $this->add_hook, array( $this, 'room_setup' ) );
+		add_action( $this->edit_hook, array( $this, 'room_setup' ) );
 	}
 
 	/**

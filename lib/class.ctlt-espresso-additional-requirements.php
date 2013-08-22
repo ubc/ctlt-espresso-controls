@@ -135,9 +135,12 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 				</span> </h3>
 			<div class="inside">
 				<?php $this->nonce_input( 'additional_requirements_noncename' ); ?>
+				<h4><?php echo self::$computers['name']; ?></h4>
 				<?php $this->the_computers(); ?>
 				<?php $this->the_cables(); ?>
 				<?php $this->the_misc_computer_stuff(); ?>
+				<h4><?php echo self::$equipment['name']; ?></h4>
+				<?php $this->the_equipment(); ?>
 				<?php //print_r( self::$data ); ?>
 			</div>
 		</div>
@@ -191,7 +194,18 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 			</div>
 		<?php }
 	}
-}
 
+	public function the_equipment() {
+		?>
+		<div class="ctlt-events-row">
+		<?php foreach( self::$equipment['options'] as $option ) { ?>
+			<?php //$checked = isset( self::$data[$option['id']] ) ? esc_attr( self::$data[$option['id']] ) : '';?>
+				<label class="ctlt-inline ctlt-colspan-1 ctlt-events-col" for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?></label>
+				<input class="ctlt-inline ctlt-colspan-1 ctlt-events-col" type="<?php echo self::$equipment['type']; ?>" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" <?php //checked( $checked, 'yes' ); ?>>
+		<?php } ?>
+		</div>
+		<?php
+	}
+}
 
 new CTLT_Espresso_Additional_Requirements();

@@ -59,19 +59,19 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 					'name' => 'Laptops',
 					'description' => 'Max number of laptops are 20',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'laptop_checkbox' ), 
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'laptop_textbox' ), 'label' => array( 'Quantity' ) )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'laptop_textbox' ), 'label' => array( 'Quantity' ), 'max' => 20 )
 				),
 				array(
 					'name' => 'Headsets',
 					'description' => 'Max number of headsets are 20',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'headset_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'headset_textbox' ), 'label' => array( 'Quantity' ) )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'headset_textbox' ), 'label' => array( 'Quantity' ), 'max' => 20 )
 				),
 				array(
 					'name' => 'Clickers',
 					'description' => 'Max number of clickers are 25',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'clicker_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'clicker_textbox' ), 'label' => array( 'Quantity' ) )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'clicker_textbox' ), 'label' => array( 'Quantity' ), 'max' => 25 )
 				),
 				array(
 					'name' => 'Virtual Participation',
@@ -107,13 +107,13 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 					'name' => 'Audio Recording',
 					'description' => 'How many people in the room?',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'audio_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'audio_textbox' ), 'label' => array( 'Quantity' ) )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'audio_textbox' ), 'label' => array( 'Headcount' ) )
 				),
 				array(
 					'name' => 'Projectors',
 					'description' => 'Max number of projectors are 2 and only in room 2.22',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'projector_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'projector_textbox' ), 'label' => array( 'Quantity' ) )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'projector_textbox' ), 'label' => array( 'Quantity' ), 'max' => 2 )
 				),
 				array(
 					'name' => 'Speakers',
@@ -185,7 +185,18 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 					<?php //echo 'number of textboxes needed: ' . count($option['textbox']['id']);?>
 					<?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
 						<label class="ctlt-inline ctlt-colspan-1 ctlt-events-col" for="<?php echo $option['textbox']['id'][$i]; ?>"><?php echo $option['textbox']['label'][$i]; ?></label>
-						<input class="ctlt-inline ctlt-colspan-2 ctlt-events-col" type="<?php echo $option['textbox']['type']; ?>" name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i]; ?>">
+						<?php if( strtolower( $option['textbox']['label'][$i] ) !== "quantity" ) { ?>
+							<input class="ctlt-inline ctlt-colspan-2 ctlt-events-col" type="<?php echo $option['textbox']['type']; ?>" name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i]; ?>">
+						<?php } 
+						else { ?>
+							<?php //$select = isset( self::$data[$option['textbox']['id'][$i]] ) ? self::$data[$option['textbox']['id'][$i]] : ''; ?>
+							<select name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i] ?>">
+								<option>none</option>
+							<?php for( $j = 1; $j <= $option['textbox']['max']; $j++ ) { ?>
+								<option <?php //selected( $option['textbox']['id'][$i], $j ); ?>><?php echo $j; ?></option>
+							<?php } ?>
+							</select>
+						<?php } ?>
 					<?php } ?>
 				<?php } 
 				else { ?>

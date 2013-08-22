@@ -57,58 +57,69 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 			'options' => array(
 				array( 
 					'name' => 'Laptops',
+					'description' => 'Max number of laptops are 20',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'laptop_checkbox' ), 
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'laptop_textbox' ), 'label' => array( 'Quantity' ), 'description' => 'Max number of laptops are 20' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'laptop_textbox' ), 'label' => array( 'Quantity' ) )
 				),
 				array(
 					'name' => 'Headsets',
+					'description' => 'Max number of headsets are 20',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'headset_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'headset_textbox' ), 'label' => array( 'Quantity' ), 'description' => 'Max number of headsets are 20' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'headset_textbox' ), 'label' => array( 'Quantity' ) )
 				),
 				array(
 					'name' => 'Clickers',
+					'description' => 'Max number of clickers are 25',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'clicker_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'clicker_textbox' ), 'label' => array( 'Quantity' ), 'description' => 'Max number of clickers are 25' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'clicker_textbox' ), 'label' => array( 'Quantity' ) )
 				),
 				array(
 					'name' => 'Virtual Participation',
+					'description' => 'The website and login details for virtual participation',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'virtual_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'virtual_textbox_website', self::$prefix . 'virtual_textbox_login' ), 'label' => array( 'Website', 'Login' ), 'description' => 'The website and login details for virtual participation' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'virtual_textbox_website', self::$prefix . 'virtual_textbox_login' ), 'label' => array( 'Website', 'Login' ) )
 				),
 				array(
 					'name' => 'URL\'s on Computers',
+					'description' => 'The website each computer will be at initially',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'url_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'url_textbox' ), 'label' => array( 'URL' ), 'description' => 'The website each computer will be at initially' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'url_textbox' ), 'label' => array( 'URL' ) )
 				),
 				array(
 					'name' => 'Folder with Files',
+					'description' => 'Please send or give a USB containing your files to the admin team',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'folder_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'folder_textbox' ), 'label' => array( null ), 'description' => 'Please send or give a USB containing your files to the admin team' )
+					'textbox' => array( 'type' => 'text', 'id' => null, 'label' => null )
 				),
 				array(
 					'name' => 'Additional Software',
+					'description' => 'Additional software you would like to be installed in all the computers',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'software_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'software_textbox' ), 'label' => array( 'Software Name' ) , 'description' => 'Additional software you would like to be installed in all the computers' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'software_textbox' ), 'label' => array( 'Software Name' ) )
 				),
 				array(
 					'name' => 'Login Information',
+					'description' => 'Specific accounts users need to login to',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'login_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'login_textbox_name', self::$prefix . 'login_textbox_password' ), 'label' => array( 'Username', 'Password' ), 'description' => 'Specific accounts users need to login to' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'login_textbox_name', self::$prefix . 'login_textbox_password' ), 'label' => array( 'Username', 'Password' ) )
 				),
 				array(
 					'name' => 'Audio Recording',
+					'description' => 'How many people in the room?',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'audio_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'audio_textbox' ), 'label' => array( 'Quantity' ), 'description' => 'How many people in the room?' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'audio_textbox' ), 'label' => array( 'Quantity' ) )
 				),
 				array(
 					'name' => 'Projectors',
+					'description' => 'Max number of projectors are 2 and only in room 2.22',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'projector_checkbox' ),
-					'textbox' => array( 'type' => 'textbox', 'id' => array( self::$prefix . 'projector_textbox' ), 'label' => array( 'Quantity' ), 'description' => 'Max number of projectors are 2 and only in room 2.22' )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'projector_textbox' ), 'label' => array( 'Quantity' ) )
 				),
 				array(
 					'name' => 'Speakers',
+					'description' => 'Turn on room speakers?',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'speakers_checkbox' ),
-					'textbox' => array( null )
+					'textbox' => array( 'type' =>'text', 'id' => null, 'label' => null )
 				)
 			)
 		);
@@ -125,6 +136,8 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 			<div class="inside">
 				<?php $this->nonce_input( 'additional_requirements_noncename' ); ?>
 				<?php $this->the_computers(); ?>
+				<?php $this->the_cables(); ?>
+				<?php $this->the_misc_computer_stuff(); ?>
 				<?php //print_r( self::$data ); ?>
 			</div>
 		</div>
@@ -133,9 +146,52 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 
 	public function the_computers() {
 		?>
-		
+		<div class="ctlt-events-row">
+			<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo self::$computers['id']; ?>"><?php echo self::$computers['name']; ?></label>
+			<?php foreach( self::$computers['options'] as $option ) { ?>
+				<?php //$checked = self::$data[self::$computers['id']] == $option['name'] ? ' checked="checked"' : ''; ?>
+				<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col">
+					<input type="<?php echo self::$computers['type']; ?>" name="<?php echo self::$computers['id']; ?>" value="<?php echo $option['name']; ?>" <?php //echo $checked; ?>/> <?php echo $option['name']; ?>
+				</label>
+			<?php } ?>
+		</div>
 		<?php
 	}
+
+	public function the_cables() {
+		?>
+		<div class="ctlt-events-row">
+			<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo self::$cables['id']; ?>"><?php echo self::$cables['name']; ?></label>
+			<?php foreach( self::$cables['options'] as $option ) { ?>
+				<?php //$checked = self::$data[self::$cables['id']] == $option['name'] ? ' checked="checked"' : ''; ?>
+				<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col">
+					<input type="<?php echo self::$cables['type']; ?>" name="<?php echo self::$cables['id']; ?>" value="<?php echo $option['name']; ?>" <?php //echo $checked; ?>/> <?php echo $option['name']; ?>
+				</label>
+			<?php } ?>
+		</div>
+		<?php
+	}
+
+	public function the_misc_computer_stuff() {
+		foreach( self::$misc_computer_stuff['options'] as $option ) { ?>
+			<?php //$checked = isset( self::$data[$option['id']] ) ? esc_attr( self::$data[$option['id']] ) : ''; ?>
+			<div class="ctlt-events-row">
+				<div class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo $option['checkbox']['id']; ?>"><label><?php echo $option['name']; ?></label><?php echo isset( $option['textbox']['id'] ) ? '<br/>' . $option['description'] : ''; ?></div>
+				<input class="ctlt-inline ctlt-colspan-1 ctlt-events-col" type="<?php echo $option['checkbox']['type']; ?>" name="<?php echo $option['checkbox']['id']; ?>" id="<?php echo $option['checkbox']['id']; ?>" <?php //checked( $checked, 'yes' ); ?>>
+				<?php if( isset( $option['textbox']['id'] ) ) { ?>
+					<?php //echo 'number of textboxes needed: ' . count($option['textbox']['id']);?>
+					<?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
+						<label class="ctlt-inline ctlt-colspan-1 ctlt-events-col" for="<?php echo $option['textbox']['id'][$i]; ?>"><?php echo $option['textbox']['label'][$i]; ?></label>
+						<input class="ctlt-inline ctlt-colspan-2 ctlt-events-col" type="<?php echo $option['textbox']['type']; ?>" name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i]; ?>">
+					<?php } ?>
+				<?php } 
+				else { ?>
+				<div class="ctlt-inline ctlt-colspan-7 ctlt-events-col"><?php echo $option['description']; ?></div>
+			<?php } ?>
+			</div>
+		<?php }
+	}
 }
+
 
 new CTLT_Espresso_Additional_Requirements();

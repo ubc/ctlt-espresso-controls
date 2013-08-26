@@ -21,7 +21,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 	 * upload_file function
 	 * This function will handle uploading handout files to the WordPress media library
 	 */
-	static public function upload_file() {
+	static private function upload_file() {
 
 		if( !empty( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'] ) ) {
 			// setup the array of supported file types
@@ -53,11 +53,13 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 	 * assigning function
 	 * This function will assign the values to be inserted into the db to an array
 	 */
-	static public function assigning() {
+	static private function assigning() {
 		self::$meta_data = array(
 			CTLT_Espresso_Handouts::$radios_arr['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] ) ? $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] : 'N/A',
 			CTLT_Espresso_Handouts::$handout_file['id'] => !empty( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'] ) ? self::$file_upload : '',
 			CTLT_Espresso_Room_Setup::$rooms['id'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] : '',
+			CTLT_Espresso_Additional_Requirements::$computers['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] : '',
+			CTLT_Espresso_Additional_Requirements::$cables['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] : '',
 		);
 
 		foreach( CTLT_Espresso_Additional_Information::$add_info['options'] as $option ) {
@@ -74,6 +76,21 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 				self::$meta_data[$option['id']] = is_numeric( $_POST[$option['id']] ) && $_POST[$option['id']] >= 0 ? strip_tags( $_POST[$option['id']] ) : 0;
 			}
 		}
+
+		foreach( CTLT_Espresso_Additional_Requirements::$equipment['options'] as $option ) {
+			self::$meta_data[$option['id']] = isset( $_POST[$option['id']] ) && $_POST[$option['id']] ? 'yes' : 'no';
+		}
+
+		foreach( CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['options'] as $option ) {
+			self::$meta_data[$option['checkbox']['id']] = isset( $_POST[$option['checkbox']['id']] ) && $_POST[$option['checkbox']['id']] ? 'yes' : 'no';
+			if( isset( $option['textbox']['id'] ) ) {
+				for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) {
+					self::$meta_data[$option['textbox']['id'][$i]] = isset( $_POST[$option['textbox']['id'][$i]] ) ? $_POST[$option['textbox']['id'][$i]] : '';
+				}
+			}
+		}
+			
+	//static $misc_computer_stuff = null;
 	}
 
 	/**
@@ -81,7 +98,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 	 * This function will take the event id as a parameter and insert data into the events_meta table
 	 * @param int (event_id)
 	 */
-	static public function insert_to_db( $event_id ) {
+	static private function insert_to_db( $event_id ) {
 		// $meta_data contains all the information that we wish to save to the db
 		// event_id = int; meta_key = varchar(255); meta_value = longtext; date_added = datetime
 
@@ -116,7 +133,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 	 * This function will take the event id as a paramter and update the data in the events_meta table
 	 * @param int (event_id)
 	 */
-	static public function update_to_db( $event_id ) {
+	static private function update_to_db( $event_id ) {
 		// before doing the saving, verify the nonce, make sure autosave is not enabled
 		// verify the nonce
 		/*if( !self::verify_nonce() )

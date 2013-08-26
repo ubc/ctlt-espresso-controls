@@ -58,6 +58,8 @@ class CTLT_Espresso_Controls {
 	 */
 	protected $plugin_screen_hook_suffix = null;
 
+	public $test_var = null;
+
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
@@ -149,6 +151,19 @@ class CTLT_Espresso_Controls {
 			<p>Please enable <strong>Event Espresso</strong></p>
 		</div>
 		<?php
+	}
+
+	public function frontend_get_data() {
+		global $wpdb;
+		$event_id = $_GET['ee'];
+		
+
+		$sql = "SELECT meta_key, meta_value 
+		FROM " . CTLT_ESPRESSO_EVENTS_META . " 
+		WHERE event_id='" . $event_id . "';";  
+
+		$results = $wpdb->get_results( $wpdb->prepare( $sql, null ), ARRAY_A );
+		return array_column( $results, 'meta_value', 'meta_key' );
 	}
 
 }

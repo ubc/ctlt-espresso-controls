@@ -57,9 +57,9 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 		self::$meta_data = array(
 			CTLT_Espresso_Handouts::$radios_arr['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] ) ? $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] : 'N/A',
 			CTLT_Espresso_Handouts::$handout_file['id'] => !empty( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'] ) ? self::$file_upload : '',
-			CTLT_Espresso_Room_Setup::$rooms['id'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] : '',
-			CTLT_Espresso_Additional_Requirements::$computers['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] : '',
-			CTLT_Espresso_Additional_Requirements::$cables['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] : '',
+			CTLT_Espresso_Room_Setup::$rooms['id'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] : 'None Specified',
+			CTLT_Espresso_Additional_Requirements::$computers['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] : 'None Specified',
+			CTLT_Espresso_Additional_Requirements::$cables['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] : 'None Specified',
 		);
 
 		foreach( CTLT_Espresso_Additional_Information::$add_info['options'] as $option ) {
@@ -119,9 +119,11 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 		foreach( self::$meta_data as $key => $value ) {
 			$sql = "INSERT INTO " . CTLT_ESPRESSO_EVENTS_META . " (event_id, meta_key, meta_value, date_added) 
-			VALUES ('" . $event_id . "', '" . $key . "', '" . $value . "', '" . $date . "');";
+			VALUES(%d, %s, %s, %s);";
+			//VALUES ('" . $event_id . "', '" . $key . "', '" . $value . "', '" . $date . "');";
+			// int, string, string, string
 
-			if( !$wpdb->query( $wpdb->prepare( $sql, null ) ) ) {
+			if( !$wpdb->query( $wpdb->prepare( $sql, $event_id, $key, $value, $date ) ) ) {
 				// error goes here
 			}
 		}
@@ -150,10 +152,11 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 		$date = date( "Y-m-d H:i:s", time() );
 		foreach( self::$meta_data as $key => $value ) {
-			$sql = "UPDATE " . CTLT_ESPRESSO_EVENTS_META . " SET meta_value='" . $value . "' 
-			WHERE event_id='" . $event_id . "' AND meta_key='" . $key . "';";
+			/*$sql = "UPDATE " . CTLT_ESPRESSO_EVENTS_META . " SET meta_value='" . $value . "' 
+			WHERE event_id='" . $event_id . "' AND meta_key='" . $key . "';";*/
+			$sql = "UPDATE " . CTLT_ESPRESSO_EVENTS_META . " SET meta_value='%s' WHERE event_id='%d' AND meta_key='%s';";
 
-			if( !$wpdb->query( $wpdb->prepare( $sql, null ) ) ) {
+			if( !$wpdb->query( $wpdb->prepare( $sql, $value, $event_id, $key ) ) ) {
 				// error goes here
 			}
 		}

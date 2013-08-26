@@ -26,7 +26,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 				array( 'name' => 'Laser Pointer', 'id' => self::$prefix . 'laser_pointer', 'checked' => 'no' ),
 				array( 'name' => 'Smart Projector', 'id' => self::$prefix . 'smart_projecter', 'checked' => 'no' ),
 				array( 'name' => 'USB Stick', 'id' => self::$prefix . 'usb_stick', 'checked' => 'no' ),
-				array( 'name' => 'AV Technician', 'id' => self::$prefix . 'av_technician', 'checked' => 'no' )
+				array( 'name' => 'A/V Technician', 'id' => self::$prefix . 'av_technician', 'checked' => 'no' )
 			)
 		);
 
@@ -77,7 +77,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 					'name' => 'Virtual Participation',
 					'description' => 'The website and login details for virtual participation',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'virtual_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'virtual_textbox_website', self::$prefix . 'virtual_textbox_login' ), 'label' => array( 'Website', 'Login' ) )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'virtual_textbox_website', self::$prefix . 'virtual_textbox_login' ), 'label' => array( 'URL', 'Login' ) )
 				),
 				array(
 					'name' => 'URL\'s on Computers',

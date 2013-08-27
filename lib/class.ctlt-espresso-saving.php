@@ -120,7 +120,6 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 		foreach( self::$meta_data as $key => $value ) {
 			$sql = "INSERT INTO " . CTLT_ESPRESSO_EVENTS_META . " (event_id, meta_key, meta_value, date_added) 
 			VALUES(%d, %s, %s, %s);";
-			//VALUES ('" . $event_id . "', '" . $key . "', '" . $value . "', '" . $date . "');";
 			// int, string, string, string
 
 			if( !$wpdb->query( $wpdb->prepare( $sql, $event_id, $key, $value, $date ) ) ) {
@@ -150,10 +149,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 		global $wpdb;
 
-		$date = date( "Y-m-d H:i:s", time() );
 		foreach( self::$meta_data as $key => $value ) {
-			/*$sql = "UPDATE " . CTLT_ESPRESSO_EVENTS_META . " SET meta_value='" . $value . "' 
-			WHERE event_id='" . $event_id . "' AND meta_key='" . $key . "';";*/
 			$sql = "UPDATE " . CTLT_ESPRESSO_EVENTS_META . " SET meta_value='%s' WHERE event_id='%d' AND meta_key='%s';";
 
 			if( !$wpdb->query( $wpdb->prepare( $sql, $value, $event_id, $key ) ) ) {

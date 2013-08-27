@@ -153,6 +153,11 @@ class CTLT_Espresso_Controls {
 		<?php
 	}
 
+	/**
+	 * frontend_get_data function
+	 * This function allows the frontend to get the data entered from the admin side of the plugin
+	 * using the event id
+	 */
 	public function frontend_get_data() {
 		global $wpdb;
 		$event_id = $_GET['ee'];
@@ -160,9 +165,9 @@ class CTLT_Espresso_Controls {
 
 		$sql = "SELECT meta_key, meta_value 
 		FROM " . CTLT_ESPRESSO_EVENTS_META . " 
-		WHERE event_id='" . $event_id . "';";  
+		WHERE event_id=%d;";  
 
-		$results = $wpdb->get_results( $wpdb->prepare( $sql, null ), ARRAY_A );
+		$results = $wpdb->get_results( $wpdb->prepare( $sql, $event_id ), ARRAY_A );
 		return array_column( $results, 'meta_value', 'meta_key' );
 	}
 

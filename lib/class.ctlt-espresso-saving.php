@@ -173,10 +173,8 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 		$sql = "SELECT meta_key, meta_value 
 		FROM " . CTLT_ESPRESSO_EVENTS_META . " 
 		WHERE event_id='" . $event_id . "';";  
-		//AND meta_key='" . $meta_key ."';";
 
 		$results = $wpdb->get_results( $wpdb->prepare( $sql, null ), ARRAY_A );
-		//return $results;
 		return array_column( $results, 'meta_value', 'meta_key' );
 	}
 

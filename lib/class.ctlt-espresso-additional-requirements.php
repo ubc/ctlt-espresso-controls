@@ -36,7 +36,8 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 			'type' => 'radio',
 			'options' => array(
 				array( 'name' => 'Room Computer', 'value' => 'Room Computer' ),
-				array( 'name' => 'Own Computer', 'value' => 'Own Computer' )
+				array( 'name' => 'Own Computer', 'value' => 'Own Computer' ),
+				array( 'name' => 'None', 'value' => 'None' )
 			) 
 		);
 
@@ -48,7 +49,8 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 				array( 'name' => 'VGA' ),
 				array( 'name' => 'DVI' ),
 				array( 'name' => 'Display Port' ),
-				array( 'name' => 'HDMI' )
+				array( 'name' => 'HDMI' ),
+				array( 'name' => 'None' )
 			)
 		);
 
@@ -163,7 +165,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 	public function the_cables() {
 		?>
 		<div class="ctlt-events-row">
-			<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo self::$cables['id']; ?>"><?php echo self::$cables['name']; ?></label>
+			<label class="ctlt-inline ctlt-colspan-1 ctlt-events-col" for="<?php echo self::$cables['id']; ?>"><?php echo self::$cables['name']; ?></label>
 			<?php foreach( self::$cables['options'] as $option ) { ?>
 				<?php $checked = self::$data[self::$cables['id']] == $option['name'] ? ' checked="checked"' : ''; ?>
 				<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col">

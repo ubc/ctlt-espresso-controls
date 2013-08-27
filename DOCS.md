@@ -2,6 +2,20 @@
 
 Documentation to reference to when maintaining, building upon, or understanding the CTLT Espresso Controls plugin.
 
+## Table of Contents
+
+1. [Introduction](#introduction)
+1. [Discussion](#discussion)
+	- [ctlt-espresso-controls.php](#ctlt-espresso-controlsphp)
+	- [class.ctlt-espresso-controls.php](#classctlt-espresso-controlsphp)
+	- [class.ctlt-espresso-metaboxes.php](#classctlt-espresso-metaboxesphp)
+	- [class.ctlt-espresso-handouts.php](#classctlt-espresso-handoutsphp)
+	- [class.ctlt-espresso-room-setup.php](#classctlt-espresso-room-setupphp)
+	- [class.ctlt-espresso-additional-information.php](#classctlt-espresso-additional-informationphp)
+	- [class.ctlt-espresso-additional-requirements.php](#classctlt-espresso-additional-requirementsphp)
+	- [class.ctlt-espresso-costs.php](#classctlt-espresso-costsphp)
+	- [class.ctlt-espresso-saving.php](#classctlt-espresso-savingphp)
+
 ## Introduction
 
 This documentation serves to provide reference material for developers who wish to maintain or build upon this plugin. This documentation only applies to the version of the plugin that is compatible to Event Espresso 3.1.4+ up to version 4.0 exclusively and as such should not be referenced for any other versions other than the aforementioned ones.
@@ -59,4 +73,4 @@ The CTLT_Espresso_Costs class can be found defined in the `ctlt-espresso-control
 
 ### class.ctlt-espresso-saving.php
 
-The CTLT_Espresso_Saving class can be found defined in the `ctlt-espresso-controls/lib/class.ctlt-espresso-saving.php` file. This class handles most of the database functions for inserting, updating and getting data. The data is saved and grabbed from the events meta table and requires the use of the two hooks from `insert_event.php` and `update_event.php` in the Event Espresso core files. When inserting into the events meta table, all the values from the input form fields are saved regardless if they have been checked or filled in. The values for the fields that are not filled are saved as a default value such as empty strings or a default radio button field. The data is gathered by taking advantage of the php `$_POST` array and then targetting the appropriate input fields that are described in the individual meta box classes as well as the event id that is generated in the `insert_event.php` file. Once all of the appropriate data is gathered, insertion to the events meta table will take place. Updating information is handled almost exactly the same way as inserting data into the events meta table. Getting data from the events data table is accomplished by providing the event id and calling the static function `get_from_db( $event_id )`. This function is called in the CTLT_Espresso_Metaboxes class when the action hook for editing events is fired.
+The CTLT_Espresso_Saving class can be found defined in the `ctlt-espresso-controls/lib/class.ctlt-espresso-saving.php` file. This class handles most of the database functions for inserting, updating and getting data. The data is saved and grabbed from the events meta table and requires the use of the two hooks from `insert_event.php` and `update_event.php` in the Event Espresso core files. When inserting into the events meta table, all the values from the input form fields are saved regardless if they have been checked or filled in. The values for the fields that are not filled are saved as a default value such as empty strings or a default radio button field. The data is gathered by taking advantage of the php `$_POST` array and then targeting the appropriate input fields that are described in the individual meta box classes as well as the event id that is generated in the `insert_event.php` file. Once all of the appropriate data is gathered, insertion to the events meta table will take place. Updating information is handled almost exactly the same way as inserting data into the events meta table. Getting data from the events data table is accomplished by providing the event id and calling the static function `get_from_db( $event_id )`. This function is called in the CTLT_Espresso_Metaboxes class when the action hook for editing events is fired.

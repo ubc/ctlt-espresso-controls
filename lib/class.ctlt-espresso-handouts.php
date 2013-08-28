@@ -20,7 +20,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	public function init_handout_properties() {
 
 		self::$radios_arr = array(
-			'name' => 'Handouts:',
+			'name' => 'Handouts',
 			'id' => self::$prefix . 'handouts_radio',
 			'type' => 'radio',
 			'options' => array(
@@ -42,7 +42,6 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	 * This function creates the wrapper for the handout form fields
 	 */
 	public function handouts() {
-		global $org_options;
 		?>
 		<div id="event-handouts" class="postbox">
 			<div class="handlediv" title="Click to toggle"><br>
@@ -51,10 +50,10 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 				Handouts
 				</span> </h3>
 			<div class="inside">
-				<?php $this->nonce_input( 'handouts_noncename' ); ?>
+				<?php echo $this->nonce_input( 'handouts_noncename' ); ?>
 				<?php $this->the_radio_buttons(); ?>
 				<?php $this->the_file_upload(); ?>
-				<?php //print_r( self::$data ); ?>
+				<?php print_r( self::$data ); ?>
 			</div>
 		</div>
 		<?php
@@ -67,15 +66,13 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	public function the_radio_buttons() {
 		?>
 		<div class="ctlt-events-row">
-			<div class="ctlt-span-12">
-				<label class="ctlt-inline ctlt-span-4 ctlt-events-col" for="<?php echo self::$radios_arr['id']; ?>"><?php echo self::$radios_arr['name']; ?></label>
-				<?php foreach( self::$radios_arr['options'] as $option ) { ?>
-					<?php $checked = self::$data[self::$radios_arr['id']] == $option['value'] ? ' checked="checked"' : ''; ?>
-					<label class="ctlt-inline ctlt-span-2 ctlt-events-col">
-						<input type="<?php echo self::$radios_arr['type']; ?>" name="<?php echo self::$radios_arr['id']; ?>" value="<?php echo $option['value']; ?>" <?php echo $checked; ?> /> <?php echo $option['name']; ?>
-					</label>
-				<?php } ?>
-			</div>
+			<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo self::$radios_arr['id']; ?>"><?php echo self::$radios_arr['name']; ?></label>
+			<?php foreach( self::$radios_arr['options'] as $option ) { ?>
+				<?php $checked = self::$data[self::$radios_arr['id']] == $option['value'] ? ' checked="checked"' : ''; ?>
+				<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col">
+					<input type="<?php echo self::$radios_arr['type']; ?>" name="<?php echo self::$radios_arr['id']; ?>" value="<?php echo $option['value']; ?>" <?php echo $checked; ?> /> <?php echo $option['name']; ?>
+				</label>
+			<?php } ?>
 		</div>
 		<?php
 	}
@@ -87,9 +84,13 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	public function the_file_upload() {
 		?>
 		<div class="ctlt-events-row">
-			<div class="ctlt-span-12">
-				<label class="ctlt-span-4 ctlt-events-col" for="<?php echo self::$handout_file['id']; ?>"><?php echo self::$handout_file['name']; ?>:</label>
-				<input class="ctlt-span-6 ctlt-events-col" type="<?php echo self::$handout_file['type']; ?>" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" />
+			<div class="ctlt-colspan-12">
+				
+				<label class="ctlt-colspan-2 ctlt-events-col"><?php echo self::$handout_file['name']; ?>:</label>
+				<!--<input class="ctlt-colspan-4 ctlt-events-col" type="<?php echo self::$handout_file['type']; ?>" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" />-->
+				<input type="text" id="<?php echo self::$handout_file['id']; ?>" name="<?php echo self::$handout_file['id']; ?>" value="<?php echo self::$handout_file['name']; ?>" />
+				<input type="button" class="button" value="<?php echo self::$handout_file['name']; ?>" />
+
 				<?php //$this->add_download_link(); ?>
 			</div>
 		</div>
@@ -112,7 +113,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		$attachment = self::$data[self::$handout_file['id']];
 		print_r( $attachment );
 		if( !empty( $attachment['url'] ) ) { ?>
-		<a class="ctlt-span-12 ctlt-events-col" href="<?php echo $attachment['url']; ?>" download="handout.pdf">
+		<a class="ctlt-colspan-12 ctlt-events-col" href="<?php echo $attachment['url']; ?>" download="handout.pdf">
 			Download the attachment here
 		</a>
 		<?php }

@@ -136,7 +136,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 				Additional Requirements
 				</span> </h3>
 			<div class="inside">
-				<?php $this->nonce_input( 'additional_requirements_noncename' ); ?>
+				<?php echo $this->nonce_input( 'additional_requirements_noncename' ); ?>
 				<h4><?php echo self::$computers['name']; ?></h4>
 				<?php $this->the_computers(); ?>
 				<?php $this->the_cables(); ?>

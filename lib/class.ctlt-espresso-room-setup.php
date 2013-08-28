@@ -47,7 +47,7 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 				Room Setup
 				</span> </h3>
 			<div class="inside">
-				<?php $this->nonce_input( 'room_setup_noncename' ); ?>
+				<?php echo $this->nonce_input( 'room_setup_noncename' ); ?>
 				<?php $this->the_room_styles(); ?>
 			</div>
 		</div>

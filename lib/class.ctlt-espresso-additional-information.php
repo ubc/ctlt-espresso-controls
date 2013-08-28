@@ -52,7 +52,7 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 				Additional Information	
 			</span> </h3>
 			<div class="inside">
-				<?php $this->nonce_input( 'additional_noncename' ); ?>
+				<?php echo $this->nonce_input( 'additional_information_noncename' ); ?>
 				<?php $this->the_textboxes(); ?>
 				<?php $this->the_checkboxes(); ?>
 			</div>

@@ -49,7 +49,7 @@ The CTLT_Espresso_Controls class can be found to be defined in the `ctlt-espress
 
 ### class.ctlt-espresso-metaboxes.php
 
-The CTLT_Espresso_Metaboxes class can be found to be defined in the `ctlt-espresso-controls/lib/class.ctlt-espresso-metaboxes.php` file. This class contains all of the hook names that the rest of the plugin will use and inherit from. The class also contains a function that will execute on event edit that will load the relevant data from the events meta table and allow the children classes to display previously inserted/updated data from the same event id.
+The CTLT_Espresso_Metaboxes class can be found to be defined in the `ctlt-espresso-controls/lib/class.ctlt-espresso-metaboxes.php` file. This class contains all of the hook names that the rest of the plugin will use and inherit from. The class also contains a function that will execute on event edit that will load the relevant data from the events meta table and allow the children classes to display previously inserted/updated data from the same event id. In the event that the `$insert_hook` and `$update_hook` are not added to the Event Espresso core files, they can be added to the `event-espresso/includes/event-management/insert_event.php` file and the `event-espresso/includes/event-management/update_event.php` file. For the `insert_event.php` file, simply add a `do_action( 'INSERT HOOK GOES HERE', $last_event_id );` underneath the if statement block where event posts are added to the database. For the `update_event.php` file, add a `do_action( 'UPDATE HOOK GOES HERE', $event_id );` underneath the if statement block where event posts are updated to the database.
 
 ### class.ctlt-espresso-handouts.php
 

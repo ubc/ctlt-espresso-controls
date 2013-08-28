@@ -6,61 +6,13 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 	static $file_upload_url = null;
 
 	static public function insert( $event_id ) {
-		self::upload_file();
 		self::assigning();
 		self::insert_to_db( $event_id );
 	}
 
 	static public function update( $event_id ) {
-		self::upload_file();
 		self::assigning();
 		self::update_to_db( $event_id );
-	}
-
-	/**
-	 * upload_file function
-	 * This function will handle uploading handout files to the WordPress media library
-	 */
-	static private function upload_file() {
-
-		/*if( !empty( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'] ) ) {
-			// setup the array of supported file types
-			$supported_types = array( 'application/pdf' );
-
-			// get the file type of the upload
-			$arr_file_type = wp_check_filetype( basename( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'] ) );
-			$uploaded_type = $arr_file_type['type'];
-
-			// check if the type is supported. if not, throw an error
-			if( in_array( $uploaded_type, $supported_types ) ) {
-
-				// use the WordPress API to upload the file
-				self::$file_upload = wp_upload_bits( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'], null, file_get_contents( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['tmp_name'] ) );
-
-				if( isset( self::$file_upload['error'] ) && self::$file_upload['error'] != 0 ) {
-					wp_die( 'There was an error uploading your file. The error is: ' . self::$file_upload['error'] );
-				}
-				//self::$file_upload = $upload;
-			}
-			else {
-				wp_die( "the file type that you have uploaded is not a PDF." );
-			}
-		}*/
-
-		// if the file exists
-		if( !empty( $_FILES ) && isset( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']] ) ) {
-
-			// upload the file here using the WordPress API
-			$upload = wp_upload_bits( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'], null, wp_remote_get( $FILES[CTLT_Espresso_Handouts::$handout_file['id']]['tmp_name'] ) );
-
-			// set the events meta for this file
-			if( false == $upload['error'] ) {
-				self::$file_upload_url = $upload['url'];
-			}
-
-			// TODO: set a filetype restriction
-		}
-
 	}
 
 	/**
@@ -71,8 +23,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 		self::$meta_data = array(
 			CTLT_Espresso_Handouts::$radios_arr['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] ) ? $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] : 'N/A',
-			CTLT_Espresso_Handouts::$handout_file['id'] => !empty( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'] ) ? self::$file_upload_url : '',
-			//CTLT_Espresso_Handouts::$handout_file['id'] => !empty( $_FILES[CTLT_Espresso_Handouts::$handout_file['id']]['name'] ) ? '' : '',
+			CTLT_Espresso_Handouts::$handout_file['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$handout_file['id']] ) ? $_POST[CTLT_Espresso_Handouts::$handout_file['id']] : '',
 			CTLT_Espresso_Room_Setup::$rooms['id'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] : 'Open Space',
 			CTLT_Espresso_Additional_Requirements::$computers['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] : 'None',
 			CTLT_Espresso_Additional_Requirements::$cables['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] : 'None',
@@ -185,7 +136,6 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 			$compare = self::get_single_row( $event_id, $key );
 			if( $compare[0] !== $value ) { 
 			// compare the 0th index of the returned array with the value of the current array index of meta_data
-				print_r( self::$file_upload );
 				$sql = "UPDATE " . CTLT_ESPRESSO_EVENTS_META . " SET meta_value='%s' WHERE event_id='%d' AND meta_key='%s';";
 
 				if( !$wpdb->query( $wpdb->prepare( $sql, $value, $event_id, $key ) ) ) {

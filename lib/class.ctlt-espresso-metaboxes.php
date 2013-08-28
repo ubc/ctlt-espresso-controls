@@ -29,8 +29,8 @@ class CTLT_Espresso_Metaboxes {
 		add_action( $this->edit_hook, array( $this, 'load_data' ) );
 	}
 
-	public function nonce_input( $metabox_noncename ) {
-		$nonce_box = '<input type="hidden" name="' . self::$prefix . $metabox_noncename . '" value="' . wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ) . '" />';
+	protected function nonce_input( $metabox_noncename ) {
+		return '<input type="hidden" name="' . self::$prefix . $metabox_noncename . '" value="' . wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ) . '" />';
 	}
 
 	public static function load_data( ) {

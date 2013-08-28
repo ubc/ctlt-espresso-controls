@@ -4,6 +4,7 @@
 var CTLT_Espresso_File_Upload = {
 
 	frame_output: null,
+	attachment_target: null,
 
 	onReady: function() {
 		jQuery( '.ctlt-espresso-upload-button' ).on( 'click', CTLT_Espresso_File_Upload.fileUpload );
@@ -12,7 +13,8 @@ var CTLT_Espresso_File_Upload = {
 	fileUpload: function( event ) {
 		event.preventDefault();
 
-		CTLT_Espresso_File_Upload.frame_output = jQuery(this).siblings('.ctlt-espresso-upload')
+		CTLT_Espresso_File_Upload.frame_output = jQuery(this).siblings('.ctlt-espresso-upload');
+		CTLT_Espresso_File_Upload.attachment_target = jQuery(this).siblings('.ctlt-espresso-target-attachment-id');
 
 		// create that frame, if you're so great (i mean when it isn't already created)
 		if( !wp.media.frames.ctlt_frame ) {
@@ -30,8 +32,9 @@ var CTLT_Espresso_File_Upload = {
 				attachment = frame.state().get('selection').first().toJSON();
 
 				// Do something with attachment.id and/or attachment.uri here
-				CTLT_Espresso_File_Upload.frame_output.val(attachment.uri);
-				console.log( attachment );
+				CTLT_Espresso_File_Upload.frame_output.val(attachment.url);
+				CTLT_Espresso_File_Upload.attachment_target.val(attachment.id);				
+
 			} );
 
 			// assign here

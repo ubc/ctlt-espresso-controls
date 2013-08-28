@@ -54,7 +54,6 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 				<?php echo $this->nonce_input( 'handouts_noncename' ); ?>
 				<?php $this->the_radio_buttons(); ?>
 				<?php $this->the_file_upload(); ?>
-				<pre><?php print_r( self::$data ); ?></pre>
 			</div>
 		</div>
 		<?php
@@ -86,14 +85,14 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		?>
 		<div class="ctlt-events-row">
 			<div class="ctlt-colspan-12">
-				
 				<label class="ctlt-colspan-2 ctlt-events-col"><?php echo self::$handout_file['name']; ?></label>
-				<!--<input class="ctlt-colspan-4 ctlt-events-col" type="<?php echo self::$handout_file['type']; ?>" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" />
-				<input type="text" id="<?php echo self::$handout_file['id']; ?>" name="<?php echo self::$handout_file['id']; ?>" value="<?php echo self::$handout_file['name']; ?>" />
-				<input type="button" class="button" value="<?php echo self::$handout_file['name']; ?>" />-->
 				<div class="uploader">
+					<?php $attachment_id = isset( self::$data[self::$handout_file['id']] ) ? self::$data[self::$handout_file['id']] : null;?>
+					<?php $attachment_url = wp_get_attachment_url( $attachment_id ); ?>
 					<input class="ctlt-espresso-upload-button button" type="button" name="<?php echo self::$handout_file['id'] . '_button'; ?>" id="<?php echo self::$handout_file['id'] . '_button'; ?>" value="Upload" />
- 					<input class="ctlt_espresso-upload" type="text" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" />
+ 					<input class="ctlt-espresso-upload" type="text" value="<?php echo $attachment_url !== false ? $attachment_url : null; ?>" />
+ 					<input class="ctlt-espresso-target-attachment-id" type="hidden" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" value="<?php echo $attachment_id; ?>"/>
+ 					<br /> Enter a URL or choose a file for the slide
 				</div>
 
 				<?php //$this->add_download_link(); ?>

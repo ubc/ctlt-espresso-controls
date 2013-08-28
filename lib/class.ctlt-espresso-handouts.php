@@ -9,6 +9,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		$this->init_handout_properties();
 		add_action( $this->add_hook, array( $this, 'handouts' ) );
 		add_action( $this->edit_hook, array( $this, 'handouts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'uploader_js' ) );
 		add_action( 'ctlt_espresso_form', array( $this, 'update_edit_form') );
 	}
 
@@ -53,7 +54,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 				<?php echo $this->nonce_input( 'handouts_noncename' ); ?>
 				<?php $this->the_radio_buttons(); ?>
 				<?php $this->the_file_upload(); ?>
-				<?php print_r( self::$data ); ?>
+				<pre><?php print_r( self::$data ); ?></pre>
 			</div>
 		</div>
 		<?php
@@ -86,10 +87,14 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		<div class="ctlt-events-row">
 			<div class="ctlt-colspan-12">
 				
-				<label class="ctlt-colspan-2 ctlt-events-col"><?php echo self::$handout_file['name']; ?>:</label>
-				<!--<input class="ctlt-colspan-4 ctlt-events-col" type="<?php echo self::$handout_file['type']; ?>" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" />-->
+				<label class="ctlt-colspan-2 ctlt-events-col"><?php echo self::$handout_file['name']; ?></label>
+				<!--<input class="ctlt-colspan-4 ctlt-events-col" type="<?php echo self::$handout_file['type']; ?>" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" />
 				<input type="text" id="<?php echo self::$handout_file['id']; ?>" name="<?php echo self::$handout_file['id']; ?>" value="<?php echo self::$handout_file['name']; ?>" />
-				<input type="button" class="button" value="<?php echo self::$handout_file['name']; ?>" />
+				<input type="button" class="button" value="<?php echo self::$handout_file['name']; ?>" />-->
+				<div class="uploader">
+					<input class="ctlt-espresso-upload-button button" type="button" name="<?php echo self::$handout_file['id'] . '_button'; ?>" id="<?php echo self::$handout_file['id'] . '_button'; ?>" value="Upload" />
+ 					<input class="ctlt_espresso-upload" type="text" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" />
+				</div>
 
 				<?php //$this->add_download_link(); ?>
 			</div>
@@ -119,6 +124,15 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		<?php }
 	}
 	
+	/**
+	 * uploader_js function
+	 * This function enqueues the javascript for the uploader
+	 */
+	public function uploader_js() {
+		wp_enqueue_media();
+		wp_enqueue_script( 'media-upload' );
+		wp_enqueue_script( 'ctlt-espresso-uploader-js', CTLT_ESPRESSO_CONTROLS_JS_URL . 'ctlt-espresso-uploader.js', array( 'jquery' ), '1.0.0', true );
+	}
 }
 
 new CTLT_Espresso_Handouts();

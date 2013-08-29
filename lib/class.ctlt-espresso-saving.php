@@ -56,6 +56,15 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 				}
 			}
 		}
+
+		foreach( CTLT_Espresso_Additional_Requirements::$conference_misc['options'] as $option ) {
+			self::$meta_data[$option['checkbox']['id']] = isset( $_POST[$option['checkbox']['id']] ) && $_POST[$option['checkbox']['id']] ? 'yes' : 'no';
+			if( isset( $option['textbox']['id'] ) ) {
+				for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) {
+					self::$meta_data[$option['textbox']['id'][$i]] = isset( $_POST[$option['textbox']['id'][$i]] ) ? $_POST[$option['textbox']['id'][$i]] : '';
+				}
+			}
+		}
 			
 	}
 
@@ -157,7 +166,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 		$value = $wpdb->get_results( $wpdb->prepare( $sql, $event_id, $meta_key ), ARRAY_A );
 		if( !$value ) {
-			wp_die( 'fail' );
+			wp_die( 'failed at id=' . $meta_key );
 		}
 		return array_column( $value, 'meta_value' );
 	}

@@ -146,7 +146,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 					'name' => 'Video Conference',
 					'description' => 'Will this conference be at least partially a video conference?',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'video_conference_checkbox' ),
-					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'video_conference_textbox_ip', self::$prefix . 'video_conference_checkbox_number' ), 'label' => array( 'IP Address', 'Contact Number' ) )
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'video_conference_textbox_ip', self::$prefix . 'video_conference_textbox_number' ), 'label' => array( 'IP Address', 'Contact Number' ) )
 				),
 				array(
 					'name' => 'Phone Conference',
@@ -262,7 +262,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 				<?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
 					<?php $value = isset( self::$data[$option['textbox']['id'][$i]] ) ? esc_attr( self::$data[$option['textbox']['id'][$i]] ) : ''; ?>
 					<label class="ctlt-inline ctlt-colspan-1 ctlt-events-col" for="<?php echo $option['textbox']['id'][$i]; ?>"><?php echo $option['textbox']['label'][$i]; ?></label>
-					<input class="ctlt-inline ctlt-colspan-1 ctlt-events-col" type="<?php echo $option['textbox']['type']; ?>" name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i]; ?>" value="<?php echo $value; ?>">
+					<input class="ctlt-inline ctlt-colspan-<?php echo ( strtolower( $option['textbox']['label'][$i] ) === 'url' ) || ( strpos( strtolower( $option['textbox']['label'][$i] ), 'number' ) !== false ) ? '2' : '1'; ?> ctlt-events-col" type="<?php echo $option['textbox']['type']; ?>" name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i]; ?>" value="<?php echo $value; ?>">
 				<?php } ?>
 			<?php }
 			else { ?>

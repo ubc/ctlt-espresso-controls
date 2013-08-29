@@ -65,11 +65,11 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 			<?php echo $count % 3 === 0 ? '<div class="ctlt-events-row">' : ''; ?>
 				<div class="ctlt-colspan-4 ctlt-events-col room-setup">
 					<?php $img_src = !empty( $option['image'] ) ? CTLT_ESPRESSO_CONTROLS_ASSETS_URL . $option['image'] : '';?>
-					<?php $checked = self::$data[self::$rooms['id']] == $option['value'] ? ' checked="checked"' : ''; ?>
+					<?php $checked = isset( self::$data[self::$rooms['id']] ) && self::$data[self::$rooms['id']] == $option['value'] ? 'yes' : empty( self::$data[self::$rooms['id']] ) && strtolower( $option['value'] ) === 'open space' ? 'yes' : 'no'; ?>
 					<?php $img_tag = '<img src="' . $img_src . '" class="image-clip" alt="' . $option['alt'] . '" />'; ?>
 					<?php echo !empty( $img_src ) ? $img_tag : '<div class="image-clip ctlt-inline">' . $option['alt'] . '</div>'; ?>
 					<label class="ctlt-align-mid">
-						<input type="<?php echo self::$rooms['type']; ?>" name="<?php echo self::$rooms['id']?>" value="<?php echo $option['value']; ?>" <?php echo $checked;?> /> <?php echo $option['name']; ?>
+						<input type="<?php echo self::$rooms['type']; ?>" name="<?php echo self::$rooms['id']?>" value="<?php echo $option['value']; ?>" <?php echo checked( $checked, 'yes' );?> /> <?php echo $option['name']; ?>
 					</label>
 				</div>
 			<?php echo $count % 3 === 1 ? '</div>' : ''; ?>

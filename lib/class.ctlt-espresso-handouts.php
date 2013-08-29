@@ -68,9 +68,9 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 		<div class="ctlt-events-row">
 			<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo self::$radios_arr['id']; ?>"><?php echo self::$radios_arr['name']; ?></label>
 			<?php foreach( self::$radios_arr['options'] as $option ) { ?>
-				<?php $checked = self::$data[self::$radios_arr['id']] == $option['value'] ? ' checked="checked"' : ''; ?>
+				<?php $checked = isset( self::$data[self::$radios_arr['id']] ) && self::$data[self::$radios_arr['id']] == $option['value'] ? 'yes' : empty( self::$data[self::$radios_arr['id']] ) && strtolower( $option['value'] ) === 'n/a' ? 'yes' : 'no'; ?>
 				<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col">
-					<input type="<?php echo self::$radios_arr['type']; ?>" name="<?php echo self::$radios_arr['id']; ?>" value="<?php echo $option['value']; ?>" <?php echo $checked; ?> /> <?php echo $option['name']; ?>
+					<input type="<?php echo self::$radios_arr['type']; ?>" name="<?php echo self::$radios_arr['id']; ?>" value="<?php echo $option['value']; ?>" <?php checked( $checked, 'yes' ); ?> /> <?php echo $option['name']; ?>
 				</label>
 			<?php } ?>
 		</div>

@@ -6,6 +6,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 	static $computers = null;
 	static $cables = null;
 	static $misc_computer_stuff = null;
+	static $conference_misc = null;
 
 	public function __construct() {
 		$this->init_assets();
@@ -46,11 +47,11 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 			'id' => self::$prefix . 'cables',
 			'type' => 'radio',
 			'options' => array(
-				array( 'name' => 'VGA' ),
-				array( 'name' => 'DVI' ),
-				array( 'name' => 'Display Port' ),
-				array( 'name' => 'HDMI' ),
-				array( 'name' => 'None' )
+				array( 'name' => 'VGA', 'value' => 'VGA' ),
+				array( 'name' => 'DVI', 'value' => 'DVI' ),
+				array( 'name' => 'Display Port', 'value' => 'Display Port' ),
+				array( 'name' => 'HDMI', 'value' => 'HDMI' ),
+				array( 'name' => 'None', 'value' => 'None' )
 			)
 		);
 
@@ -121,8 +122,38 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 					'name' => 'Speakers',
 					'description' => 'Turn on room speakers?',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'speakers_checkbox' ),
-					'textbox' => array( 'type' =>'text', 'id' => null, 'label' => null )
+					'textbox' => array( 'type' => 'text', 'id' => null, 'label' => null )
 				)
+			)
+		);
+
+		self::$conference_misc = array(
+			'name' => 'Conference Miscellaneous Information',
+			'options' => array(
+				array(
+					'name' => 'Video Capture',
+					'description' => 'Conference will be recorded',
+					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'video_capture_checkbox' ),
+					'textbox' => array( 'type' => 'text', 'id' => null, 'label' => null )
+				),
+				array(
+					'name' => 'Live Streaming',
+					'description' => 'Conference will be streamed to a live audience',
+					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'live_stream_checkbox' ),
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'live_stream_textbox' ), 'label' => array( 'URL' ) ) 
+				),
+				array(
+					'name' => 'Video Conference',
+					'description' => 'Will this conference be at least partially a video conference?',
+					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'video_conference_checkbox' ),
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'video_conference_textbox_ip', self::$prefix . 'video_conference_checkbox_number' ), 'label' => array( 'IP Address', 'Contact Number' ) )
+				),
+				array(
+					'name' => 'Phone Conference',
+					'description' => 'Will this conference have participants over the phone?',
+					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'phone_conference_checkbox' ),
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'phone_conference_textbox_phone', self::$prefix . 'phone_conference_textbox_teleconference', self::$prefix . 'phone_conference_textbox_access_code' ), 'label' => array( 'Phone Number', 'Conference Number', 'Access Code' ) )
+				),
 			)
 		);
 	}
@@ -143,6 +174,8 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 				<?php $this->the_misc_computer_stuff(); ?>
 				<h4><?php echo self::$equipment['name']; ?></h4>
 				<?php $this->the_equipment(); ?>
+				<h4><?php echo self::$conference_misc['name']; ?></h4>
+				<?php $this->the_conference_misc(); ?>
 			</div>
 		</div>
 		<?php
@@ -153,9 +186,9 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 		<div class="ctlt-events-row">
 			<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo self::$computers['id']; ?>"><?php echo self::$computers['name']; ?></label>
 			<?php foreach( self::$computers['options'] as $option ) { ?>
-				<?php $checked = self::$data[self::$computers['id']] == $option['name'] ? ' checked="checked"' : ''; ?>
+				<?php $checked = isset( self::$data[self::$computers['id']] ) && self::$data[self::$computers['id']] == $option['name'] ? 'yes' : empty( self::$data[self::$computers['id']] ) && strtolower( $option['value'] ) === 'none' ? 'yes' : 'no'; ?>
 				<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col">
-					<input type="<?php echo self::$computers['type']; ?>" id="" name="<?php echo self::$computers['id']; ?>" value="<?php echo $option['value']; ?>" <?php echo $checked; ?>/> <?php echo $option['name']; ?>
+					<input type="<?php echo self::$computers['type']; ?>" id="" name="<?php echo self::$computers['id']; ?>" value="<?php echo $option['value']; ?>" <?php checked( $checked, 'yes' ); ?>/> <?php echo $option['name']; ?>
 				</label>
 			<?php } ?>
 		</div>
@@ -167,9 +200,9 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 		<div class="ctlt-events-row">
 			<label class="ctlt-inline ctlt-colspan-1 ctlt-events-col" for="<?php echo self::$cables['id']; ?>"><?php echo self::$cables['name']; ?></label>
 			<?php foreach( self::$cables['options'] as $option ) { ?>
-				<?php $checked = self::$data[self::$cables['id']] == $option['name'] ? ' checked="checked"' : ''; ?>
+				<?php $checked = isset( self::$data[self::$cables['id']] ) && self::$data[self::$cables['id']] == $option['name'] ? 'yes' : empty( self::$data[self::$cables['id']] ) && strtolower( $option['value'] ) === 'none' ? 'yes' : 'no'; ?>
 				<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col">
-					<input type="<?php echo self::$cables['type']; ?>" name="<?php echo self::$cables['id']; ?>" value="<?php echo $option['name']; ?>" <?php echo $checked; ?>/> <?php echo $option['name']; ?>
+					<input type="<?php echo self::$cables['type']; ?>" name="<?php echo self::$cables['id']; ?>" value="<?php echo $option['value']; ?>" <?php checked( $checked, 'yes' ); ?>/> <?php echo $option['name']; ?>
 				</label>
 			<?php } ?>
 		</div>
@@ -183,7 +216,6 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 				<div class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo $option['checkbox']['id']; ?>"><label><?php echo $option['name']; ?></label><?php echo isset( $option['textbox']['id'] ) ? '<br/>' . $option['description'] : ''; ?></div>
 				<input class="ctlt-inline ctlt-colspan-1 ctlt-events-col" type="<?php echo $option['checkbox']['type']; ?>" name="<?php echo $option['checkbox']['id']; ?>" id="<?php echo $option['checkbox']['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
 				<?php if( isset( $option['textbox']['id'] ) ) { ?>
-					<?php //echo 'number of textboxes needed: ' . count($option['textbox']['id']);?>
 					<?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
 						<?php $value = isset( self::$data[$option['textbox']['id'][$i]] ) ? esc_attr( self::$data[$option['textbox']['id'][$i]] ) : ''; ?>
 						<label class="ctlt-inline ctlt-colspan-1 ctlt-events-col" for="<?php echo $option['textbox']['id'][$i]; ?>"><?php echo $option['textbox']['label'][$i]; ?></label>
@@ -218,6 +250,26 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 		<?php } ?>
 		</div>
 		<?php
+	}
+
+	public function the_conference_misc() {
+		foreach( self::$conference_misc['options'] as $option ) { ?>
+		<?php $checked = isset( self::$data[$option['checkbox']['id']] ) ? esc_attr( self::$data[$option['checkbox']['id']] ) : ''; ?>
+		<div class="ctlt-events-row">
+			<div class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo $option['checkbox']['id']; ?>"><label><?php echo $option['name']; ?></label><?php echo isset( $option['textbox']['id'] ) ? '<br/>' . $option['description'] : ''; ?></div>
+			<input class="ctlt-inline ctlt-colspan-1 ctlt-events-col" type="<?php echo $option['checkbox']['type']; ?>" name="<?php echo $option['checkbox']['id']; ?>" id="<?php echo $option['checkbox']['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
+			<?php if( isset( $option['textbox']['id'] ) ) { ?>
+				<?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
+					<?php $value = isset( self::$data[$option['textbox']['id'][$i]] ) ? esc_attr( self::$data[$option['textbox']['id'][$i]] ) : ''; ?>
+					<label class="ctlt-inline ctlt-colspan-1 ctlt-events-col" for="<?php echo $option['textbox']['id'][$i]; ?>"><?php echo $option['textbox']['label'][$i]; ?></label>
+					<input class="ctlt-inline ctlt-colspan-1 ctlt-events-col" type="<?php echo $option['textbox']['type']; ?>" name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i]; ?>" value="<?php echo $value; ?>">
+				<?php } ?>
+			<?php }
+			else { ?>
+			<div class="ctlt-inline ctlt-colspan-7 ctlt-events-col"><?php echo $option['description']; ?></div>
+			<?php } ?>
+		</div>
+		<?php }
 	}
 }
 

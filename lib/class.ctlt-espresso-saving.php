@@ -2,8 +2,8 @@
 
 class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 	
+    // array of event data to be inserted into/updated with the Event Espresso meta table
 	static $meta_data = array(null);
-	static $file_upload_url = null;
 
 	static public function insert( $event_id ) {
 		self::assigning();
@@ -17,26 +17,49 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
 	/**
 	 * assigning function
-	 * This function will assign the values to be inserted into the db to an array
+	 * Assigns the event values to an array to be inserted into the database
+     * Event values listed here roughly in the order they appear for the user,
+     * single values first, then foreach loops where possible
 	 */
 	static private function assigning() {
 
 		self::$meta_data = array(
-			CTLT_Espresso_Handouts::$radios_arr['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] ) ? $_POST[CTLT_Espresso_Handouts::$radios_arr['id']] : 'N/A',
+        
+            // handouts, signs, and logo fields
 			CTLT_Espresso_Handouts::$handout_file['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$handout_file['id']] ) ? $_POST[CTLT_Espresso_Handouts::$handout_file['id']] : '',
-			CTLT_Espresso_Room_Setup::$rooms['id'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] : 'Open Space',
-			CTLT_Espresso_Additional_Requirements::$computers['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$computers['id']] : 'None',
+            CTLT_Espresso_Handouts::$sign_file['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$sign_file['id']] ) ? $_POST[CTLT_Espresso_Handouts::$sign_file['id']] : '',
+            CTLT_Espresso_Handouts::$handout_file['notes'] => !empty( $_POST[CTLT_Espresso_Handouts::$handout_file['notes']] ) ? $_POST[CTLT_Espresso_Handouts::$handout_file['notes']] : '',
+            
+            // room setup fields
+            CTLT_Espresso_Room_Setup::$rooms['chairs'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['chairs']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['chairs']] : '',
+            CTLT_Espresso_Room_Setup::$rooms['tables'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['tables']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['tables']] : '',
+			CTLT_Espresso_Room_Setup::$rooms['id'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['id']] : 'As Is',
+            CTLT_Espresso_Room_Setup::$rooms['notes'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['notes']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['notes']] : '',
+            
+            // presenter equipment fields
+            CTLT_Espresso_Additional_Requirements::$presenter_equipment['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$presenter_equipment['id']] ) ? 'yes' : 'no',
+            CTLT_Espresso_Additional_Requirements::$presenter_equipment['projectors']['textbox']['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$presenter_equipment['projectors']['textbox']['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$presenter_equipment['projectors']['textbox']['id']] : 'None',
+            CTLT_Espresso_Additional_Requirements::$presenter_equipment['speakers']['checkbox']['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$presenter_equipment['speakers']['checkbox']['id']] ) ? 'yes' : 'no',
 			CTLT_Espresso_Additional_Requirements::$cables['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$cables['id']] : 'None',
+            CTLT_Espresso_Additional_Requirements::$presenter_equipment['notes'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$presenter_equipment['notes']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$presenter_equipment['notes']] : '',
+            
+            // conference equipment fields (partial)
+            CTLT_Espresso_Additional_Requirements::$conference_misc['video_capture']['checkbox']['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$conference_misc['video_capture']['checkbox']['id']] ) ? 'yes' : 'no',
+            CTLT_Espresso_Additional_Requirements::$conference_misc['notes'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$conference_misc['notes']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$conference_misc['notes']] : '',
+            CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes']] : ''
 		);
+        
+        // conference equipment checkboxes
+        foreach( CTLT_Espresso_Additional_Requirements::$equipment['options'] as $option ) {
+			self::$meta_data[$option['id']] = isset( $_POST[$option['id']] ) && $_POST[$option['id']] ? 'yes' : 'no';
+		}
 
+        // conferences notes fields
 		foreach( CTLT_Espresso_Additional_Information::$add_info['options'] as $option ) {
 			self::$meta_data[$option['id']] = isset( $_POST[$option['id']] ) ? strip_tags( $_POST[$option['id']] ) : '';
 		}
 
-		foreach( CTLT_Espresso_Additional_Information::$checks['options'] as $option ) {
-			self::$meta_data[$option['id']] = isset( $_POST[$option['id']] ) && $_POST[$option['id']] ? 'yes' : 'no';
-		}
-
+        // costs fields
 		foreach( CTLT_Espresso_Costs::$costs_arr['options'] as $option ) {
 			$_POST[$option['id']] = empty( $_POST[$option['id']] ) ? 0 : $_POST[$option['id']];
 			if( isset( $_POST[$option['id']] ) ) {
@@ -44,10 +67,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 			}
 		}
 
-		foreach( CTLT_Espresso_Additional_Requirements::$equipment['options'] as $option ) {
-			self::$meta_data[$option['id']] = isset( $_POST[$option['id']] ) && $_POST[$option['id']] ? 'yes' : 'no';
-		}
-
+        // conference equipment fields (partial)
 		foreach( CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['options'] as $option ) {
 			self::$meta_data[$option['checkbox']['id']] = isset( $_POST[$option['checkbox']['id']] ) && $_POST[$option['checkbox']['id']] ? 'yes' : 'no';
 			if( isset( $option['textbox']['id'] ) ) {
@@ -57,6 +77,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 			}
 		}
 
+        // IT services information
 		foreach( CTLT_Espresso_Additional_Requirements::$conference_misc['options'] as $option ) {
 			self::$meta_data[$option['checkbox']['id']] = isset( $_POST[$option['checkbox']['id']] ) && $_POST[$option['checkbox']['id']] ? 'yes' : 'no';
 			if( isset( $option['textbox']['id'] ) ) {

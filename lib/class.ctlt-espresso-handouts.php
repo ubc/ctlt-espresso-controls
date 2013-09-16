@@ -2,8 +2,9 @@
 
 class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 
-	static $radios_arr = null;
+    // arrays to hold handout and sign information
 	static $handout_file = null;
+    static $sign_file = null;
 
 	public function __construct() {
 		$this->init_handout_properties();
@@ -19,21 +20,15 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	 * Provides an easy place to change any option ids
 	 */
 	public function init_handout_properties() {
-
-		self::$radios_arr = array(
-			'name' => 'Handouts',
-			'id' => self::$prefix . 'handouts_radio',
-			'type' => 'radio',
-			'options' => array(
-				array( 'name' => 'N/A', 'value' => 'N/A' ),
-				array( 'name' => 'Expected', 'value' => 'Expected' ),
-				array( 'name' => 'Received', 'value' => 'Received' ),
-				array( 'name' => 'Copying Complete', 'value' => 'Copying Complete' )
-				)
-			);
 		self::$handout_file = array(
 			'name' => 'Handout File',
 			'id' => self::$prefix . 'handouts_upload',
+			'type' => 'file',
+            'notes' => self::$prefix . 'handouts_notes'
+			);
+        self::$sign_file = array(
+			'name' => 'Sign File',
+			'id' => self::$prefix . 'signs_upload',
 			'type' => 'file'
 			);
 	}
@@ -52,52 +47,47 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 				</span> </h3>
 			<div class="inside">
 				<?php echo $this->nonce_input( 'handouts_noncename' ); ?>
-				<?php $this->the_radio_buttons(); ?>
 				<?php $this->the_file_upload(); ?>
 			</div>
 		</div>
 		<?php
 	}
-
-	/**
-	 * the_radio_buttons function
-	 * This function renders the radio buttons for the form
-	 */
-	public function the_radio_buttons() {
-		?>
-		<div class="ctlt-events-row">
-			<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col" for="<?php echo self::$radios_arr['id']; ?>"><?php echo self::$radios_arr['name']; ?></label>
-			<?php foreach( self::$radios_arr['options'] as $option ) { ?>
-				<?php $checked = isset( self::$data[self::$radios_arr['id']] ) && self::$data[self::$radios_arr['id']] == $option['value'] ? 'yes' : empty( self::$data[self::$radios_arr['id']] ) && strtolower( $option['value'] ) === 'n/a' ? 'yes' : 'no'; ?>
-				<label class="ctlt-inline ctlt-colspan-2 ctlt-events-col">
-					<input type="<?php echo self::$radios_arr['type']; ?>" name="<?php echo self::$radios_arr['id']; ?>" value="<?php echo $option['value']; ?>" <?php checked( $checked, 'yes' ); ?> /> <?php echo $option['name']; ?>
-				</label>
-			<?php } ?>
-		</div>
-		<?php
-	}
-
+    
 	/**
 	 * the_file_upload function
 	 * This function renders the upload file box
 	 */
 	public function the_file_upload() {
+        $text = isset( self::$data[self::$handout_file['notes']] ) ? self::$data[self::$handout_file['notes']] : '';
 		?>
-		<div class="ctlt-events-row">
-			<div class="ctlt-colspan-12">
-				<label class="ctlt-colspan-2 ctlt-events-col"><?php echo self::$handout_file['name']; ?></label>
+            <p>
+				<label><?php echo self::$handout_file['name']; ?>:</label>
 				<div class="uploader">
 					<?php $attachment_id = isset( self::$data[self::$handout_file['id']] ) ? self::$data[self::$handout_file['id']] : null;?>
 					<?php $attachment_url = wp_get_attachment_url( $attachment_id ); ?>
 					<input class="ctlt-espresso-upload-button button" type="button" name="<?php echo self::$handout_file['id'] . '_button'; ?>" id="<?php echo self::$handout_file['id'] . '_button'; ?>" value="Upload" />
  					<input class="ctlt-espresso-upload" type="text" value="<?php echo $attachment_url !== false ? $attachment_url : null; ?>" />
  					<input class="ctlt-espresso-target-attachment-id" type="hidden" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" value="<?php echo $attachment_id; ?>"/>
- 					<br /> Enter a URL or choose a file for the slide
 				</div>
-
 				<?php //$this->add_download_link(); ?>
-			</div>
-		</div>
+            </p>
+            <p>
+				<label><?php echo self::$sign_file['name']; ?>:</label>
+				<div class="uploader">
+					<?php $attachment_id = isset( self::$data[self::$sign_file['id']] ) ? self::$data[self::$sign_file['id']] : null;?>
+					<?php $attachment_url = wp_get_attachment_url( $attachment_id ); ?>
+					<input class="ctlt-espresso-upload-button button" type="button" name="<?php echo self::$sign_file['id'] . '_button'; ?>" id="<?php echo self::$sign_file['id'] . '_button'; ?>" value="Upload" />
+ 					<input class="ctlt-espresso-upload" type="text" value="<?php echo $attachment_url !== false ? $attachment_url : null; ?>" />
+ 					<input class="ctlt-espresso-target-attachment-id" type="hidden" name="<?php echo self::$sign_file['id']; ?>" id="<?php echo self::$sign_file['id']; ?>" value="<?php echo $attachment_id; ?>"/>
+				</div>
+				<?php //$this->add_download_link(); ?>
+            </p>
+            <p>
+                <div class="ctlt-espresso-controls-textarea">
+                    <label>Handouts and Signs Notes:</label><br />
+                    <textarea class="ctlt-full-width" rows="2" name="<?php echo self::$handout_file['notes'] ?>" id="<?php echo self::$handout_file['notes'] ?>"><?php echo $text; ?></textarea>
+                </div>
+            </p>
 		<?php
 	}
 

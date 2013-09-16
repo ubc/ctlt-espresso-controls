@@ -2,6 +2,7 @@
 
 class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 	
+    // array to hold room setup information
 	static $rooms = null;
 
 	public function __construct() {
@@ -21,6 +22,7 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 			'id' => self::$prefix . 'room_setup',
 			'type' => 'radio',
 			'options' => array(
+                array( 'name' => 'As Is (No Changes)', 'value' => 'As Is', 'image' => null, 'alt' => 'As Is (No Changes)' ),
 				array( 'name' => 'Hollow Square', 'value' => 'Hollow Square', 'image' => 'hollow-square.png', 'alt' => 'Hollow Square' ),
 				array( 'name' => 'Classroom Style', 'value' => 'Classroom Style', 'image' => 'classroom-style.png', 'alt' => 'Classroom Style' ),
 				array( 'name' => 'Conference Style', 'value' => 'Conference Style', 'image' => 'conference-style.png', 'alt' => 'Conference Style' ),
@@ -30,7 +32,10 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 				array( 'name' => 'Seminar Style', 'value' => 'Seminar Style', 'image' => 'seminar-style.png', 'alt' => 'Seminar Style' ),
 				array( 'name' => 'Alternate Open Space (no tables and chairs)', 'value' => 'Alternate Open Space', 'image' => null, 'alt' => 'Alternate Open Space' ),
 				array( 'name' => 'Open Space (tables and chairs stacked to the side)', 'value' => 'Open Space', 'image' => null, 'alt' => 'Open Space' )
-			)
+			),
+            'notes' => self::$prefix . 'room_setup_notes',
+            'chairs' => self::$prefix . 'room_setup_chairs',
+            'tables' => self::$prefix . 'room_setup_tables'
 		);
 	}
 
@@ -58,25 +63,45 @@ class CTLT_Espresso_Room_Setup extends CTLT_Espresso_Metaboxes {
 	 * the_room_styles function
 	 * This function creates each of the individual room styles
 	 */
-	public function the_room_styles() {
-		$count = count( self::$rooms['options'] ); ?>
-		<label class="ctlt-colspan-12 ctlt-events-col ctlt-hidden" for="<?php echo self::$rooms['id'] ?>"><?php echo self::$rooms['name']; ?></label>
+	public function the_room_styles() { ?>
+		        <div class="ctlt-left">
+        <p>
+            <?php $value = isset( self::$data[self::$rooms['chairs']] ) ? esc_attr( self::$data[self::$rooms['chairs']] ) : '0'; ?>
+            <label for="<?php echo self::$rooms['chairs']; ?>">Number of chairs:</label><br />
+            <input type="number" id="<?php echo self::$rooms['chairs']; ?>" name="<?php echo self::$rooms['chairs']; ?>" style="width:50px" value="<?php echo $value; ?>">
+        </p>
+        </div>
+        <div class="ctlt-left">
+        <p>
+            <?php $value = isset( self::$data[self::$rooms['tables']] ) ? esc_attr( self::$data[self::$rooms['tables']] ) : '0'; ?>
+            <label for="<?php echo self::$rooms['tables']; ?>">Number of tables:</label><br />
+            <input type="number" id="<?php echo self::$rooms['tables']; ?>" name="<?php echo self::$rooms['tables']; ?>" style="width:50px" value="<?php echo $value; ?>">
+        </p>
+        </div>
+        <div class="ctlt-inline">
+        <label>Arrangement:</label><br />
 		<?php foreach( self::$rooms['options'] as $option ) { ?>
-			<?php echo $count % 3 === 0 ? '<div class="ctlt-events-row">' : ''; ?>
-				<div class="ctlt-colspan-4 ctlt-events-col room-setup">
-					<?php $img_src = !empty( $option['image'] ) ? CTLT_ESPRESSO_CONTROLS_ASSETS_URL . $option['image'] : '';?>
-					<?php $checked = isset( self::$data[self::$rooms['id']] ) && self::$data[self::$rooms['id']] == $option['value'] ? 'yes' : empty( self::$data[self::$rooms['id']] ) && strtolower( $option['value'] ) === 'open space' ? 'yes' : 'no'; ?>
-					<?php $img_tag = '<img src="' . $img_src . '" class="image-clip" alt="' . $option['alt'] . '" />'; ?>
-					<?php echo !empty( $img_src ) ? $img_tag : '<div class="image-clip ctlt-inline">' . $option['alt'] . '</div>'; ?>
-					<label class="ctlt-align-mid">
-						<input type="<?php echo self::$rooms['type']; ?>" name="<?php echo self::$rooms['id']?>" value="<?php echo $option['value']; ?>" <?php echo checked( $checked, 'yes' );?> /> <?php echo $option['name']; ?>
-					</label>
-				</div>
-			<?php echo $count % 3 === 1 ? '</div>' : ''; ?>
-			<?php $count -= 1; ?>
-		<?php }
-	}
 
+            <?php $img_src = !empty( $option['image'] ) ? CTLT_ESPRESSO_CONTROLS_ASSETS_URL . $option['image'] : '';?>
+            <?php $checked = isset( self::$data[self::$rooms['id']] ) && self::$data[self::$rooms['id']] == $option['value'] ? 'yes' : empty( self::$data[self::$rooms['id']] ) && strtolower( $option['value'] ) === 'as is' ? 'yes' : 'no'; ?>
+            <?php $img_tag = '<img src="' . $img_src . '" class="image-clip" alt="' . $option['alt'] . '" /><br />'; ?>
+
+            <label for="<?php echo $option['value']; ?>">
+            <div class="ctlt-option-box ctlt-room-setup-option-box">
+            <?php echo !empty( $img_src ) ? $img_tag : '' ?>
+                <?php echo $option['name']; ?>
+            <br /><input type="<?php echo self::$rooms['type']; ?>" name="<?php echo self::$rooms['id']?>" value="<?php echo $option['value']; ?>" <?php echo checked( $checked, 'yes' );?> id="<?php echo $option['value']; ?>"/>
+            </div>
+            </label>
+		<?php } ?>
+        </div>
+        <?php $text = isset( self::$data[self::$rooms['notes']] ) ? self::$data[self::$rooms['notes']] : ''; ?>
+        <div class="ctlt-espresso-controls-textarea">
+        <label>Additional Room Setup Notes:</label><br />
+        <textarea class="ctlt-full-width" rows="2" name="<?php echo self::$rooms['notes'] ?>" id="<?php echo self::$rooms['notes'] ?>"><?php echo $text; ?></textarea>
+        </div>
+	<?php }
+    
 }
 
 new CTLT_Espresso_Room_Setup();

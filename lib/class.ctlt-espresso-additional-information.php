@@ -2,8 +2,8 @@
 
 class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 
+    // array to hold additional information fields
 	static $add_info = null;
-	static $checks = null;
 	
 	public function __construct() {
 		$this->init_default_assets();
@@ -21,20 +21,9 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 			'name' => 'Additional Information',
 			'id' => self::$prefix . 'additional_information',
 			'options' => array(
-				array( 'name' => 'Room Setup Notes', 'id' => self::$prefix . 'room_setup_notes' ),
-				array( 'name' => 'A/V and Computer Requirements', 'id' => self::$prefix . 'av_computer_requirements' ),
-				array( 'name' => 'Admin Support Notes', 'id' => self::$prefix . 'admin_support_notes' ),
+				array( 'name' => 'General Notes', 'id' => self::$prefix . 'admin_support_notes' ),
 				array( 'name' => 'Marketing and Communication Support Notes', 'id' => self::$prefix . 'marketing_communication' ),
 				array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' )
-			)
-		);
-		self::$checks = array(
-			'name' => 'Event Misc',
-			'id' => self::$prefix . 'event-misc',
-			'type' => 'checkbox',
-			'options' => array(
-				array( 'name' => 'Room Setup Assistance', 'id' => self::$prefix . 'room_setup_assistance', 'checked' => 'no' ),
-				array( 'name' => 'Signs for Event', 'id' => self::$prefix . 'signs_for_event', 'checked' => 'no' )
 			)
 		);
 	}
@@ -54,7 +43,6 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 			<div class="inside">
 				<?php echo $this->nonce_input( 'additional_information_noncename' ); ?>
 				<?php $this->the_textboxes(); ?>
-				<?php $this->the_checkboxes(); ?>
 			</div>
 		</div>
 		<?php
@@ -68,30 +56,12 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 		foreach( self::$add_info['options'] as $option ) {
 			$text = isset( self::$data[$option['id']] ) ? self::$data[$option['id']] : '';
 			?>
-			<div class="ctlt-events-row">
-				<label class="ctlt-colspan-12 ctlt-events-col"for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
-				<textarea class="ctlt-colspan-12 ctlt-events-col ctlt-espresso-controls-textarea" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" cols="40" rows="8"><?php echo $text; ?></textarea>
+			<div class="ctlt-espresso-controls-textarea">
+				<label for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
+				<textarea class="ctlt-full-width" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" cols="40" rows="4"><?php echo $text; ?></textarea>
 			</div>
 			<?php 
 		}
-	}
-
-	/**
-	 * the_checkboxes function
-	 * This function renders the checkboxes for the form
-	 */
-	public function the_checkboxes() {
-		echo '<div class="ctlt-events-row">';
-		foreach( self::$checks['options'] as $option ) {
-			$checked = isset( self::$data[$option['id']] ) ? esc_attr( self::$data[$option['id']] ) : '';
-			?>
-			<div class="ctlt-colspan-6 ctlt-events-col">
-				<label class="label-pad-right" for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?>:</label>
-				<input type="<?php echo self::$checks['type']; ?>" name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
-			</div>
-			<?php
-		}
-		echo '</div>';
 	}
 }
 

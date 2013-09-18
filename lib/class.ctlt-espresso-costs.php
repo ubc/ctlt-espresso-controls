@@ -2,71 +2,105 @@
 
 class CTLT_Espresso_Costs extends CTLT_Espresso_Metaboxes {
 	
-    // array to hold cost information
 	static $costs_arr = null;
 
 	public function __construct() {
 		$this->init_default_assets();
-		add_action( $this->add_hook, array( $this, 'costs' ) );
-		add_action( $this->edit_hook, array( $this, 'costs' ) );
+		add_action( 'add_meta_boxes_' . $this->espresso_slug, array( $this, 'costs_metabox' ) );
+		add_action( 'save_post', array( $this, 'save' ) );
 	}
 
-	/**
-	 * init_default_assets function
-	 * This function sets the form fields and their ids
-	 * Provides an easy place to change any option ids
-	 */
 	public function init_default_assets() {
 		self::$costs_arr = array(
 			'name' => 'Costs',
-			'id' => self::$prefix . 'costs',
+			'id' => $this->prefix . 'costs',
 			'type' => 'text',
 			'options' => array(
-				array( 'name' => 'Facilitator Pay (Total)', 'id' => self::$prefix . 'facilitator_pay' ),
-				array( 'name' => 'TA Pay (Total)', 'id' => self::$prefix . 'ta_pay' ),
-				array( 'name' => 'Room Cost', 'id' => self::$prefix . 'room_cost' ),
-				array( 'name' => 'Ad Cost', 'id' => self::$prefix . 'ad_cost' ),
-				array( 'name' => 'Food Cost', 'id' => self::$prefix . 'food_cost' ),
-				array( 'name' => 'Other Cost', 'id' => self::$prefix . 'other_cost' )
+				array( 'name' => 'Facilitator Pay (Total)', 'id' => $this->prefix . 'facilitator-pay' ),
+				array( 'name' => 'TA Pay (Total)', 'id' => $this->prefix . 'ta-pay' ),
+				array( 'name' => 'Room Cost', 'id' => $this->prefix . 'room-cost' ),
+				array( 'name' => 'Ad Cost', 'id' => $this->prefix . 'ad-cost' ),
+				array( 'name' => 'Food Cost', 'id' => $this->prefix . 'food-cost' ),
+				array( 'name' => 'Other Cost', 'id' => $this->prefix . 'other-cost' )
 			)
 		);
 	}
 
-	/**
-	 * costs function
-	 * This function creates the wrapper for the handout form fields
-	 */
-	public function costs() {
-		?>
-		<div id="event-costs" class="postbox">
-			<div class="handlediv" title="Click to toggle"><br />
-			</div>
-			<h3 class="hndle"> <span>
-				Estimated Costs
-			</span> </h3>
-			<div class="inside">
-				<?php echo $this->nonce_input( 'costs_noncename' ); ?>
-				<?php $this->the_number_boxes(); ?>
-			</div>
-		</div>
-		<?php
+	public function costs_metabox() {
+		add_meta_box(
+			'ctlt_espresso_costs',
+			'Costs',
+			array( $this, 'render_costs' ),
+			$this->espresso_slug,
+			'normal',
+			'high'
+		);
 	}
 
-	/**
-	 * the_number_boxes function
-	 * This function renders the text boxes for the form
-	 */
-	public function the_number_boxes() {
+	public function render_costs() {
+		global $post;
+		echo '<input type="hidden" name="' . $this->prefix . 'costs_noncename" value="' . wp_create_nonce( CTLT_ESPRESSO_CONTROLS_BASENAME ) . '" />';
+		$meta = get_post_custom( $post->ID );
+		//var_dump( $meta );
+		$this->costs( $meta );
+	}
+
+	public function costs( $meta ) {
+		//$count = count( self::$costs_arr['options'] ) * 2;
 		foreach( self::$costs_arr['options'] as $option ) { 
-			$value = isset( self::$data[$option['id']] ) ? esc_attr( self::$data[$option['id']] ) : '';
+			$value = isset( $meta[$option['id']] ) ? esc_attr( $meta[$option['id']][0] ) : '';
 			//echo $count % 4 === 0 ? '<div class="ctlt-events-row">' : ''; ?>
-			<div class="ctlt-text-block">
-                <label for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?></label><br />
-					$<input name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" type="<?php echo self::$costs_arr['type']; ?>" value="<?php echo $value; ?>">
+			<div class="ctlt-events-row">
+				<div class="ctlt-colspan-3 ctlt-events-col">
+					<label for="<?php echo $option['id']; ?>"><?php echo $option['name']; ?></label>
+				</div>
+				<div class="ctlt-colspan-3 ctlt-events-col ctlt-espresso-controls-currency-prepend">
+					<span class="currency">$</span>
+					<input name="<?php echo $option['id']; ?>" id="<?php echo $option['id']; ?>" type="<?php echo self::$costs_arr['type']; ?>" value="<?php echo $value; ?>">
+				</div>
 			</div>
 			<?php //echo $count % 4 === 1 ? '</div>' : '';
-			//$count -= 1;
+			$count -= 1;
 		}
+	}
+
+	public function save( $post_id ) {
+		// verify the nonce
+		if( !wp_verify_nonce($_POST[$this->prefix .'costs_noncename'], CTLT_ESPRESSO_CONTROLS_BASENAME) ) {
+			return $post_id;
+		}
+		// check autosave
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return $post_id;
+		}
+		// check permissions
+		if( 'page' == $_POST['post_type'] ) {
+			if( !current_user_can( 'edit_page', $post_id ) ) {
+				return $post_id;
+			}
+		}
+		elseif( !current_user_can( 'edit_post', $post_id ) ) {
+			return $post_id;
+		}
+		// do the actual saving here
+		foreach( self::$costs_arr['options'] as $option ) {
+			$_POST[$option['id']] = empty( $_POST[$option['id']] ) ? 0 : $_POST[$option['id']];
+			if( isset( $_POST[$option['id']] ) ) {
+				if( is_numeric( $_POST[$option['id']] ) ) {
+					if( $_POST[$option['id']] < 0 ) {
+						wp_die( "Please enter a non-negative number in the costs fields. <a href='" . $this->back_to_edit() . "'>Back</a>" );
+					}
+					else {
+						$this->create_post_meta_fields( $option['id'], strip_tags( $_POST[$option['id']] ) );
+						update_post_meta( $post_id, $option['id'], strip_tags( $_POST[$option['id']] ) );
+					}
+				}
+				else {
+					wp_die( "Please enter a number in the costs fields. <a href='" . $this->back_to_edit() . "'>Back</a>" );
+				}
+			}
+		}
+		
 	}
 
 }

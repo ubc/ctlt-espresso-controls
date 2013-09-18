@@ -2,7 +2,7 @@
 
 class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 
-    // arrays to hold equipment/setup information, roughly in the order the appear to the user
+    // arrays to hold equipment/setup information, roughly in the order they appear to the user
 	static $equipment = null;
 	static $presenter_equipment = null;
 	static $cables = null;
@@ -79,7 +79,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'clicker_textbox' ), 'label' => array( 'Quantity' ), 'max' => 25 )
 				),
 				array(
-					'name' => 'Computer Setup',
+					'name' => 'Audience Computer Setup',
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'virtual_textbox_website', self::$prefix . 'virtual_textbox_login', self::$prefix . 'virtual_textbox_password'  ), 'label' => array( 'Initial website:', 'Login:', 'Password:' ) )
 				)
 			),

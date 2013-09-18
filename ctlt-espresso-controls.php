@@ -15,8 +15,8 @@
  * Plugin Name: CTLT Espresso Controls
  * Plugin URI:  
  * Description: Create more control panels into the event editor
- * Version:     1.0.0
- * Author:      Julien Law, CTLT
+ * Version:     3.1.1
+ * Author:      Julien Law and Nathan Sidles, CTLT
  * Author URI:  ctlt.ubc.ca
  * Text Domain: 
  * License:     GPL-2.0+

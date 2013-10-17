@@ -199,26 +199,15 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
         ?>
         <div class="ctlt-text-block">
 		<?php foreach( self::$misc_computer_stuff['options'] as $option ) { ?>
-			<?php $checked = isset( self::$data[$option['checkbox']['id']] ) ? esc_attr( self::$data[$option['checkbox']['id']] ) : ''; ?>
+			<?php $checked = isset( self::$data[$option['textbox']['id']] ) ? esc_attr( self::$data[$option['textbox']['id']] ) : ''; ?>
 			<div class="ctlt-left">
 				<label><?php echo $option['name']; ?></label><br />
                 <?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
                     <?php $value = isset( self::$data[$option['textbox']['id'][$i]] ) ? esc_attr( self::$data[$option['textbox']['id'][$i]] ) : ''; ?>
-                    <?php if( strtolower( $option['textbox']['max'] ) == null ) { ?>
                         <div class="ctlt-inline">
                             <label><?php echo $option['textbox']['label'][$i]; ?></label>
                             <input type="<?php echo $option['textbox']['type']; ?>" size="8" name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i]; ?>" value="<?php echo $value; ?>">
                         </div>
-                    <?php } 
-                    else { ?>
-                        <?php $select = isset( self::$data[$option['textbox']['id'][$i]] ) ? self::$data[$option['textbox']['id'][$i]] : 'none'; ?>
-                        <select name="<?php echo $option['textbox']['id'][$i]; ?>" id="<?php echo $option['textbox']['id'][$i] ?>">
-                            <option <?php selected( $select, 'none' ); ?>>none</option>
-                        <?php for( $j = 1; $j <= $option['textbox']['max']; $j++ ) { ?>
-                            <option <?php selected( $select, $j ); ?>><?php echo $j; ?></option>
-                        <?php } ?>
-                        </select>
-                    <?php } ?>
                 <?php } ?>
 			</div>
 		<?php } ?>

@@ -72,10 +72,19 @@ class CTLT_Espresso_Controls {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_stylesheets' ) );		
 	}
     
+    /*
+    * register_ctlt_espresso_reports_page function
+    * Registers the Espresso Reports menu page
+    */
     function register_ctlt_espresso_reports_page() {
-        add_menu_page( 'Event Reports', 'Event Reports', 'manage_options', 'event-espresso-reports', array (CTLT_Espresso_Reports, 'reports_menu_page' ) );
+        add_menu_page( 'Event Reports', 'Event Reports', 'manage_options', 'event-espresso-reports', array ('CTLT_Espresso_Reports', 'reports_menu_page' ) );
     }
     
+    
+    /*
+    * ctlt_espresso_export_to_excel function
+    * checks for POST parameters from Espresso Reports export to excel requests
+    */
     function ctlt_espresso_export_to_excel() {
     
         global $wpdb;

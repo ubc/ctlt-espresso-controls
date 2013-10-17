@@ -2,7 +2,11 @@
 
 class CTLT_Espresso_Reports {
     
-	public function reports_menu_page() {
+    /*
+    * reports_menu_page function
+    * builds the Espresso Reports page for the Espresso Reports plugin.
+    */
+	static function reports_menu_page() {
     
         global $wpdb;
         $sql_query = "SELECT category_name FROM " . EVENTS_CATEGORY_TABLE . " ";

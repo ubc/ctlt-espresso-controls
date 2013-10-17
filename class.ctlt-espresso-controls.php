@@ -66,10 +66,301 @@ class CTLT_Espresso_Controls {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
+        add_action('admin_menu', array( $this, 'register_ctlt_espresso_reports_page') );
 		add_action( 'admin_init', array( $this, 'init_ctlt_espresso_controls' ) );
+        add_action( 'admin_menu', array( $this, 'ctlt_espresso_export_to_excel' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_stylesheets' ) );		
 	}
+    
+    function register_ctlt_espresso_reports_page() {
+        add_menu_page( 'Event Reports', 'Event Reports', 'manage_options', 'event-espresso-reports', array (CTLT_Espresso_Reports, 'reports_menu_page' ) );
+    }
+    
+    function ctlt_espresso_export_to_excel() {
+    
+        global $wpdb;
+        $argument_counter = 0;
+        $sql_query;
+        $sql_results;
+        $distinct_spacer;
+        
+        if(isset($_POST['submit'])) {
+            if ( !isset($_POST['ctlt_espresso_nonce_field']) || !wp_verify_nonce($_POST['ctlt_espresso_nonce_field'],'ctlt_espresso_nonce_check') ) {
+                print 'Sorry, your nonce did not verify. You do not currently have sufficient privileges to save your edits. Please contact the CTLT support team for further information.';
+                exit;
+            }
+        }
+    
+        if( isset($_REQUEST['attendees_events_id']) || isset($_REQUEST['attendees_events_start']) || isset($_REQUEST['attendees_events_end']) || isset($_REQUEST['attendees_events_cateogry']) ) {
+    
+            $filename ="excelreport.xls";
+            header('Content-type: application/ms-excel');
+            header('Content-Disposition: attachment; filename='.$filename);
+    
+            if( $_REQUEST['attendees_events_unique'] != '' ) {
+                $distinct_spacer = "DISTINCT ";
+            }
+    
+            $sql_query = "SELECT " . $distinct_spacer . "fname AS FirstName, lname AS LastName, email As Email, ";
+            $sql_query .= "MAX(CASE WHEN wp_events_answer.question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Type' LIMIT 1) THEN wp_events_answer.answer END) as Title, ";
+            $sql_query .= "MAX(CASE WHEN wp_events_answer.question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Institution' LIMIT 1) THEN wp_events_answer.answer END) as Institution, ";
+            $sql_query .= "MAX(CASE WHEN wp_events_answer.question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Faculty, School, or College' LIMIT 1) THEN wp_events_answer.answer END) as Faculty, ";
+            $sql_query .= "MAX(CASE WHEN wp_events_answer.question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Department' LIMIT 1) THEN wp_events_answer.answer END) as Department ";
+            $sql_query .= "FROM (SELECT id, fname, lname, email, phone, date, registration_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
+    
+            if( $_REQUEST['attendees_events_id'] != '' || $_REQUEST['attendees_events_start'] != '' || $_REQUEST['attendees_events_end'] != '' || $_REQUEST['attendees_events_category'] != '' ) {
+                
+                $sql_query .= "WHERE event_id IN (SELECT id FROM " . EVENTS_DETAIL_TABLE . " WHERE ";
+                
+                if( $_REQUEST['attendees_events_id'] != '' ) {
+                    $sql_query .= $wpdb->prepare( 'id = %d ', $_REQUEST['attendees_events_id'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['attendees_events_start'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'start_date >= %s ', $_REQUEST['attendees_events_start'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['attendees_events_end'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'end_date <= %s ', $_REQUEST['attendees_events_end'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['attendees_events_category'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_category_id = $wpdb->get_results ( $wpdb->prepare( 'SELECT id FROM ' . EVENTS_CATEGORY_TABLE . ' WHERE category_name = %s LIMIT 1 ', $_REQUEST['attendees_events_category'] ) );
+                    $sql_query .= $wpdb->prepare( 'category_id = %s', $sql_category_id[0]->id );
+                }
+                
+                $sql_query .= ")";
+            
+            }
+            
+            $sql_query .= ") ";
+            $sql_query .= "AS first_results INNER JOIN " . EVENTS_ANSWER_TABLE . " ON first_results.registration_id = " . EVENTS_ANSWER_TABLE . ".registration_id GROUP BY first_results.id" ;
+            $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
+            
+            $flag = false;
+            foreach($sql_results as $row) {
+                if(!$flag) {
+                    echo implode("\t", array_keys($row)) . "\r\n";
+                    $flag = true;
+                }
+                echo implode("\t", array_values($row)) . "\r\n";
+            }
 
+            exit();
+        }
+        
+        if( isset($_REQUEST['events_events_id']) || isset($_REQUEST['events_events_start']) || isset($_REQUEST['events_events_end']) || isset($_REQUEST['events_events_cateogry']) ) {
+        
+            $filename ="excelreport.xls";
+            header('Content-type: application/ms-excel');
+            header('Content-Disposition: attachment; filename='.$filename);
+            
+            $sql_query = "SELECT event_id, event_name, category_name, second_results.start_date, second_results.end_date, registration_start, registration_end, venue_title, COUNT(" . EVENTS_ATTENDEE_TABLE . ".id) AS 'Total Attendees' FROM (";
+            $sql_query .= "SELECT first_results.id, event_name, category_name, start_date, end_date, registration_start, registration_end, venue_title FROM (";
+            $sql_query .= "SELECT id, event_name, start_date, end_date, registration_start, registration_end, venue_title, category_id FROM " . EVENTS_DETAIL_TABLE . " ";
+            $sql_query .= ") ";
+            $sql_query .= "AS first_results LEFT JOIN " . EVENTS_CATEGORY_TABLE . " ON first_results.category_id = " . EVENTS_CATEGORY_TABLE . ".id";
+            $sql_query .= ") ";
+            $sql_query .= "AS second_results INNER JOIN ". EVENTS_ATTENDEE_TABLE. " ON " . EVENTS_ATTENDEE_TABLE . ".event_id = second_results.id ";
+            
+            if( $_REQUEST['events_events_id'] != '' || $_REQUEST['events_events_start'] != '' || $_REQUEST['events_events_end'] != '' || $_REQUEST['events_events_category'] != '' ) {
+                
+                $sql_query .= "WHERE ";
+                
+                if( $_REQUEST['events_events_id'] != '' ) {
+                    $sql_query .= $wpdb->prepare( 'event_id = %d ', $_REQUEST['events_events_id'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['events_events_start'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'second_results.start_date >= %s ', $_REQUEST['events_events_start'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['events_events_end'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'second_results.end_date <= %s ', $_REQUEST['events_events_end'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['events_events_category'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'category_name = %s ', $_REQUEST['events_events_category'] );
+                }
+                
+            }
+            
+            $sql_query .= "GROUP BY second_results.id";
+            $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
+        
+            $flag = false;
+            foreach($sql_results as $row) {
+                if(!$flag) {
+                    echo implode("\t", array_keys($row)) . "\r\n";
+                    $flag = true;
+                }
+                echo implode("\t", array_values($row)) . "\r\n";
+            }
+    
+            exit();
+        }
+        
+        if( isset($_REQUEST['admin_events_id']) || isset($_REQUEST['admin_events_start']) || isset($_REQUEST['admin_events_end']) || isset($_REQUEST['admin_events_cateogry']) ) {
+        
+            $filename ="excelreport.xls";
+            header('Content-type: application/ms-excel');
+            header('Content-Disposition: attachment; filename='.$filename);
+            
+            $sql_query = "SELECT id, event_name AS 'Event Name', start_date AS 'Start Date', end_date AS 'End Date', venue_title AS 'Venue Title',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_handouts_upload' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Handout File URL',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_signs_upload' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Sign File URL',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_handouts_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Files Notes',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_room_setup_chairs' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Number of Chairs',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_room_setup_tables' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Number of Tables',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_room_setup' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Chair Configuration',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_room_setup_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Room Setup Notes',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_computers' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Presenter Computer',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_projector_textbox' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Projectors',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_cables' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Presenter Cables',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_slide_advancer' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Slide Advancer Needed',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_laser_pointer' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Laser Pointer Needed',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_smart_projecter' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Smart Projector Needed',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_usb_stick' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'USB Stick Needed',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_av_technician' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'AV Technician Needed',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_computers_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Presenter Equipment Notes',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_video_capture_checkbox' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Video Capture Needed',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_digitization_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Digitization and Communication Notes',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_misc_computer_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Audience Computer Notes',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_admin_support_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'General Notes',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_marketing_communication' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Marketing and Communication Notes',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_catering_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Catering Notes',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_facilitator_pay' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Facilitator Pay',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_ta_pay' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'TA Pay (Total)',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_ad_cost' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Ad Cost',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_food_cost' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Room Cost',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_other_cost' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Other Cost',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_laptop_textbox' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Audience Laptops Required',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_headset_textbox' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Audience Headsets Required',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_clicker_textbox' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Audience Clickers Required',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_virtual_textbox_website' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Audience Computer Website',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_virtual_textbox_login' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Audience Computer Login Name',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_virtual_textbox_password' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Audience Computer Login Password',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_live_stream_textbox' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Live Streaming URL',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_video_conference_textbox_ip' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Video Conference IP Address',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_video_conference_textbox_number' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Video Conference Contact Number',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_phone_conference_textbox_phone' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Teleconference Phone Number',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_phone_conference_textbox_teleconference' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Teleconference Conference Number',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_phone_conference_textbox_access_code' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Teleconference Access Code' ";
+            $sql_query .= "FROM (SELECT * FROM " . EVENTS_DETAIL_TABLE .  " ";
+            
+            if( $_REQUEST['admin_events_id'] != '' || $_REQUEST['admin_events_start'] != '' || $_REQUEST['admin_events_end'] != '' || $_REQUEST['admin_events_category'] != '' ) {
+                
+                $sql_query .= "WHERE ";
+                
+                if( $_REQUEST['admin_events_id'] != '' ) {
+                    $sql_query .= $wpdb->prepare( 'id = %d ', $_REQUEST['admin_events_id'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['admin_events_start'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'start_date >= %s ', $_REQUEST['admin_events_start'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['admin_events_end'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'end_date <= %s ', $_REQUEST['admin_events_end'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['admin_events_category'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'category_name = %s ', $_REQUEST['admin_events_category'] );
+                }
+                
+            }
+            
+            $sql_query .= ") ";
+            $sql_query .= "AS first_results INNER JOIN " . CTLT_ESPRESSO_EVENTS_META . " ON first_results.id = " . CTLT_ESPRESSO_EVENTS_META . ".event_id GROUP BY first_results.id";
+
+            $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
+            
+            $flag = false;
+            foreach($sql_results as $row) {
+                if(!$flag) {
+                    echo implode("\t", array_keys($row)) . "\r\n";
+                    $flag = true;
+                }
+                echo implode("\t", array_values($row)) . "\r\n";
+            }
+            
+            
+            exit();
+        }
+        
+        if( isset($_REQUEST['person_fname']) || isset($_REQUEST['person_lname']) ) {
+        
+            $filename ="excelreport.xls";
+            header('Content-type: application/ms-excel');
+            header('Content-Disposition: attachment; filename='.$filename);
+            
+            $sql_query = "SELECT fname, lname, event_name, start_date, end_date FROM (SELECT fname, lname, event_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
+            
+            if( $_REQUEST['person_fname'] != '' || $_REQUEST['person_lname'] != '' ) {
+                $sql_query .= "WHERE ";
+                
+                if( $_REQUEST['person_fname'] != '' ) {
+                    $sql_query .= $wpdb->prepare( 'fname = %s ', $_REQUEST['person_fname'] );
+                    $argument_counter++;
+                }
+                if( $_REQUEST['person_lname'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'lname = %s ', $_REQUEST['person_lname'] );
+                    $argument_counter++;
+                }
+                
+            }
+            
+            $sql_query .= ") ";
+            $sql_query .= "AS first_results INNER JOIN " . EVENTS_DETAIL_TABLE . " ON first_results.event_id = " . EVENTS_DETAIL_TABLE . ".id";
+
+            $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
+            
+            $flag = false;
+            foreach($sql_results as $row) {
+                if(!$flag) {
+                    echo implode("\t", array_keys($row)) . "\r\n";
+                    $flag = true;
+                }
+                echo implode("\t", array_values($row)) . "\r\n";
+            }
+            
+            exit();
+
+        }
+        
+        
+    }
+    
 	/**
 	 * Return an instance of this class.
 	 *
@@ -111,18 +402,20 @@ class CTLT_Espresso_Controls {
 
 	/**
 	 * init_ctlt_espresso_controls function
-	 * This function includes the necessary php files to create the metaboxes
+	 * This function includes the necessary php files to create the metaboxes and reports page
 	 */
 	public function init_ctlt_espresso_controls() {
 		require_once( 'lib/class.ctlt-espresso-metaboxes.php' );
 		/** meta box ordering **/
 		// the order of the require_once statements are what the order of the meta boxes as they appear in the events admin
+        // lib/class.ctlt-espresso-reports.php creates the report page
 		require_once( 'lib/class.ctlt-espresso-handouts.php' );
 		require_once( 'lib/class.ctlt-espresso-room-setup.php' );
 		require_once( 'lib/class.ctlt-espresso-additional-requirements.php' );
 		require_once( 'lib/class.ctlt-espresso-additional-information.php' );
 		require_once( 'lib/class.ctlt-espresso-costs.php' );
 		require_once( 'lib/class.ctlt-espresso-saving.php' );
+		require_once( 'lib/class.ctlt-espresso-reports.php' );
 		add_action( 'ctlt_espresso_insert_event', array( 'CTLT_Espresso_Saving', 'insert' ) );
 		add_action( 'ctlt_espresso_update_event', array( 'CTLT_Espresso_Saving', 'update' ) );
 	}

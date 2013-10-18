@@ -111,10 +111,10 @@ class CTLT_Espresso_Controls {
             }
     
             $sql_query = "SELECT " . $distinct_spacer . "fname AS FirstName, lname AS LastName, email As Email, ";
-            $sql_query .= "MAX(CASE WHEN wp_events_answer.question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Type' LIMIT 1) THEN wp_events_answer.answer END) as Title, ";
-            $sql_query .= "MAX(CASE WHEN wp_events_answer.question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Institution' LIMIT 1) THEN wp_events_answer.answer END) as Institution, ";
-            $sql_query .= "MAX(CASE WHEN wp_events_answer.question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Faculty, School, or College' LIMIT 1) THEN wp_events_answer.answer END) as Faculty, ";
-            $sql_query .= "MAX(CASE WHEN wp_events_answer.question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Department' LIMIT 1) THEN wp_events_answer.answer END) as Department ";
+            $sql_query .= "MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Type' LIMIT 1) THEN ". EVENTS_ANSWER_TABLE . ".answer END) as Title, ";
+            $sql_query .= "MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Institution' LIMIT 1) THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Institution, ";
+            $sql_query .= "MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Faculty, School, or College' LIMIT 1) THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Faculty, ";
+            $sql_query .= "MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Department' LIMIT 1) THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Department ";
             $sql_query .= "FROM (SELECT id, fname, lname, email, phone, date, registration_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
     
             if( $_REQUEST['attendees_events_id'] != '' || $_REQUEST['attendees_events_start'] != '' || $_REQUEST['attendees_events_end'] != '' || $_REQUEST['attendees_events_category'] != '' ) {
@@ -173,9 +173,9 @@ class CTLT_Espresso_Controls {
             header('Content-type: application/ms-excel');
             header('Content-Disposition: attachment; filename='.$filename);
             
-            $sql_query = "SELECT event_id, event_name, category_name, second_results.start_date, second_results.end_date, registration_start, registration_end, venue_title, COUNT(" . EVENTS_ATTENDEE_TABLE . ".id) AS 'Total Attendees' FROM (";
-            $sql_query .= "SELECT first_results.id, event_name, category_name, start_date, end_date, registration_start, registration_end, venue_title FROM (";
-            $sql_query .= "SELECT id, event_name, start_date, end_date, registration_start, registration_end, venue_title, category_id FROM " . EVENTS_DETAIL_TABLE . " ";
+            $sql_query = "SELECT event_id, event_name, category_name, second_results.start_date, second_results.end_date, registration_start, registration_end, COUNT(" . EVENTS_ATTENDEE_TABLE . ".id) AS 'Total Attendees' FROM (";
+            $sql_query .= "SELECT first_results.id, event_name, category_name, start_date, end_date, registration_start, registration_end FROM (";
+            $sql_query .= "SELECT id, event_name, start_date, end_date, registration_start, registration_end, category_id FROM " . EVENTS_DETAIL_TABLE . " ";
             $sql_query .= ") ";
             $sql_query .= "AS first_results LEFT JOIN " . EVENTS_CATEGORY_TABLE . " ON first_results.category_id = " . EVENTS_CATEGORY_TABLE . ".id";
             $sql_query .= ") ";
@@ -233,7 +233,7 @@ class CTLT_Espresso_Controls {
             header('Content-type: application/ms-excel');
             header('Content-Disposition: attachment; filename='.$filename);
             
-            $sql_query = "SELECT id, event_name AS 'Event Name', start_date AS 'Start Date', end_date AS 'End Date', venue_title AS 'Venue Title',
+            $sql_query = "SELECT id, event_name AS 'Event Name', start_date AS 'Start Date', end_date AS 'End Date',
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_handouts_upload' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Handout File URL',
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_signs_upload' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Sign File URL',
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_handouts_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Files Notes',
@@ -319,7 +319,6 @@ class CTLT_Espresso_Controls {
                 }
                 echo implode("\t", array_values($row)) . "\r\n";
             }
-            
             
             exit();
         }

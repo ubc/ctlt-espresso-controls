@@ -93,7 +93,7 @@ class CTLT_Espresso_Controls {
         $sql_results;
         $distinct_spacer;
         
-        if(isset($_POST['submit'])) {
+        if(isset($_POST['submit']) && ( isset($_REQUEST['attendees_events_id']) || isset($_REQUEST['events_events_id']) || isset($_REQUEST['admin_events_id']) || isset($_REQUEST['person_fname']) ) ) {
             if ( !isset($_POST['ctlt_espresso_nonce_field']) || !wp_verify_nonce($_POST['ctlt_espresso_nonce_field'],'ctlt_espresso_nonce_check') ) {
                 print 'Sorry, your nonce did not verify. You do not currently have sufficient privileges to save your edits. Please contact the CTLT support team for further information.';
                 exit;

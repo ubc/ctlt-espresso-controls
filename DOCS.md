@@ -8,6 +8,7 @@ Documentation to reference to when maintaining, building upon, or understanding 
 1. [Discussion](#discussion)
 	- [ctlt-espresso-controls.php](#ctlt-espresso-controlsphp)
 	- [class.ctlt-espresso-controls.php](#classctlt-espresso-controlsphp)
+	- [class.ctlt-espresso-reports.php](#classctlt-espresso-reportsphp)        
 	- [class.ctlt-espresso-metaboxes.php](#classctlt-espresso-metaboxesphp)
 	- [class.ctlt-espresso-handouts.php](#classctlt-espresso-handoutsphp)
 	- [class.ctlt-espresso-room-setup.php](#classctlt-espresso-room-setupphp)

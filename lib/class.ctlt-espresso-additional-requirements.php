@@ -199,8 +199,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
         ?>
         <div class="ctlt-text-block">
 		<?php foreach( self::$misc_computer_stuff['options'] as $option ) { ?>
-			<?php $checked = isset( self::$data[$option['textbox']['id']] ) ? esc_attr( self::$data[$option['textbox']['id']] ) : ''; ?>
-			<div class="ctlt-left">
+            <div class="ctlt-left">
 				<label><?php echo $option['name']; ?></label><br />
                 <?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
                     <?php $value = isset( self::$data[$option['textbox']['id'][$i]] ) ? esc_attr( self::$data[$option['textbox']['id'][$i]] ) : ''; ?>

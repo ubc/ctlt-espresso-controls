@@ -67,8 +67,8 @@ class CTLT_Espresso_Controls {
 	 */
 	private function __construct() {
         add_action('admin_menu', array( $this, 'register_ctlt_espresso_reports_page') );
-		add_action( 'admin_init', array( $this, 'init_ctlt_espresso_controls' ) );
         add_action( 'admin_menu', array( $this, 'ctlt_espresso_export_to_excel' ) );
+		add_action( 'admin_init', array( $this, 'init_ctlt_espresso_controls' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_stylesheets' ) );		
 	}
     
@@ -80,7 +80,6 @@ class CTLT_Espresso_Controls {
         add_menu_page( 'Event Reports', 'Event Reports', 'manage_options', 'event-espresso-reports', array ('CTLT_Espresso_Reports', 'reports_menu_page' ) );
     }
     
-    
     /*
     * ctlt_espresso_export_to_excel function
     * checks for POST parameters from Espresso Reports export to excel requests
@@ -91,7 +90,7 @@ class CTLT_Espresso_Controls {
         $argument_counter = 0;
         $sql_query;
         $sql_results;
-        $distinct_spacer;
+        $distinct_spacer = "";
         
         if(isset($_POST['submit']) && ( isset($_REQUEST['attendees_events_id']) || isset($_REQUEST['events_events_id']) || isset($_REQUEST['admin_events_id']) || isset($_REQUEST['person_fname']) ) ) {
             if ( !isset($_POST['ctlt_espresso_nonce_field']) || !wp_verify_nonce($_POST['ctlt_espresso_nonce_field'],'ctlt_espresso_nonce_check') ) {
@@ -100,23 +99,27 @@ class CTLT_Espresso_Controls {
             }
         }
     
+        // Attendees Query and Report
         if( isset($_REQUEST['attendees_events_id']) || isset($_REQUEST['attendees_events_start']) || isset($_REQUEST['attendees_events_end']) || isset($_REQUEST['attendees_events_cateogry']) ) {
     
             $filename ="excelreport.xls";
             header('Content-type: application/ms-excel');
             header('Content-Disposition: attachment; filename='.$filename);
     
-            if( $_REQUEST['attendees_events_unique'] != '' ) {
+            if( isset($_REQUEST['attendees_events_unique']) && $_REQUEST['attendees_events_unique'] != '' ) {
                 $distinct_spacer = "DISTINCT ";
             }
     
-            $sql_query = "SELECT " . $distinct_spacer . "fname AS FirstName, lname AS LastName, email As Email, ";
-            $sql_query .= "MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Type' LIMIT 1) THEN ". EVENTS_ANSWER_TABLE . ".answer END) as Title, ";
-            $sql_query .= "MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Institution' LIMIT 1) THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Institution, ";
-            $sql_query .= "MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Faculty, School, or College' LIMIT 1) THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Faculty, ";
-            $sql_query .= "MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id from " . EVENTS_QUESTION_TABLE . " WHERE question = 'Department' LIMIT 1) THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Department ";
-            $sql_query .= "FROM (SELECT id, fname, lname, email, phone, date, registration_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
-    
+            $sql_query = "SELECT " . $distinct_spacer . "fname as 'First Name', lname as 'Last Name', Type as 'Attending As', Organization, Faculty, Department, PhoneNumber as 'Phone Number', email as 'Email', event_name as 'Event Name', start_date as 'Start Date', end_date as 'End Date' FROM ( ";
+
+            $sql_query .= "SELECT event_id, fname, lname, email, Type, MAX(CASE WHEN meta_key = 'event_espresso_organization' THEN meta_value END) as Organization, MAX(CASE WHEN meta_key = 'event_espresso_faculty' THEN meta_value END) as Faculty, MAX(CASE WHEN meta_key = 'event_espresso_department' THEN meta_value END) as Department, MAX(CASE WHEN meta_key = 'event_espresso_phone_number' THEN meta_value END) as PhoneNumber FROM ( ";
+
+            $sql_query .= "SELECT second_results.event_id, second_results.attendee_id, fname, lname, email, Type, user_id FROM ( ";
+
+            $sql_query .= "SELECT event_id, first_results.attendee_id as attendee_id, fname, lname, email, MAX(CASE WHEN wp_events_answer.question_id = (SELECT id FROM wp_events_question WHERE question = 'Attending As') THEN wp_events_answer.answer END) as Type FROM ( ";
+
+            $sql_query .= "SELECT id as attendee_id, fname, lname, email, event_id FROM wp_events_attendee ";
+
             if( $_REQUEST['attendees_events_id'] != '' || $_REQUEST['attendees_events_start'] != '' || $_REQUEST['attendees_events_end'] != '' || $_REQUEST['attendees_events_category'] != '' ) {
                 
                 $sql_query .= "WHERE event_id IN (SELECT id FROM " . EVENTS_DETAIL_TABLE . " WHERE ";
@@ -150,9 +153,14 @@ class CTLT_Espresso_Controls {
                 $sql_query .= ")";
             
             }
-            
-            $sql_query .= ") ";
-            $sql_query .= "AS first_results INNER JOIN " . EVENTS_ANSWER_TABLE . " ON first_results.registration_id = " . EVENTS_ANSWER_TABLE . ".registration_id GROUP BY first_results.id" ;
+
+            $sql_query .= ") AS first_results ";
+            $sql_query .= "INNER JOIN wp_events_answer ON wp_events_answer.attendee_id = first_results.attendee_id GROUP BY first_results.attendee_id) AS second_results ";
+            $sql_query .= "INNER JOIN wp_events_member_rel ON wp_events_member_rel.attendee_id = second_results.attendee_id ";
+            $sql_query .= ") AS third_results ";
+            $sql_query .= "INNER JOIN wp_usermeta ON wp_usermeta.user_iD = third_results.user_id GROUP BY attendee_id ";
+            $sql_query .= ") AS fourth_results ";
+            $sql_query .= "INNER JOIN wp_events_detail ON wp_events_detail.id = fourth_results.event_id ";
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
             
             $flag = false;
@@ -167,6 +175,7 @@ class CTLT_Espresso_Controls {
             exit();
         }
         
+        // Events Summary Query and Report
         if( isset($_REQUEST['events_events_id']) || isset($_REQUEST['events_events_start']) || isset($_REQUEST['events_events_end']) || isset($_REQUEST['events_events_cateogry']) ) {
         
             $filename ="excelreport.xls";
@@ -227,6 +236,7 @@ class CTLT_Espresso_Controls {
             exit();
         }
         
+        // Administrative Details Query and Report
         if( isset($_REQUEST['admin_events_id']) || isset($_REQUEST['admin_events_start']) || isset($_REQUEST['admin_events_end']) || isset($_REQUEST['admin_events_cateogry']) ) {
         
             $filename ="excelreport.xls";
@@ -275,6 +285,7 @@ class CTLT_Espresso_Controls {
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_phone_conference_textbox_access_code' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Teleconference Access Code' ";
             $sql_query .= "FROM (SELECT * FROM " . EVENTS_DETAIL_TABLE .  " ";
             
+            // Events Attended Query and Report
             if( $_REQUEST['admin_events_id'] != '' || $_REQUEST['admin_events_start'] != '' || $_REQUEST['admin_events_end'] != '' || $_REQUEST['admin_events_category'] != '' ) {
                 
                 $sql_query .= "WHERE ";
@@ -417,8 +428,8 @@ class CTLT_Espresso_Controls {
 		/** meta box ordering **/
 		// the order of the require_once statements are what the order of the meta boxes as they appear in the events admin
         // lib/class.ctlt-espresso-reports.php creates the report page
+        require_once( 'lib/class.ctlt-espresso-room-setup.php' );
 		require_once( 'lib/class.ctlt-espresso-handouts.php' );
-		require_once( 'lib/class.ctlt-espresso-room-setup.php' );
 		require_once( 'lib/class.ctlt-espresso-additional-requirements.php' );
 		require_once( 'lib/class.ctlt-espresso-additional-information.php' );
 		require_once( 'lib/class.ctlt-espresso-costs.php' );

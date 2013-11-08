@@ -69,7 +69,6 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 
         // conference equipment fields (partial)
 		foreach( CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['options'] as $option ) {
-			self::$meta_data[$option['checkbox']['id']] = isset( $_POST[$option['checkbox']['id']] ) && $_POST[$option['checkbox']['id']] ? 'yes' : 'no';
 			if( isset( $option['textbox']['id'] ) ) {
 				for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) {
 					self::$meta_data[$option['textbox']['id'][$i]] = isset( $_POST[$option['textbox']['id'][$i]] ) ? $_POST[$option['textbox']['id'][$i]] : '';

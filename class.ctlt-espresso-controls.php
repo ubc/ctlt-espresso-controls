@@ -116,9 +116,9 @@ class CTLT_Espresso_Controls {
 
             $sql_query .= "SELECT second_results.event_id, second_results.attendee_id, fname, lname, email, Type, user_id FROM ( ";
 
-            $sql_query .= "SELECT event_id, first_results.attendee_id as attendee_id, fname, lname, email, MAX(CASE WHEN wp_events_answer.question_id = (SELECT id FROM wp_events_question WHERE question = 'Attending As') THEN wp_events_answer.answer END) as Type FROM ( ";
+            $sql_query .= "SELECT event_id, first_results.attendee_id as attendee_id, fname, lname, email, MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id FROM " . EVENTS_QUESTION_TABLE . " WHERE question = 'Attending As') THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Type FROM ( ";
 
-            $sql_query .= "SELECT id as attendee_id, fname, lname, email, event_id FROM wp_events_attendee ";
+            $sql_query .= "SELECT id as attendee_id, fname, lname, email, event_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
 
             if( $_REQUEST['attendees_events_id'] != '' || $_REQUEST['attendees_events_start'] != '' || $_REQUEST['attendees_events_end'] != '' || $_REQUEST['attendees_events_category'] != '' ) {
                 
@@ -155,12 +155,12 @@ class CTLT_Espresso_Controls {
             }
 
             $sql_query .= ") AS first_results ";
-            $sql_query .= "INNER JOIN wp_events_answer ON wp_events_answer.attendee_id = first_results.attendee_id GROUP BY first_results.attendee_id) AS second_results ";
-            $sql_query .= "INNER JOIN wp_events_member_rel ON wp_events_member_rel.attendee_id = second_results.attendee_id ";
+            $sql_query .= "INNER JOIN " . EVENTS_ANSWER_TABLE . " ON " . EVENTS_ANSWER_TABLE . ".attendee_id = first_results.attendee_id GROUP BY first_results.attendee_id) AS second_results ";
+            $sql_query .= "INNER JOIN " . EVENTS_MEMBER_REL_TABLE . " ON " . EVENTS_MEMBER_REL_TABLE . ".attendee_id = second_results.attendee_id ";
             $sql_query .= ") AS third_results ";
-            $sql_query .= "INNER JOIN wp_usermeta ON wp_usermeta.user_iD = third_results.user_id GROUP BY attendee_id ";
+            $sql_query .= "INNER JOIN " . $wpdb->prefix . "usermeta ON " . $wpdb->prefix . "usermeta.user_iD = third_results.user_id GROUP BY attendee_id ";
             $sql_query .= ") AS fourth_results ";
-            $sql_query .= "INNER JOIN wp_events_detail ON wp_events_detail.id = fourth_results.event_id ";
+            $sql_query .= "INNER JOIN " . EVENTS_DETAIL_TABLE . " ON " . EVENTS_DETAIL_TABLE . ".id = fourth_results.event_id ";
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
             
             $flag = false;

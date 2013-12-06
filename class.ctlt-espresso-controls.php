@@ -66,10 +66,11 @@ class CTLT_Espresso_Controls {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-        add_action('admin_menu', array( $this, 'register_ctlt_espresso_reports_page') );
+        add_action( 'admin_menu', array( $this, 'admin_scripts') );
+        add_action( 'admin_menu', array( $this, 'register_ctlt_espresso_reports_page') );
         add_action( 'admin_menu', array( $this, 'ctlt_espresso_export_to_excel' ) );
 		add_action( 'admin_init', array( $this, 'init_ctlt_espresso_controls' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_stylesheets' ) );		
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_stylesheets' ) );
 	}
     
     /*
@@ -448,6 +449,16 @@ class CTLT_Espresso_Controls {
 		wp_register_style( 'ctlt_espresso_controls_css', CTLT_ESPRESSO_CONTROLS_CSS_URL . $css, false, '1.0.0' );
 		wp_enqueue_style( 'ctlt_espresso_controls_css' );
 	}
+    
+    /*
+     * admin_scripts function
+     * This functions enqueues the scripts to set the
+     *
+     */
+    public function admin_scripts() {
+        wp_enqueue_script( 'ctlt-espresso-box-hider-js', CTLT_ESPRESSO_CONTROLS_JS_URL . 'ctlt-espresso-box-hider.js', array( 'jquery' ), '1.0.0', true );
+    }
+    
 
 	public function espresso_properties() {
 		if( !defined( 'EVENT_ESPRESSO_VERSION' ) ) {

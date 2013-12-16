@@ -29,6 +29,7 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
 			CTLT_Espresso_Handouts::$handout_file['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$handout_file['id']] ) ? $_POST[CTLT_Espresso_Handouts::$handout_file['id']] : '',
             CTLT_Espresso_Handouts::$sign_file['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$sign_file['id']] ) ? $_POST[CTLT_Espresso_Handouts::$sign_file['id']] : '',
             CTLT_Espresso_Handouts::$handout_file['notes'] => !empty( $_POST[CTLT_Espresso_Handouts::$handout_file['notes']] ) ? $_POST[CTLT_Espresso_Handouts::$handout_file['notes']] : '',
+            CTLT_Espresso_Handouts::$handout_policy['id'] => !empty( $_POST[CTLT_Espresso_Handouts::$handout_policy['id']] ) ? 'yes' : 'no',
             
             // room setup fields
             CTLT_Espresso_Room_Setup::$rooms['chairs'] => !empty( $_POST[CTLT_Espresso_Room_Setup::$rooms['chairs']] ) ? $_POST[CTLT_Espresso_Room_Setup::$rooms['chairs']] : '',

@@ -252,7 +252,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 	public function the_conference_misc() {
 		$checked = isset( self::$data[self::$conference_misc['video_capture']['checkbox']['id']] ) ? self::$data[self::$conference_misc['video_capture']['checkbox']['id']] : ''; ?>
         <label for="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>"><?php echo self::$conference_misc['video_capture']['name']; ?></label><br />
-        <input type="checkbox" name="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" id="<?php echo self::$conference_misc['video']['checkbox']['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
+        <input type="checkbox" name="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" id="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
 		<?php foreach( self::$conference_misc['options'] as $option ) { ?>
 		<div class="ctlt-text-block">
 			<label><?php echo $option['name']; ?></label><br />

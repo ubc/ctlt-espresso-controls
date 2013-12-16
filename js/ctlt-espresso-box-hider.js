@@ -21,7 +21,9 @@ jQuery(document).ready( function() {
     // Sets all postboxes with the specified IDs to be closed by default
     if(postboxesToClose[0]) {
         for ( var i=0; i<postboxesToClose.length; i++ ){
-            postboxesToClose[i].className = "postbox closed";
+            if(postboxesToClose[i]) {
+                postboxesToClose[i].className = "postbox closed";
+            }
         }
     }
     

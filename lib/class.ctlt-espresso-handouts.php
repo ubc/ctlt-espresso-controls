@@ -4,6 +4,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 
     // arrays to hold handout and sign information
 	static $handout_file = null;
+    static $handout_policy = null;
     static $sign_file = null;
 
 	public function __construct() {
@@ -31,6 +32,13 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 			'id' => self::$prefix . 'signs_upload',
 			'type' => 'file'
 			);
+        self::$handout_policy = array(
+			'name' => 'Materials Distribution Policy',
+			'id' => self::$prefix . 'do_not_handout',
+			'type' => 'checkbox',
+            'checkbox_label' => 'Do not automatically make event materials available',
+		);
+            
 	}
 
 	/**
@@ -70,6 +78,11 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
  					<input class="ctlt-espresso-target-attachment-id" type="hidden" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" value="<?php echo $attachment_id; ?>"/>
 				</div>
 				<?php //$this->add_download_link(); ?>
+            </p>
+            <p>
+                <?php $checked = isset( self::$handout_policy['id'] ) ? self::$data[self::$handout_policy['id']] : ''; ?>
+                <label for="<?php echo self::$handout_policy['id']; ?>"><?php echo self::$handout_policy['checkbox_label']; ?></label><br />
+                <input type="<?php echo self::$handout_policy['type']; ?>" name="<?php echo self::$handout_policy['id']; ?>" id="<?php echo self::$handout_policy['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
             </p>
             <p>
 				<label><?php echo self::$sign_file['name']; ?>:</label>

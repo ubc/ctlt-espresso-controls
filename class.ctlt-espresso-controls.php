@@ -111,15 +111,17 @@ class CTLT_Espresso_Controls {
                 $distinct_spacer = "DISTINCT ";
             }
     
-            $sql_query = "SELECT " . $distinct_spacer . "fname as 'First Name', lname as 'Last Name', Type as 'Attending As', Organization, Faculty, Department, PhoneNumber as 'Phone Number', email as 'Email', event_name as 'Event Name', start_date as 'Start Date', end_date as 'End Date' FROM ( ";
+            $sql_query = "SELECT fname as 'First Name', lname as 'Last Name', payment_status as 'Registration Status', Type as 'Attending As', Organization, Faculty, Department, PhoneNumber as 'Phone Number', email as 'Email', event_name as 'Event Name', category_name as 'Primary Event Category', start_date as 'Start Date', end_date as 'End Date' FROM ( ";
+    
+            $sql_query .= "SELECT " . $distinct_spacer . "fname, lname, payment_status, Type, Organization, Faculty, Department, PhoneNumber, email, event_name, category_id, start_date, end_date FROM ( ";
 
-            $sql_query .= "SELECT event_id, fname, lname, email, Type, MAX(CASE WHEN meta_key = 'event_espresso_organization' THEN meta_value END) as Organization, MAX(CASE WHEN meta_key = 'event_espresso_faculty' THEN meta_value END) as Faculty, MAX(CASE WHEN meta_key = 'event_espresso_department' THEN meta_value END) as Department, MAX(CASE WHEN meta_key = 'event_espresso_phone_number' THEN meta_value END) as PhoneNumber FROM ( ";
+            $sql_query .= "SELECT event_id, fname, lname, payment_status, email, Type, MAX(CASE WHEN meta_key = 'event_espresso_organization' THEN meta_value END) as Organization, MAX(CASE WHEN meta_key = 'event_espresso_faculty' THEN meta_value END) as Faculty, MAX(CASE WHEN meta_key = 'event_espresso_department' THEN meta_value END) as Department, MAX(CASE WHEN meta_key = 'event_espresso_phone_number' THEN meta_value END) as PhoneNumber FROM ( ";
 
-            $sql_query .= "SELECT second_results.event_id, second_results.attendee_id, fname, lname, email, Type, user_id FROM ( ";
+            $sql_query .= "SELECT second_results.event_id, second_results.attendee_id, fname, lname, payment_status, email, Type, user_id FROM ( ";
 
-            $sql_query .= "SELECT event_id, first_results.attendee_id as attendee_id, fname, lname, email, MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id FROM " . EVENTS_QUESTION_TABLE . " WHERE question = 'Attending As') THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Type FROM ( ";
+            $sql_query .= "SELECT event_id, first_results.attendee_id as attendee_id, fname, lname, payment_status, email, MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id FROM " . EVENTS_QUESTION_TABLE . " WHERE question = 'Attending As') THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Type FROM ( ";
 
-            $sql_query .= "SELECT id as attendee_id, fname, lname, email, event_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
+            $sql_query .= "SELECT id as attendee_id, fname, lname, payment_status, email, event_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
 
             if( $_REQUEST['attendees_events_id'] != '' || $_REQUEST['attendees_events_start'] != '' || $_REQUEST['attendees_events_end'] != '' || $_REQUEST['attendees_events_category'] != '' ) {
                 
@@ -159,11 +161,14 @@ class CTLT_Espresso_Controls {
             $sql_query .= "INNER JOIN " . EVENTS_ANSWER_TABLE . " ON " . EVENTS_ANSWER_TABLE . ".attendee_id = first_results.attendee_id GROUP BY first_results.attendee_id) AS second_results ";
             $sql_query .= "INNER JOIN " . EVENTS_MEMBER_REL_TABLE . " ON " . EVENTS_MEMBER_REL_TABLE . ".attendee_id = second_results.attendee_id ";
             $sql_query .= ") AS third_results ";
-            $sql_query .= "INNER JOIN " . $wpdb->prefix . "usermeta ON " . $wpdb->prefix . "usermeta.user_iD = third_results.user_id GROUP BY attendee_id ";
+            $sql_query .= "INNER JOIN " . $wpdb->prefix . "usermeta ON " . $wpdb->prefix . "usermeta.user_id = third_results.user_id GROUP BY attendee_id ";
             $sql_query .= ") AS fourth_results ";
             $sql_query .= "INNER JOIN " . EVENTS_DETAIL_TABLE . " ON " . EVENTS_DETAIL_TABLE . ".id = fourth_results.event_id ";
+            $sql_query .= ") AS fifth_results ";
+            $sql_query .= "LEFT JOIN " . EVENTS_CATEGORY_TABLE . " ON " . EVENTS_CATEGORY_TABLE . ".id = fifth_results.category_id ";
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
             
+
             $flag = false;
             foreach($sql_results as $row) {
                 if(!$flag) {
@@ -222,9 +227,10 @@ class CTLT_Espresso_Controls {
                 
             }
             
-            $sql_query .= "GROUP BY second_results.id";
+            $sql_query .= "WHERE " . EVENTS_ATTENDEE_TABLE . ".payment_status = 'COMPLETED' GROUP BY second_results.id";
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
         
+            
             $flag = false;
             foreach($sql_results as $row) {
                 if(!$flag) {
@@ -320,6 +326,8 @@ class CTLT_Espresso_Controls {
             
             $sql_query .= ") ";
             $sql_query .= "AS first_results INNER JOIN " . CTLT_ESPRESSO_EVENTS_META . " ON first_results.id = " . CTLT_ESPRESSO_EVENTS_META . ".event_id GROUP BY first_results.id";
+
+            echo $sql_query;
 
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
             
@@ -436,7 +444,7 @@ class CTLT_Espresso_Controls {
 		require_once( 'lib/class.ctlt-espresso-costs.php' );
 		require_once( 'lib/class.ctlt-espresso-saving.php' );
 		require_once( 'lib/class.ctlt-espresso-reports.php' );
-		add_action( 'ctlt_espresso_insert_event', array( 'CTLT_Espresso_Saving', 'insert' ) );
+        add_action( 'ctlt_espresso_insert_event', array( 'CTLT_Espresso_Saving', 'insert' ) );
 		add_action( 'ctlt_espresso_update_event', array( 'CTLT_Espresso_Saving', 'update' ) );
 	}
 

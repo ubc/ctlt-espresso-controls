@@ -327,8 +327,6 @@ class CTLT_Espresso_Controls {
             $sql_query .= ") ";
             $sql_query .= "AS first_results INNER JOIN " . CTLT_ESPRESSO_EVENTS_META . " ON first_results.id = " . CTLT_ESPRESSO_EVENTS_META . ".event_id GROUP BY first_results.id";
 
-            echo $sql_query;
-
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
             
             $flag = false;

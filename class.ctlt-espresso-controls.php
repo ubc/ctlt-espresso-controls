@@ -111,11 +111,12 @@ class CTLT_Espresso_Controls {
                 $distinct_spacer = "DISTINCT ";
             }
     
-            $sql_query = "SELECT fname as 'First Name', lname as 'Last Name', payment_status as 'Registration Status', Type as 'Attending As', Organization, Faculty, Department, PhoneNumber as 'Phone Number', email as 'Email', event_name as 'Event Name', category_name as 'Primary Event Category', start_date as 'Start Date', end_date as 'End Date' FROM ( ";
+            $sql_query = "SELECT fname as 'First Name', lname as 'Last Name', payment_status as 'Registration Status', CASE WHEN checked_in = 1 THEN 'yes' END as 'Attended', Attending_As as 'Attending As', Organization, Faculty, Department, PhoneNumber, email as 'Email', event_name as 'Event Name', category_name as 'Primary Category Name', start_date as 'Start Date', end_date as 'End Date' FROM (";
+            $sql_query .= "SELECT fname, lname, payment_status, Type as 'Attending_As', Organization, Faculty, Department, PhoneNumber, email, event_name, category_name, start_date, end_date, attendee_id FROM ( ";
     
-            $sql_query .= "SELECT " . $distinct_spacer . "fname, lname, payment_status, Type, Organization, Faculty, Department, PhoneNumber, email, event_name, category_id, start_date, end_date FROM ( ";
+            $sql_query .= "SELECT " . $distinct_spacer . "fname, lname, payment_status, Type, Organization, Faculty, Department, PhoneNumber, email, event_name, category_id, start_date, end_date, attendee_id FROM ( ";
 
-            $sql_query .= "SELECT event_id, fname, lname, payment_status, email, Type, MAX(CASE WHEN meta_key = 'event_espresso_organization' THEN meta_value END) as Organization, MAX(CASE WHEN meta_key = 'event_espresso_faculty' THEN meta_value END) as Faculty, MAX(CASE WHEN meta_key = 'event_espresso_department' THEN meta_value END) as Department, MAX(CASE WHEN meta_key = 'event_espresso_phone_number' THEN meta_value END) as PhoneNumber FROM ( ";
+            $sql_query .= "SELECT event_id, fname, lname, payment_status, email, Type, MAX(CASE WHEN meta_key = 'event_espresso_organization' THEN meta_value END) as Organization, MAX(CASE WHEN meta_key = 'event_espresso_faculty' THEN meta_value END) as Faculty, MAX(CASE WHEN meta_key = 'event_espresso_department' THEN meta_value END) as Department, MAX(CASE WHEN meta_key = 'event_espresso_phone_number' THEN meta_value END) as PhoneNumber, attendee_id FROM ( ";
 
             $sql_query .= "SELECT second_results.event_id, second_results.attendee_id, fname, lname, payment_status, email, Type, user_id FROM ( ";
 
@@ -166,8 +167,9 @@ class CTLT_Espresso_Controls {
             $sql_query .= "INNER JOIN " . EVENTS_DETAIL_TABLE . " ON " . EVENTS_DETAIL_TABLE . ".id = fourth_results.event_id ";
             $sql_query .= ") AS fifth_results ";
             $sql_query .= "LEFT JOIN " . EVENTS_CATEGORY_TABLE . " ON " . EVENTS_CATEGORY_TABLE . ".id = fifth_results.category_id ";
+            $sql_query .= ") AS sixth_results ";
+            $sql_query .= "LEFT JOIN " . $wpdb->prefix . "events_attendee_checkin ON " .  $wpdb->prefix . "events_attendee_checkin.attendee_id = sixth_results.attendee_id ";
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
-            
 
             $flag = false;
             foreach($sql_results as $row) {
@@ -188,7 +190,8 @@ class CTLT_Espresso_Controls {
             header('Content-type: application/ms-excel');
             header('Content-Disposition: attachment; filename='.$filename);
             
-            $sql_query = "SELECT event_id, event_name, category_name, second_results.start_date, second_results.end_date, registration_start, registration_end, COUNT(" . EVENTS_ATTENDEE_TABLE . ".id) AS 'Total Attendees' FROM (";
+            $sql_query = "SELECT third_results.event_id as 'Event Id', event_name as 'Event Name', category_name as 'Primary Category Name', start_date as 'Start Date', end_date as 'End Date', registration_start as 'Registration Start', registration_end as 'Registration End', Total_Registrations as 'Total Completed Registrations', COUNT(checked_in) as 'Total Attended' FROM (";
+            $sql_query .= "SELECT event_id, event_name, category_name, second_results.start_date, second_results.end_date, registration_start, registration_end, COUNT(" . EVENTS_ATTENDEE_TABLE . ".id) AS 'Total_Registrations' FROM (";
             $sql_query .= "SELECT first_results.id, event_name, category_name, start_date, end_date, registration_start, registration_end FROM (";
             $sql_query .= "SELECT id, event_name, start_date, end_date, registration_start, registration_end, category_id FROM " . EVENTS_DETAIL_TABLE . " ";
             $sql_query .= ") ";
@@ -227,9 +230,11 @@ class CTLT_Espresso_Controls {
                 
             }
             
-            $sql_query .= "WHERE " . EVENTS_ATTENDEE_TABLE . ".payment_status = 'COMPLETED' GROUP BY second_results.id";
+            $sql_query .= "WHERE " . EVENTS_ATTENDEE_TABLE . ".payment_status = 'COMPLETED' GROUP BY second_results.id) as third_results ";
+            $sql_query .= "LEFT JOIN " . $wpdb->prefix . "events_attendee_checkin ON third_results.event_id = " . $wpdb->prefix . "events_attendee_checkin.event_id GROUP BY third_results.event_id ";
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
         
+            echo $sql_query;
             
             $flag = false;
             foreach($sql_results as $row) {
@@ -251,8 +256,8 @@ class CTLT_Espresso_Controls {
             header('Content-Disposition: attachment; filename='.$filename);
             
             $sql_query = "SELECT id, event_name AS 'Event Name', start_date AS 'Start Date', end_date AS 'End Date',
-                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_handouts_upload' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Handout File URL',
-                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_signs_upload' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Sign File URL',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_handouts_upload' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Handout File Id Number',
+                MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_signs_upload' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Sign File ID Number',
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_handouts_notes' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Files Notes',
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_room_setup_chairs' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Number of Chairs',
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_room_setup_tables' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Number of Tables',

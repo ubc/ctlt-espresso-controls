@@ -56,6 +56,15 @@ textarea.ctlt-espresso-controls-textarea {
  * NLS *
  *******/
 
+#submitdiv {
+    position: fixed;
+    width: 275px;
+    right: 1;
+    bottom: 0;
+    z-index: 2;
+    background: orange !important;
+}
+
 .ctlt-option-box {
     float: left;
     width:70px;

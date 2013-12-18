@@ -47,6 +47,13 @@ class CTLT_Espresso_Reports {
                         <td><select name="attendees_events_category"><?php echo $categories_options_builder; ?></select></td>
                     </tr>
                     <tr>
+                        <td>Event Type:</td>
+                        <td>
+                            <input type="radio" name="attendees_events_type" value="A">Active<br>
+                            <input type="radio" name="attendees_events_type" value="S">Waitlist
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Return unique names only:</td>
                         <td><input type="checkbox" name="attendees_events_unique" value="DISTINCT "></td>
                     </tr>
@@ -74,6 +81,13 @@ class CTLT_Espresso_Reports {
                     <tr>
                         <td>Event Category:</td>
                         <td><select name="events_events_category"><?php echo $categories_options_builder; ?></select></td>
+                    </tr>
+                    <tr>
+                        <td>Event Type:</td>
+                        <td>
+                            <input type="radio" name="events_events_type" value="A">Active<br>
+                            <input type="radio" name="events_events_type" value="S">Waitlist
+                        </td>
                     </tr>
                 </table>
                 <?php wp_nonce_field('ctlt_espresso_nonce_check','ctlt_espresso_nonce_field'); ?>

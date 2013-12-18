@@ -111,12 +111,12 @@ class CTLT_Espresso_Controls {
                 $distinct_spacer = "DISTINCT ";
             }
     
-            $sql_query = "SELECT fname as 'First Name', lname as 'Last Name', payment_status as 'Registration Status', CASE WHEN checked_in = 1 THEN 'yes' END as 'Attended', Attending_As as 'Attending As', Organization, Faculty, Department, PhoneNumber, email as 'Email', event_name as 'Event Name', category_name as 'Primary Category Name', start_date as 'Start Date', end_date as 'End Date' FROM (";
-            $sql_query .= "SELECT fname, lname, payment_status, Type as 'Attending_As', Organization, Faculty, Department, PhoneNumber, email, event_name, category_name, start_date, end_date, attendee_id FROM ( ";
+            $sql_query = "SELECT fname as 'First Name', lname as 'Last Name', payment_status as 'Registration Status', CASE WHEN checked_in = 1 THEN 'yes' END as 'Attended', Attending_As as 'Attending As', Organization, Faculty, Department, Other_Unit as 'Other Unit', PhoneNumber, email as 'Email', event_name as 'Event Name', category_name as 'First Category Name', start_date as 'Start Date', end_date as 'End Date' FROM (";
+            $sql_query .= "SELECT fname, lname, payment_status, Type as 'Attending_As', Organization, Faculty, Department, PhoneNumber, Other_Unit, email, event_name, category_name, start_date, end_date, attendee_id FROM ( ";
     
-            $sql_query .= "SELECT " . $distinct_spacer . "fname, lname, payment_status, Type, Organization, Faculty, Department, PhoneNumber, email, event_name, category_id, start_date, end_date, attendee_id FROM ( ";
+            $sql_query .= "SELECT " . $distinct_spacer . "fname, lname, payment_status, Type, Organization, Faculty, Department, Other_Unit, PhoneNumber, email, event_name, category_id, start_date, end_date, attendee_id FROM ( ";
 
-            $sql_query .= "SELECT event_id, fname, lname, payment_status, email, Type, MAX(CASE WHEN meta_key = 'event_espresso_organization' THEN meta_value END) as Organization, MAX(CASE WHEN meta_key = 'event_espresso_faculty' THEN meta_value END) as Faculty, MAX(CASE WHEN meta_key = 'event_espresso_department' THEN meta_value END) as Department, MAX(CASE WHEN meta_key = 'event_espresso_phone_number' THEN meta_value END) as PhoneNumber, attendee_id FROM ( ";
+            $sql_query .= "SELECT event_id, fname, lname, payment_status, email, Type, MAX(CASE WHEN meta_key = 'event_espresso_organization' THEN meta_value END) as Organization, MAX(CASE WHEN meta_key = 'event_espresso_faculty' THEN meta_value END) as Faculty, MAX(CASE WHEN meta_key = 'event_espresso_department' THEN meta_value END) as Department, MAX(CASE WHEN meta_key = 'event_espresso_other_unit' THEN meta_value END) as Other_Unit, MAX(CASE WHEN meta_key = 'event_espresso_phone_number' THEN meta_value END) as PhoneNumber, attendee_id FROM ( ";
 
             $sql_query .= "SELECT second_results.event_id, second_results.attendee_id, fname, lname, payment_status, email, Type, user_id FROM ( ";
 
@@ -124,10 +124,10 @@ class CTLT_Espresso_Controls {
 
             $sql_query .= "SELECT id as attendee_id, fname, lname, payment_status, email, event_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
 
-            if( $_REQUEST['attendees_events_id'] != '' || $_REQUEST['attendees_events_start'] != '' || $_REQUEST['attendees_events_end'] != '' || $_REQUEST['attendees_events_category'] != '' ) {
+            if( $_REQUEST['attendees_events_id'] != '' || $_REQUEST['attendees_events_start'] != '' || $_REQUEST['attendees_events_end'] != '' || $_REQUEST['attendees_events_category'] != '' || $_REQUEST['attendees_events_type'] != '') {
                 
                 $sql_query .= "WHERE event_id IN (SELECT id FROM " . EVENTS_DETAIL_TABLE . " WHERE ";
-                
+
                 if( $_REQUEST['attendees_events_id'] != '' ) {
                     $sql_query .= $wpdb->prepare( 'id = %d ', $_REQUEST['attendees_events_id'] );
                     $argument_counter++;
@@ -151,11 +151,19 @@ class CTLT_Espresso_Controls {
                         $sql_query .= "AND ";
                     }
                     $sql_category_id = $wpdb->get_results ( $wpdb->prepare( 'SELECT id FROM ' . EVENTS_CATEGORY_TABLE . ' WHERE category_name = %s LIMIT 1 ', $_REQUEST['attendees_events_category'] ) );
-                    $sql_query .= $wpdb->prepare( 'category_id = %s', $sql_category_id[0]->id );
+                    $sql_query .= "FIND_IN_SET(";
+                    $sql_query .= $wpdb->prepare( '%s', $sql_category_id[0]->id );
+                    $sql_query .= ", category_id) > 0 ";
+                    $argument_counter++;
+                }
+                if( $_REQUEST['attendees_events_type'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'event_status = %s ', $_REQUEST['attendees_events_type'] );
                 }
                 
                 $sql_query .= ")";
-            
             }
 
             $sql_query .= ") AS first_results ";
@@ -190,52 +198,59 @@ class CTLT_Espresso_Controls {
             header('Content-type: application/ms-excel');
             header('Content-Disposition: attachment; filename='.$filename);
             
-            $sql_query = "SELECT third_results.event_id as 'Event Id', event_name as 'Event Name', category_name as 'Primary Category Name', start_date as 'Start Date', end_date as 'End Date', registration_start as 'Registration Start', registration_end as 'Registration End', Total_Registrations as 'Total Completed Registrations', COUNT(checked_in) as 'Total Attended' FROM (";
+            $sql_query = "SELECT third_results.event_id as 'Event Id', event_name as 'Event Name', category_name as 'First Category Name', start_date as 'Start Date', end_date as 'End Date', registration_start as 'Registration Start', registration_end as 'Registration End', Total_Registrations as 'Total Completed Registrations', COUNT(checked_in) as 'Total Attended' FROM (";
             $sql_query .= "SELECT event_id, event_name, category_name, second_results.start_date, second_results.end_date, registration_start, registration_end, COUNT(" . EVENTS_ATTENDEE_TABLE . ".id) AS 'Total_Registrations' FROM (";
             $sql_query .= "SELECT first_results.id, event_name, category_name, start_date, end_date, registration_start, registration_end FROM (";
             $sql_query .= "SELECT id, event_name, start_date, end_date, registration_start, registration_end, category_id FROM " . EVENTS_DETAIL_TABLE . " ";
-            $sql_query .= ") ";
-            $sql_query .= "AS first_results LEFT JOIN " . EVENTS_CATEGORY_TABLE . " ON first_results.category_id = " . EVENTS_CATEGORY_TABLE . ".id";
-            $sql_query .= ") ";
-            $sql_query .= "AS second_results INNER JOIN ". EVENTS_ATTENDEE_TABLE. " ON " . EVENTS_ATTENDEE_TABLE . ".event_id = second_results.id ";
             
-            if( $_REQUEST['events_events_id'] != '' || $_REQUEST['events_events_start'] != '' || $_REQUEST['events_events_end'] != '' || $_REQUEST['events_events_category'] != '' ) {
+            if( $_REQUEST['events_events_id'] != '' || $_REQUEST['events_events_start'] != '' || $_REQUEST['events_events_end'] != '' || $_REQUEST['events_events_category'] != '' || $_REQUEST['events_events_type'] != '') {
                 
                 $sql_query .= "WHERE ";
-                
+
                 if( $_REQUEST['events_events_id'] != '' ) {
-                    $sql_query .= $wpdb->prepare( 'event_id = %d ', $_REQUEST['events_events_id'] );
+                    $sql_query .= $wpdb->prepare( 'id = %d ', $_REQUEST['events_events_id'] );
                     $argument_counter++;
                 }
                 if( $_REQUEST['events_events_start'] != '' ) {
                     if($argument_counter > 0) {
                         $sql_query .= "AND ";
                     }
-                    $sql_query .= $wpdb->prepare( 'second_results.start_date >= %s ', $_REQUEST['events_events_start'] );
+                    $sql_query .= $wpdb->prepare( 'start_date >= %s ', $_REQUEST['events_events_start'] );
                     $argument_counter++;
                 }
                 if( $_REQUEST['events_events_end'] != '' ) {
                     if($argument_counter > 0) {
                         $sql_query .= "AND ";
                     }
-                    $sql_query .= $wpdb->prepare( 'second_results.end_date <= %s ', $_REQUEST['events_events_end'] );
+                    $sql_query .= $wpdb->prepare( 'end_date <= %s ', $_REQUEST['events_events_end'] );
                     $argument_counter++;
                 }
                 if( $_REQUEST['events_events_category'] != '' ) {
                     if($argument_counter > 0) {
                         $sql_query .= "AND ";
                     }
-                    $sql_query .= $wpdb->prepare( 'category_name = %s ', $_REQUEST['events_events_category'] );
+                    $sql_category_id = $wpdb->get_results ( $wpdb->prepare( 'SELECT id FROM ' . EVENTS_CATEGORY_TABLE . ' WHERE category_name = %s LIMIT 1 ', $_REQUEST['events_events_category'] ) );
+                    $sql_query .= "FIND_IN_SET(";
+                    $sql_query .= $wpdb->prepare( '%s', $sql_category_id[0]->id );
+                    $sql_query .= ", category_id) > 0 ";
+                    $argument_counter++;
                 }
-                
+                if( $_REQUEST['events_events_type'] != '' ) {
+                    if($argument_counter > 0) {
+                        $sql_query .= "AND ";
+                    }
+                    $sql_query .= $wpdb->prepare( 'event_status = %s ', $_REQUEST['events_events_type'] );
+                }
             }
             
+            $sql_query .= ") ";
+            $sql_query .= "AS first_results LEFT JOIN " . EVENTS_CATEGORY_TABLE . " ON first_results.category_id = " . EVENTS_CATEGORY_TABLE . ".id";
+            $sql_query .= ") ";
+            $sql_query .= "AS second_results INNER JOIN ". EVENTS_ATTENDEE_TABLE. " ON " . EVENTS_ATTENDEE_TABLE . ".event_id = second_results.id ";
             $sql_query .= "WHERE " . EVENTS_ATTENDEE_TABLE . ".payment_status = 'COMPLETED' GROUP BY second_results.id) as third_results ";
             $sql_query .= "LEFT JOIN " . $wpdb->prefix . "events_attendee_checkin ON third_results.event_id = " . $wpdb->prefix . "events_attendee_checkin.event_id GROUP BY third_results.event_id ";
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
         
-            echo $sql_query;
-            
             $flag = false;
             foreach($sql_results as $row) {
                 if(!$flag) {

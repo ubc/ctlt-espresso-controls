@@ -17,8 +17,6 @@ class CTLT_Espresso_Reports {
         foreach($sql_results as $row) {
             $categories_options_builder .= '<option value="' . $row['category_name'] . '">' . $row['category_name'] . '</option>\n';
         }
-        
-        
 
     ?>
 

@@ -47,7 +47,11 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
             // conference equipment fields (partial)
             CTLT_Espresso_Additional_Requirements::$conference_misc['video_capture']['checkbox']['id'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$conference_misc['video_capture']['checkbox']['id']] ) ? 'yes' : 'no',
             CTLT_Espresso_Additional_Requirements::$conference_misc['notes'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$conference_misc['notes']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$conference_misc['notes']] : '',
-            CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes']] : ''
+            CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes']] : '',
+            
+            // event waitlisting information
+            CTLT_Espresso_Additional_Information::$event_waitlisting['id'] => !empty( $_POST[CTLT_Espresso_Additional_Information::$event_waitlisting['id']] ) ? 'yes' : 'no'
+            
 		);
         
         // conference equipment checkboxes

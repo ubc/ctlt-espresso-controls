@@ -115,6 +115,14 @@ hr {
     background: yellow;
 }
 
+#event-category, #member-options, #featured-image-options, #event-discounts, #event-questions-additional, #event-pricing, #event-meta, #event-post {
+    display: none !important;
+}
+
+#toplevel_page_event_espresso ul:first-child {
+    background: blue;
+}
+
 #event-date-time.postbox {
 margin-top: 10px;
 }

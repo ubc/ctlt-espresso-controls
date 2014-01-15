@@ -4,6 +4,7 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 
     // array to hold additional information fields
 	static $add_info = null;
+    static $event_waitlisting = null;
 	
 	public function __construct() {
 		$this->init_default_assets();
@@ -23,8 +24,15 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 			'options' => array(
 				array( 'name' => 'General Notes', 'id' => self::$prefix . 'admin_support_notes' ),
 				array( 'name' => 'Marketing and Communication Support Notes', 'id' => self::$prefix . 'marketing_communication' ),
-				array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' )
+				array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' ),
+                array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' )
 			)
+		);
+        self::$event_waitlisting = array(
+			'name' => 'Event Waitlisting Policy',
+			'id' => self::$prefix . 'event_waitlisting',
+			'type' => 'checkbox',
+            'checkbox_label' => 'Do not automatically allow waitlisting for this event (NOTE: THIS CANNOT BE CHANGED AFTER THE EVENT IS CREATED)'
 		);
 	}
 
@@ -53,6 +61,13 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 	 * This function renders the text areas for the form
 	 */
 	public function the_textboxes() {
+        ?>
+            <p>
+                <?php $checked = isset( self::$event_waitlisting['id'] ) ? self::$data[self::$event_waitlisting['id']] : ''; ?>
+                <label for="<?php echo self::$event_waitlisting['id']; ?>"><?php echo self::$event_waitlisting['checkbox_label']; ?></label><br />
+                <input type="<?php echo self::$event_waitlisting['type']; ?>" name="<?php echo self::$event_waitlisting['id']; ?>" id="<?php echo self::$event_waitlisting['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
+            </p>
+        <?php
 		foreach( self::$add_info['options'] as $option ) {
 			$text = isset( self::$data[$option['id']] ) ? self::$data[$option['id']] : '';
 			?>

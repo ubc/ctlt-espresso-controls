@@ -50,7 +50,8 @@ class CTLT_Espresso_Saving extends CTLT_Espresso_Metaboxes {
             CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes'] => !empty( $_POST[CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes']] ) ? $_POST[CTLT_Espresso_Additional_Requirements::$misc_computer_stuff['notes']] : '',
             
             // event waitlisting information
-            CTLT_Espresso_Additional_Information::$event_waitlisting['id'] => !empty( $_POST[CTLT_Espresso_Additional_Information::$event_waitlisting['id']] ) ? 'yes' : 'no'
+			CTLT_Espresso_Additional_Information::$event_waitlisting['id'] => !empty( $_POST[CTLT_Espresso_Additional_Information::$event_waitlisting['id']] ) ? $_POST[CTLT_Espresso_Additional_Information::$event_waitlisting['id']] : 'Automatic Waitlist',
+            CTLT_Espresso_Additional_Information::$event_contiguous['id'] => !empty( $_POST[CTLT_Espresso_Additional_Information::$event_contiguous['id']] ) ? 'yes' : 'no'
             
 		);
         

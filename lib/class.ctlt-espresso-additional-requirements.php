@@ -108,6 +108,12 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'video_conference_checkbox' ),
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'video_conference_textbox_ip', self::$prefix . 'video_conference_textbox_number' ), 'label' => array( 'IP Address:', 'Contact Number:' ) )
 				),
+                array(
+					'name' => 'Blue Jeans:',
+					'description' => 'Will this conference have participants over Blue Jeans Network Video?',
+					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'blue_jeans_checkbox' ),
+					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'blue_jeans_access_code' ), 'label' => array( 'Access Code:' ) )
+				),
 				array(
 					'name' => 'Phone Conference:',
 					'description' => 'Will this conference have participants over the phone?',

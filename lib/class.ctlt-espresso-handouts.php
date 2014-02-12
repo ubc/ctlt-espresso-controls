@@ -36,7 +36,7 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 			'name' => 'Materials Distribution Policy',
 			'id' => self::$prefix . 'do_not_handout',
 			'type' => 'checkbox',
-            'checkbox_label' => 'Do not automatically make event materials available',
+            'checkbox_label' => 'Do not publicly display link to event materials',
 		);
             
 	}

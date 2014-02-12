@@ -5,6 +5,7 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
     // array to hold additional information fields
 	static $add_info = null;
     static $event_waitlisting = null;
+    static $event_contiguous = null;
 	
 	public function __construct() {
 		$this->init_default_assets();
@@ -28,11 +29,21 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
                 array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' )
 			)
 		);
+        self::$event_contiguous = array(
+			'name' => 'Event Contiguous Policy',
+			'id' => self::$prefix . 'event_contiguous',
+			'type' => 'checkbox',
+            'checkbox_label' => 'This event occurs on non-contiguous days. (Set initial date or range of dates in the "Event Start Date" fields and note all other dates in the event description, preferably before the "more" tag.)'
+		);
         self::$event_waitlisting = array(
 			'name' => 'Event Waitlisting Policy',
 			'id' => self::$prefix . 'event_waitlisting',
-			'type' => 'checkbox',
-            'checkbox_label' => 'Do not automatically allow waitlisting for this event (NOTE: THIS CANNOT BE CHANGED AFTER THE EVENT IS CREATED)'
+			'type' => 'radio',
+			'options' => array(
+                array( 'name' => 'Automatic Waitlisting (allows both automatic and manual transfers from event waitlist to main event)', 'value' => 'Automatic Waitlist' ),
+				array( 'name' => 'No Waitlisting', 'value' => 'No Waitlist' ),
+				array( 'name' => 'Facilitator-approved Registration (allows facilitator to determine applicant success', 'value' => 'Manual Waitlist' )
+			)
 		);
 	}
 
@@ -63,9 +74,20 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 	public function the_textboxes() {
         ?>
             <p>
-                <?php $checked = isset( self::$event_waitlisting['id'] ) ? self::$data[self::$event_waitlisting['id']] : ''; ?>
-                <label for="<?php echo self::$event_waitlisting['id']; ?>"><?php echo self::$event_waitlisting['checkbox_label']; ?></label><br />
-                <input type="<?php echo self::$event_waitlisting['type']; ?>" name="<?php echo self::$event_waitlisting['id']; ?>" id="<?php echo self::$event_waitlisting['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
+            <label>Waitlisting/Registration Policy (NOTE: CHANGING THIS OPTION AFTER EVENT CREATION WILL NOT CHANGE REGISTRATION POLICY):</label>
+            <?php foreach( self::$event_waitlisting['options'] as $option ) { ?>
+                <?php $checked = isset( self::$data[self::$event_waitlisting['id']] ) && self::$data[self::$event_waitlisting['id']] == $option['value'] ? 'yes' : empty( self::$data[self::$event_waitlisting['id']] ) && strtolower( $option['value'] ) === 'automatic waitlist' ? 'yes' : 'no'; ?>
+                <br /><input type="<?php echo self::$event_waitlisting['type']; ?>" name="<?php echo self::$event_waitlisting['id']?>" value="<?php echo $option['value']; ?>" <?php echo checked( $checked, 'yes' );?> id="<?php echo $option['value']; ?>"/>
+                <label for="<?php echo $option['value']; ?>">
+                <?php echo $option['name']; ?>
+                </label>
+            <?php } ?>
+            </p>
+            <p>
+            <label>Contiguous Days:</label><br />
+                <?php $checked = isset( self::$event_contiguous['id'] ) ? self::$data[self::$event_contiguous['id']] : ''; ?>
+                <input type="<?php echo self::$event_contiguous['type']; ?>" name="<?php echo self::$event_contiguous['id']; ?>" id="<?php echo self::$event_contiguous['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
+                <label for="<?php echo self::$event_contiguous['id']; ?>"><?php echo self::$event_contiguous['checkbox_label']; ?></label>
             </p>
         <?php
 		foreach( self::$add_info['options'] as $option ) {

@@ -111,7 +111,7 @@ class CTLT_Espresso_Controls {
                 $distinct_spacer = "DISTINCT ";
             }
     
-            $sql_query = "SELECT fname as 'First Name', lname as 'Last Name', payment_status as 'Registration Status', CASE WHEN checked_in = 1 THEN 'yes' END as 'Attended', Attending_As as 'Attending As', Organization, Faculty, Department, Other_Unit as 'Other Unit', PhoneNumber, email as 'Email', event_name as 'Event Name', category_name as 'First Category Name', start_date as 'Start Date', end_date as 'End Date' FROM (";
+            $sql_query = "SELECT fname as 'First Name', lname as 'Last Name', payment_status as 'Registration Status', CASE WHEN checked_in = 1 THEN 'yes' ELSE 'no' END as 'Attended', Attending_As as 'Attending As', Organization, Faculty, Department, Other_Unit as 'Other Unit', PhoneNumber, email as 'Email', event_name as 'Event Name', category_name as 'First Category Name', start_date as 'Start Date', end_date as 'End Date' FROM (";
             $sql_query .= "SELECT fname, lname, payment_status, Type as 'Attending_As', Organization, Faculty, Department, PhoneNumber, Other_Unit, email, event_name, category_name, start_date, end_date, attendee_id FROM ( ";
     
             $sql_query .= "SELECT " . $distinct_spacer . "fname, lname, payment_status, Type, Organization, Faculty, Department, Other_Unit, PhoneNumber, email, event_name, category_id, start_date, end_date, attendee_id FROM ( ";
@@ -198,7 +198,8 @@ class CTLT_Espresso_Controls {
             header('Content-type: application/ms-excel');
             header('Content-Disposition: attachment; filename='.$filename);
             
-            $sql_query = "SELECT third_results.event_id as 'Event Id', event_name as 'Event Name', category_name as 'First Category Name', start_date as 'Start Date', end_date as 'End Date', registration_start as 'Registration Start', registration_end as 'Registration End', Total_Registrations as 'Total Completed Registrations', COUNT(checked_in) as 'Total Attended' FROM (";
+            $sql_query = "SELECT fourth_results.event_id as 'Event Id', event_name as 'Event Name', category_name as 'First Category Name', fourth_results.start_date as 'Start Date', fourth_results.end_date as 'End Date', fourth_results.registration_start as 'Registration Start', fourth_results.registration_end as 'Registration End', Total_Registrations as 'Total Registrations', total_checked_in as 'Total Attended', (Total_Registrations - COUNT(" . EVENTS_ATTENDEE_TABLE . ".id)) as 'Total Cancelled Registrations', (Total_Registrations - total_checked_in - ) as 'Total No-Shows' FROM (";
+            $sql_query .= "SELECT third_results.event_id, event_name, category_name, start_date, end_date, registration_start, registration_end, Total_Registrations, COUNT(checked_in) as total_checked_in FROM (";
             $sql_query .= "SELECT event_id, event_name, category_name, second_results.start_date, second_results.end_date, registration_start, registration_end, COUNT(" . EVENTS_ATTENDEE_TABLE . ".id) AS 'Total_Registrations' FROM (";
             $sql_query .= "SELECT first_results.id, event_name, category_name, start_date, end_date, registration_start, registration_end FROM (";
             $sql_query .= "SELECT id, event_name, start_date, end_date, registration_start, registration_end, category_id FROM " . EVENTS_DETAIL_TABLE . " ";
@@ -247,8 +248,9 @@ class CTLT_Espresso_Controls {
             $sql_query .= "AS first_results LEFT JOIN " . EVENTS_CATEGORY_TABLE . " ON first_results.category_id = " . EVENTS_CATEGORY_TABLE . ".id";
             $sql_query .= ") ";
             $sql_query .= "AS second_results INNER JOIN ". EVENTS_ATTENDEE_TABLE. " ON " . EVENTS_ATTENDEE_TABLE . ".event_id = second_results.id ";
-            $sql_query .= "WHERE " . EVENTS_ATTENDEE_TABLE . ".payment_status = 'COMPLETED' GROUP BY second_results.id) as third_results ";
+            $sql_query .= "GROUP BY second_results.id) as third_results ";
             $sql_query .= "LEFT JOIN " . $wpdb->prefix . "events_attendee_checkin ON third_results.event_id = " . $wpdb->prefix . "events_attendee_checkin.event_id GROUP BY third_results.event_id ";
+            $sql_query .= ") AS fourth_results LEFT JOIN " . EVENTS_ATTENDEE_TABLE . " ON fourth_results.event_id = " . EVENTS_ATTENDEE_TABLE . ".event_id WHERE " . EVENTS_ATTENDEE_TABLE . ".payment_status = 'COMPLETED' GROUP BY fourth_results.event_id";
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
         
             $flag = false;

@@ -30,10 +30,10 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 			)
 		);
         self::$event_contiguous = array(
-			'name' => 'Event Contiguous Policy',
+			'name' => 'Event Consecutive Policy',
 			'id' => self::$prefix . 'event_contiguous',
 			'type' => 'checkbox',
-            'checkbox_label' => 'This event occurs on non-contiguous days. (Set initial date or range of dates in the "Event Start Date" fields and note all other dates in the event description, preferably before the "more" tag.)'
+            'checkbox_label' => 'This event occurs on non-consecutive days and/or non-consecutive locations. (Set initial date or range of dates and location in the "Event Start Date" fields and note all other dates and locations in the event description, preferably before the "more" tag.)'
 		);
         self::$event_waitlisting = array(
 			'name' => 'Event Waitlisting Policy',
@@ -84,7 +84,7 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
             <?php } ?>
             </p>
             <p>
-            <label>Contiguous Days:</label><br />
+            <label>Consecutive Days/Locations:</label><br />
                 <?php $checked = isset( self::$event_contiguous['id'] ) ? self::$data[self::$event_contiguous['id']] : ''; ?>
                 <input type="<?php echo self::$event_contiguous['type']; ?>" name="<?php echo self::$event_contiguous['id']; ?>" id="<?php echo self::$event_contiguous['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
                 <label for="<?php echo self::$event_contiguous['id']; ?>"><?php echo self::$event_contiguous['checkbox_label']; ?></label>

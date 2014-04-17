@@ -115,7 +115,7 @@ hr {
     background: yellow;
 }
 
-#event-category, #member-options, #featured-image-options, #event-discounts, #event-questions, #event-questions-additional, #event-pricing, #event-meta, #event-post {
+#event-category, #member-options, #featured-image-options, #event-discounts, #event-questions, #event-questions-additional, #event-pricing, #event-meta {
     display: none !important;
 }
 
@@ -123,9 +123,21 @@ hr {
     clear: both;
     display: block;
     content: "Note: a short version of your event's description will display in the event list view only if you include it before a 'more' tag in the window above. To insert a 'more' tag in the Text view, click the 'More' button above. To insert a 'more' tag in the Visual view, click the visual 'More' button.";
-    color: red;
-    background: #eee;
+    color: black;
+    background: yellow;
     text-align: center;
+}
+
+span.mceIcon.mce_wp_more {
+    background: yellow !important;
+}
+
+#qt_event_desc_more {
+    background: yellow !important;
+}
+
+#qt_event_desc_more:hover {
+    background: orange !important;
 }
 
 #event-status > div.inside > p:first-child + p,

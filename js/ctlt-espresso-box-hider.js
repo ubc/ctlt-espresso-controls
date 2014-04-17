@@ -28,8 +28,12 @@ jQuery(document).ready( function() {
     
     var create_post_option = document.getElementsByName('create_post');
     create_post_option = create_post_option[0];
-    if( create_post_option != null ) {
-        create_post_option.value = "Y";
-    }
+    // Disabled until further notice - event posts created for draft events
+    // if( create_post_option != null ) {
+        // create_post_option.value = "Y";
+    // }
+    
+    jQuery('#event-location').insertBefore('#event-pricing');
+    jQuery('#add-register-times > legend').text("NOTE: TIMES MUST BE ENTERED IN 24-HOUR TIME");
     
 } );

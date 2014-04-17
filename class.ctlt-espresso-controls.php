@@ -313,8 +313,7 @@ class CTLT_Espresso_Controls {
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_phone_conference_textbox_teleconference' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Teleconference Conference Number',
                 MAX(CASE WHEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_key = '_ctlt_espresso_phone_conference_textbox_access_code' THEN " . CTLT_ESPRESSO_EVENTS_META . ".meta_value END) AS 'Teleconference Access Code' ";
             $sql_query .= "FROM (SELECT * FROM " . EVENTS_DETAIL_TABLE .  " ";
-            
-            // Events Attended Query and Report
+        
             if( $_REQUEST['admin_events_id'] != '' || $_REQUEST['admin_events_start'] != '' || $_REQUEST['admin_events_end'] != '' || $_REQUEST['admin_events_category'] != '' ) {
                 
                 $sql_query .= "WHERE ";
@@ -363,13 +362,14 @@ class CTLT_Espresso_Controls {
             exit();
         }
         
+        // Events Attended Query and Report
         if( isset($_REQUEST['person_fname']) || isset($_REQUEST['person_lname']) ) {
         
             $filename ="excelreport.xls";
             header('Content-type: application/ms-excel');
             header('Content-Disposition: attachment; filename='.$filename);
             
-            $sql_query = "SELECT fname, lname, event_name, start_date, end_date FROM (SELECT fname, lname, event_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
+            $sql_query = "SELECT fname as 'First Name', lname as 'Last Name', event_name as 'Event Name', start_date as 'Start Date', end_date as 'End Date', payment_status as 'Registration Status', CASE WHEN checked_in = 1 THEN 'yes' END as 'Attended' FROM (SELECT fname, lname, event_name, start_date, end_date, attendee_id, payment_status FROM (SELECT fname, lname, event_id, id as attendee_id, payment_status FROM " . EVENTS_ATTENDEE_TABLE . " ";
             
             if( $_REQUEST['person_fname'] != '' || $_REQUEST['person_lname'] != '' ) {
                 $sql_query .= "WHERE ";
@@ -390,6 +390,8 @@ class CTLT_Espresso_Controls {
             
             $sql_query .= ") ";
             $sql_query .= "AS first_results INNER JOIN " . EVENTS_DETAIL_TABLE . " ON first_results.event_id = " . EVENTS_DETAIL_TABLE . ".id";
+            $sql_query .= ") ";
+            $sql_query .= "AS second_results LEFT JOIN " . $wpdb->prefix . "events_attendee_checkin ON second_results.attendee_id = " . $wpdb->prefix . "events_attendee_checkin.attendee_id";
 
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
             

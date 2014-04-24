@@ -93,6 +93,7 @@ class CTLT_Espresso_Controls {
         $sql_results;
         $distinct_spacer = "";
         
+        
         if(isset($_POST['submit']) && ( isset($_REQUEST['attendees_events_id']) || isset($_REQUEST['events_events_id']) || isset($_REQUEST['admin_events_id']) || isset($_REQUEST['person_fname']) ) ) {
             if ( !isset($_POST['ctlt_espresso_nonce_field']) || !wp_verify_nonce($_POST['ctlt_espresso_nonce_field'],'ctlt_espresso_nonce_check') ) {
                 print 'Sorry, your nonce did not verify. You do not currently have sufficient privileges to save your edits. Please contact the CTLT support team for further information.';
@@ -120,7 +121,7 @@ class CTLT_Espresso_Controls {
 
             $sql_query .= "SELECT second_results.event_id, second_results.attendee_id, fname, lname, payment_status, email, Type, user_id FROM ( ";
 
-            $sql_query .= "SELECT event_id, first_results.attendee_id as attendee_id, fname, lname, payment_status, email, MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id = (SELECT id FROM " . EVENTS_QUESTION_TABLE . " WHERE question = 'Attending As') THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Type FROM ( ";
+            $sql_query .= "SELECT event_id, first_results.attendee_id as attendee_id, fname, lname, payment_status, email, MAX(CASE WHEN " . EVENTS_ANSWER_TABLE . ".question_id IN (SELECT id FROM " . EVENTS_QUESTION_TABLE . " WHERE question = 'Attending As') THEN " . EVENTS_ANSWER_TABLE . ".answer END) as Type FROM ( ";
 
             $sql_query .= "SELECT id as attendee_id, fname, lname, payment_status, email, event_id FROM " . EVENTS_ATTENDEE_TABLE . " ";
 
@@ -177,6 +178,7 @@ class CTLT_Espresso_Controls {
             $sql_query .= "LEFT JOIN " . EVENTS_CATEGORY_TABLE . " ON " . EVENTS_CATEGORY_TABLE . ".id = fifth_results.category_id ";
             $sql_query .= ") AS sixth_results ";
             $sql_query .= "LEFT JOIN " . $wpdb->prefix . "events_attendee_checkin ON " .  $wpdb->prefix . "events_attendee_checkin.attendee_id = sixth_results.attendee_id ";
+            
             $sql_results = $wpdb->get_results( $sql_query, ARRAY_A );
 
             $flag = false;

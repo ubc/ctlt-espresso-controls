@@ -68,18 +68,22 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 			'options' => array(
 				array( 
 					'name' => 'Laptops',
+					'class' => 'misc-laptops',
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'laptop_textbox' ), 'label' => array( 'Quantity' ), 'max' => 20 )
 				),
 				array(
 					'name' => 'Headsets',
+					'class' => 'misc-headsets',
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'headset_textbox' ), 'label' => array( 'Quantity' ), 'max' => 20 )
 				),
 				array(
 					'name' => 'Clickers',
+					'class' => 'misc-clickers',
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'clicker_textbox' ), 'label' => array( 'Quantity' ), 'max' => 25 )
 				),
 				array(
 					'name' => 'Audience Computer Setup',
+					'class' => 'misc-comp-setup',
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'virtual_textbox_website', self::$prefix . 'virtual_textbox_login', self::$prefix . 'virtual_textbox_password'  ), 'label' => array( 'Initial website:', 'Login:', 'Password:' ) )
 				)
 			),
@@ -165,7 +169,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
                 <label for="<?php echo self::$presenter_equipment['id']; ?>"><?php echo self::$presenter_equipment['checkbox_label']; ?></label><br />
                 <input type="<?php echo self::$presenter_equipment['type']; ?>" name="<?php echo self::$presenter_equipment['id']; ?>" id="<?php echo self::$presenter_equipment['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
             </div>
-        <div class="ctlt-left">
+        <div class="ctlt-left projectors">
             <label><?php echo self::$presenter_equipment['projectors']['name']; ?></label><br />
             <?php $select = isset( self::$presenter_equipment['projectors']['textbox']['id'] ) ? self::$data[self::$presenter_equipment['projectors']['textbox']['id']] : 'none'; ?>
                 <select name="<?php echo self::$presenter_equipment['projectors']['textbox']['id']; ?>" id="<?php echo self::$presenter_equipment['projectors']['textbox']['id']; ?>">
@@ -175,13 +179,13 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
                 <?php } ?>
             </select>
         </div>
-        <div class="ctlt-left">
+        <div class="ctlt-left speakers">
             <?php $checked = isset( self::$presenter_equipment['speakers']['checkbox']['id'] ) ? self::$data[self::$presenter_equipment['speakers']['checkbox']['id']] : ''; ?>
             <label for="<?php echo self::$presenter_equipment['speakers']['checkbox']['id']; ?>"><?php echo self::$presenter_equipment['speakers']['name']; ?></label><br />
             <input type="<?php echo self::$presenter_equipment['speakers']['checkbox']['type'] ?>" name="<?php echo self::$presenter_equipment['speakers']['checkbox']['id']; ?>" id="<?php echo self::$presenter_equipment['speakers']['checkbox']['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
         </div>
         </div>
-        <div class="ctlt-inline">
+        <div class="ctlt-inline cables">
 			<label for="<?php echo self::$cables['id']; ?>"><?php echo self::$cables['name']; ?></label><br />
             <?php foreach( self::$cables['options'] as $option ) { ?>
                 <?php $checked = isset( self::$data[self::$cables['id']] ) && self::$data[self::$cables['id']] == $option['value'] ? 'yes' : empty( self::$data[self::$presenter_equipment['id']] ) && strtolower( $option['value'] ) === 'none' ? 'yes' : 'no'; ?>
@@ -203,10 +207,10 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
     */
 	public function the_misc_computer_stuff() {
         ?>
-        <div class="ctlt-text-block">
+        <div class="ctlt-text-block misccomp">
 		<?php foreach( self::$misc_computer_stuff['options'] as $option ) { ?>
-            <div class="ctlt-left">
-				<label><?php echo $option['name']; ?></label><br />
+            <div class="ctlt-left <?php echo $option['class']; ?>">
+				<label><?php echo $option['name']; ?></label>
                 <?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
                     <?php $value = isset( self::$data[$option['textbox']['id'][$i]] ) ? esc_attr( self::$data[$option['textbox']['id'][$i]] ) : ''; ?>
                         <div class="ctlt-inline">
@@ -217,7 +221,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 			</div>
 		<?php } ?>
         </div>
-        <div class="ctlt-text-block">
+        <div class="ctlt-text-block note">
         <?php $text = isset( self::$data[self::$misc_computer_stuff['notes']] ) ? self::$data[self::$misc_computer_stuff['notes']] : ''; ?>
             <label><?php echo self::$misc_computer_stuff['notes_label']; ?></label><br />
             <?php echo self::$misc_computer_stuff['notes_warning']; ?><br />
@@ -232,7 +236,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
     */
 	public function the_equipment() {
 		?>
-		<div class="ctlt-inline">
+		<div class="ctlt-inline equipment">
 		<?php foreach( self::$equipment['options'] as $option ) { ?>
 			<?php $checked = isset( self::$data[$option['id']] ) ? esc_attr( self::$data[$option['id']] ) : '';?>
             <div class="ctlt-left">
@@ -257,8 +261,10 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
     */
 	public function the_conference_misc() {
 		$checked = isset( self::$data[self::$conference_misc['video_capture']['checkbox']['id']] ) ? self::$data[self::$conference_misc['video_capture']['checkbox']['id']] : ''; ?>
-        <label for="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>"><?php echo self::$conference_misc['video_capture']['name']; ?></label><br />
-        <input type="checkbox" name="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" id="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
+        <div class="ctlt-text-block">
+       		<label for="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>"><?php echo self::$conference_misc['video_capture']['name']; ?></label><br />
+        	<input type="checkbox" name="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" id="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
+		</div>
 		<?php foreach( self::$conference_misc['options'] as $option ) { ?>
 		<div class="ctlt-text-block">
 			<label><?php echo $option['name']; ?></label><br />

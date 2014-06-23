@@ -68,9 +68,8 @@ textarea.ctlt-espresso-controls-textarea {
 
 
 .ctlt-option-box {
-    width:70px;
     padding: 10px;
-    margin: 5px 20px 10px 0px;
+    margin: 10px;
     overflow: hidden;
     border-style: solid;
     border-width: 1px;
@@ -117,8 +116,11 @@ hr {
     background: yellow;
 }
 
-#event-room-setup .ctlt-inline label{
+#event-room-setup .ctlt-inline label,
+#event-additional-requirements .ctlt-inline label{
     float: left;
+    width: 24%;
+    margin: 0;
 }
 
 #event-category, #member-options, #featured-image-options, #event-discounts, #event-questions, #event-questions-additional, #event-pricing, #event-meta {
@@ -203,3 +205,74 @@ margin-top: 10px;
         margin-top: 0;
         padding: 10px;
     }
+
+#event-additional-requirements .ctlt-text-block .ctlt-left{
+    padding: 10px;
+    background: #fbfbfb;
+    min-height: 50px;
+}
+
+    #event-additional-requirements .ctlt-inline.equipment .ctlt-left{
+        padding: 10px;
+        background: #fbfbfb;
+        margin-right: 35px;
+    }
+
+
+#event-additional-requirements .ctlt-inline.equipment label{
+    width: 100%;
+}
+
+#event-additional-requirements .ctlt-text-block.misccomp .ctlt-inline{
+    display: block;
+}
+
+    #event-additional-requirements .ctlt-text-block.misccomp .ctlt-inline input{
+        width: 100%;
+    }
+
+#event-additional-requirements .ctlt-text-block.misccomp label,
+#event-additional-requirements .ctlt-text-block.misccomp input{
+    display: block;
+    clear: both;
+}
+
+
+
+#event-additional-requirements .ctlt-text-block.misccomp .misc-laptops,
+#event-additional-requirements .ctlt-text-block.misccomp .misc-headsets,
+#event-additional-requirements .ctlt-text-block.misccomp .misc-clickers{
+    margin: 0;
+    width: 28.5%;
+    margin-right: 3%;
+    margin-bottom: 3%;
+}
+
+#event-additional-requirements .ctlt-text-block.misccomp .misc-clickers{
+    margin-right: 0;
+}
+
+#event-additional-requirements .ctlt-text-block.misccomp .misc-comp-setup{
+    width: 100%;
+    margin: 0;
+}
+
+    #event-additional-requirements .ctlt-text-block.misccomp .misc-comp-setup input{
+        width: 95%;
+    }
+
+    #event-additional-requirements .ctlt-text-block.misccomp .misc-comp-setup .ctlt-inline{
+        display: block;
+        width: 30%;
+        float: left;
+    }
+
+        #event-additional-requirements .ctlt-text-block.misccomp .misc-comp-setup .ctlt-inline label{
+            width: 100%;
+        }
+
+#event-additional-requirements .ctlt-text-block.note{
+    padding: 10px;
+    background: #fbfbfb;
+    width: 97%;
+}

@@ -34,6 +34,6 @@ jQuery(document).ready( function() {
     // }
     
     jQuery('#event-location').insertBefore('#event-pricing');
-    jQuery('#add-register-times > legend').text("NOTE: TIMES MUST BE ENTERED IN 24-HOUR TIME");
+    jQuery('#add-register-times > legend').text("NOTE: 24-HOUR TIME i.e. '12:01 am' or '4:59 pm'");
     
 } );

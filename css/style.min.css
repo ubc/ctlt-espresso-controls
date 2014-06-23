@@ -271,8 +271,49 @@ margin-top: 10px;
             width: 100%;
         }
 
-#event-additional-requirements .ctlt-text-block.note{
+#event-additional-requirements .ctlt-text-block.note,
+#event-additional-requirements .vid-cap,
+#event-additional-requirements .live-streaming,
+#event-additional-requirements .vid-conference,
+#event-additional-requirements .blue-jeans,
+#event-additional-requirements .phone-conference,
+#event-additional-requirements .dig-comms-notes{
     padding: 10px;
     background: #fbfbfb;
     width: 97%;
+}
+
+#event-additional-requirements .vid-cap,
+#event-additional-requirements .live-streaming,
+#event-additional-requirements .vid-conference,
+#event-additional-requirements .blue-jeans,
+#event-additional-requirements .phone-conference,
+#event-additional-requirements .dig-comms-notes{
+    margin-bottom: 10px;
+}
+
+#event-additional-requirements .vid-cap .ctlt-inline,
+#event-additional-requirements .live-streaming .ctlt-inline,
+#event-additional-requirements .vid-conference .ctlt-inline,
+#event-additional-requirements .blue-jeans .ctlt-inline,
+#event-additional-requirements .phone-conference .ctlt-inline,
+#event-additional-requirements .dig-comms-notes .ctlt-inline,
+#event-additional-requirements .vid-cap .ctlt-inline label,
+#event-additional-requirements .live-streaming .ctlt-inline label,
+#event-additional-requirements .vid-conference .ctlt-inline label,
+#event-additional-requirements .blue-jeans .ctlt-inline label,
+#event-additional-requirements .phone-conference .ctlt-inline label,
+#event-additional-requirements .dig-comms-notes .ctlt-inline label{
+    display: block;
+    float: none;
+}
+
+#event-additional-requirements .vid-cap .ctlt-inline input,
+#event-additional-requirements .live-streaming .ctlt-inline input,
+#event-additional-requirements .vid-conference .ctlt-inline input,
+#event-additional-requirements .blue-jeans .ctlt-inline input,
+#event-additional-requirements .phone-conference .ctlt-inline input,
+#event-additional-requirements .dig-comms-notes .ctlt-inline input{
+    margin-top: 5px;
+    width: 50%;
 }

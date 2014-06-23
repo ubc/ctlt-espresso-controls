@@ -96,30 +96,35 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
             'name' => 'Digitalization and Communication Requirements',
             'video_capture' => array(
 					'name' => 'UBC Video Capture (recording):',
+					'class' => 'vid-cap',
 					'description' => 'Conference will be recorded',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'video_capture_checkbox' ),
 				),
 			'options' => array(
 				array(
 					'name' => 'Live Streaming:',
+					'class' => 'live-streaming',
 					'description' => 'Conference will be streamed to a live audience',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'live_stream_checkbox' ),
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'live_stream_textbox' ), 'label' => array( 'URL:' ) ) 
 				),
 				array(
 					'name' => 'Video Conference:',
+					'class' => 'vid-conference',
 					'description' => 'Will this conference be at least partially a video conference?',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'video_conference_checkbox' ),
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'video_conference_textbox_ip', self::$prefix . 'video_conference_textbox_number' ), 'label' => array( 'IP Address:', 'Contact Number:' ) )
 				),
                 array(
 					'name' => 'Blue Jeans:',
+					'class' => 'blue-jeans',
 					'description' => 'Will this conference have participants over Blue Jeans Network Video?',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'blue_jeans_checkbox' ),
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'blue_jeans_access_code' ), 'label' => array( 'Access Code:' ) )
 				),
 				array(
 					'name' => 'Phone Conference:',
+					'class' => 'phone-conference',
 					'description' => 'Will this conference have participants over the phone?',
 					'checkbox' => array( 'type' => 'checkbox', 'id' => self::$prefix . 'phone_conference_checkbox' ),
 					'textbox' => array( 'type' => 'text', 'id' => array( self::$prefix . 'phone_conference_textbox_phone', self::$prefix . 'phone_conference_textbox_teleconference', self::$prefix . 'phone_conference_textbox_access_code' ), 'label' => array( 'Phone Number:', 'Conference Number:', 'Access Code:' ) )
@@ -261,12 +266,12 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
     */
 	public function the_conference_misc() {
 		$checked = isset( self::$data[self::$conference_misc['video_capture']['checkbox']['id']] ) ? self::$data[self::$conference_misc['video_capture']['checkbox']['id']] : ''; ?>
-        <div class="ctlt-text-block">
+        <div class="ctlt-text-block <?php echo self::$conference_misc['video_capture']['class']; ?>">
        		<label for="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>"><?php echo self::$conference_misc['video_capture']['name']; ?></label><br />
         	<input type="checkbox" name="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" id="<?php echo self::$conference_misc['video_capture']['checkbox']['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
 		</div>
 		<?php foreach( self::$conference_misc['options'] as $option ) { ?>
-		<div class="ctlt-text-block">
+		<div class="ctlt-text-block <?php echo $option['class']; ?>">
 			<label><?php echo $option['name']; ?></label><br />
 				<?php for( $i = 0; $i < count( $option['textbox']['id'] ); $i++ ) { ?>
 					<?php $value = isset( self::$data[$option['textbox']['id'][$i]] ) ? esc_attr( self::$data[$option['textbox']['id'][$i]] ) : ''; ?>
@@ -277,7 +282,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 				<?php } ?>
 		</div>
 		<?php } ?>
-        <div class="ctlt-text-block">
+        <div class="ctlt-text-block dig-comms-notes">
             <?php $text = isset( self::$data[self::$conference_misc['notes']] ) ? self::$data[self::$conference_misc['notes']] : ''; ?>
             <label><?php echo self::$conference_misc['notes_label']; ?></label><br />
             <textarea class="ctlt-full-width" rows="2" name="<?php echo self::$conference_misc['notes'] ?>" id="<?php echo self::$conference_misc['notes'] ?>"><?php echo $text; ?></textarea>

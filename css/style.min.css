@@ -317,3 +317,14 @@ margin-top: 10px;
     margin-top: 5px;
     width: 50%;
 }
+
+#event-additional-information label{
+    font-weight: normal;
+}
+
+#event-additional-information .inside > p,
+#event-additional-information .ctlt-espresso-controls-textarea{
+    padding: 10px;
+    background: #fbfbfb;
+    margin-bottom: 10px;
+}

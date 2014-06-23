@@ -163,3 +163,8 @@ span.mceIcon.mce_wp_more {
 #event-date-time.postbox {
 margin-top: 10px;
 }
+
+/* Hide the Create a post metabox */
+#event-post{
+    display: none !important;
+}

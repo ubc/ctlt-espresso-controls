@@ -354,3 +354,15 @@ margin-top: 10px;
     background: #fbfbfb;
     margin: 0 10px 0 0;
 }
+
+#add-reg-dates p,
+#add-event-dates p{
+    -webkit-transition: 0.3s linear all;
+    -moz-transition: 0.3s linear all;
+    transition: 0.3s linear all;
+}
+
+#add-reg-dates p.error,
+#add-event-dates p.error{
+    background: #ffaaaa;
+}

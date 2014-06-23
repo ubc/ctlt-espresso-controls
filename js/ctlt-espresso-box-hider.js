@@ -43,5 +43,41 @@ jQuery(document).ready( function() {
     // Tidy up, make reg dates and reg times equal height
     var regDateHeight = jQuery( '#add-reg-dates' ).height();
     jQuery( '#add-register-times' ).css( 'height', regDateHeight );
+
+    
     
 } );
+
+(function($) {
+    
+    // Prevent the registration end date from being after when the event has finished
+    $( '#end_date, #registration_end, #registration_start, #start_date' ).datepicker({
+
+        onClose: function( selectedDate ){
+            
+            var eventEndInput               = jQuery( '#end_date' );
+            var registrationEndInput        = jQuery( '#registration_end' );
+
+            var eventEndDate                = eventEndInput[0].value;
+            var registrationEndDate         = registrationEndInput[0].value;
+
+            if( !eventEndDate || eventEndDate == '' || !registrationEndDate || registrationEndDate == '' ){
+                return;
+            }
+
+            var dateObjectOfEventEnd        = new Date( eventEndDate );
+            var dateObjectOfRegistrationEnd = new Date( registrationEndDate );
+
+            if( dateObjectOfRegistrationEnd > dateObjectOfEventEnd ){
+                eventEndInput.parent().addClass( 'error' );
+                registrationEndInput.parent().addClass( 'error' );
+            }else{
+                eventEndInput.parent().removeClass( 'error' );
+                registrationEndInput.parent().removeClass( 'error' );
+            }
+
+        }
+
+    });
+
+})(jQuery);

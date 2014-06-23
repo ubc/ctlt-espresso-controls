@@ -34,6 +34,12 @@ jQuery(document).ready( function() {
     // }
     
     jQuery('#event-location').insertBefore('#event-pricing');
-    jQuery('#add-register-times > legend').text("NOTE: 24-HOUR TIME i.e. '12:01 am' or '4:59 pm'");
+    jQuery('#add-register-times > legend').text("Registration Times");
+    jQuery( 'label[for="add-reg-start"]' ).text( 'Registration Start Time (i.e. 9:00 AM)' );
+    jQuery( 'label[for="registration_endT"]' ).text( 'Registration End Time (i.e. 5:30 PM)' );
+
+    // Tidy up, make reg dates and reg times equal height
+    var regDateHeight = jQuery( '#add-reg-dates' ).height();
+    jQuery( '#add-register-times' ).css( 'height', regDateHeight );
     
 } );

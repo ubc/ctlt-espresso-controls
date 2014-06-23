@@ -65,8 +65,9 @@ textarea.ctlt-espresso-controls-textarea {
     background: orange !important;
 }
 
+
+
 .ctlt-option-box {
-    float: left;
     width:70px;
     padding: 10px;
     margin: 5px 20px 10px 0px;
@@ -90,6 +91,7 @@ textarea.ctlt-espresso-controls-textarea {
 }
 .ctlt-text-block {
     display: block;
+    overflow: hidden;
     clear: both;
     width: 100%;
     padding-bottom: 1%;
@@ -115,6 +117,10 @@ hr {
     background: yellow;
 }
 
+#event-room-setup .ctlt-inline label{
+    float: left;
+}
+
 #event-category, #member-options, #featured-image-options, #event-discounts, #event-questions, #event-questions-additional, #event-pricing, #event-meta {
     display: none !important;
 }
@@ -126,6 +132,7 @@ hr {
     color: black;
     background: yellow;
     text-align: center;
+    padding: 10px;
 }
 
 span.mceIcon.mce_wp_more {
@@ -164,7 +171,35 @@ span.mceIcon.mce_wp_more {
 margin-top: 10px;
 }
 
+#event-date-time fieldset p{
+    padding: 10px;
+}
+
+    #event-date-time fieldset p label{
+        font-weight: normal;
+        margin-bottom: 5px;
+    }
+
+    #event-date-time fieldset p input{
+        width: 100%;
+    }
+
 /* Hide the Create a post metabox */
 #event-post{
     display: none !important;
 }
+
+#add-event-times{
+    margin-top: 20px;
+}
+
+#add-event-dates{
+    margin-bottom: 0 !important;
+}
+
+    #add-event-dates + p{
+        background: #fbfbfb;
+        overflow: hidden;
+        margin-top: 0;
+        padding: 10px;
+    }

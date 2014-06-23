@@ -56,14 +56,17 @@ textarea.ctlt-espresso-controls-textarea {
  * NLS *
  *******/
 
-#submitdiv {
+.event-espresso_page_events #submitdiv {
     position: fixed;
-    width: 275px;
+    width: 278px;
     right: 1;
     bottom: 0;
     z-index: 2;
-    background: orange !important;
 }
+
+    .event-espresso_page_events #submitdiv .hndle{
+        background: orange;
+    }
 
 
 
@@ -374,9 +377,8 @@ margin-top: 10px;
     transition: 0.3s linear all;
 }
 
-#add-reg-dates p.error,
-#add-event-dates p.error{
-    background: #ffaaaa;
+p.error{
+    background: #ffaaaa !important;
 }
 
 .wrap h2 .title-note-square{

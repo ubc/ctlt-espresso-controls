@@ -1,6 +1,10 @@
 // Simulates clicks on all Event Espresso event editing postboxes to minimize them
 jQuery(document).ready( function() {
 
+    if( !jQuery( 'body' ).hasClass( 'event-espresso_page_events' ) ){
+        return;
+    }
+
     var postboxesToClose = new Array();
 
     postboxesToClose.push(document.getElementById( 'event-pricing' ));
@@ -50,6 +54,14 @@ jQuery(document).ready( function() {
 
 (function($) {
     
+    if( !$( 'body' ).hasClass( 'event-espresso_page_events' ) ){
+        return;
+    }
+
+    if( !$( '#end_date' ).length ){
+        return;
+    }
+
     // Prevent the registration end date from being after when the event has finished
     $( '#end_date, #registration_end, #registration_start, #start_date' ).datepicker({
 

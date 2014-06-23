@@ -25,8 +25,7 @@ class CTLT_Espresso_Additional_Information extends CTLT_Espresso_Metaboxes {
 			'options' => array(
 				array( 'name' => 'General Notes', 'id' => self::$prefix . 'admin_support_notes' ),
 				array( 'name' => 'Marketing and Communication Support Notes', 'id' => self::$prefix . 'marketing_communication' ),
-				array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' ),
-                array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' )
+				array( 'name' => 'Catering Notes', 'id' => self::$prefix . 'catering_notes' )
 			)
 		);
         self::$event_contiguous = array(

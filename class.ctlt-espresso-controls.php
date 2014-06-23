@@ -71,6 +71,9 @@ class CTLT_Espresso_Controls {
         add_action( 'admin_menu', array( $this, 'ctlt_espresso_export_to_excel' ) );
 		add_action( 'admin_init', array( $this, 'init_ctlt_espresso_controls' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_stylesheets' ) );
+
+        // Remove EE plugins from updates
+        add_filter( 'site_transient_update_plugins', array( $this, 'site_transient_update_plugins__removeEEPluginsFromUpdates' ), 999, 1 );
 	}
     
     /*
@@ -525,6 +528,41 @@ class CTLT_Espresso_Controls {
 		$results = $wpdb->get_results( $wpdb->prepare( $sql, $event_id ), ARRAY_A );
 		return array_column( $results, 'meta_value', 'meta_key' );
 	}
+
+    /**
+     * Disable plugin update notifications for the event espresso plugins as they're hacked for our uses...
+     *
+     *
+     * @since 0.1
+     *
+     * @param object $value Object containing which plugin paths to update
+     * @return object $value Updated Object containing which plugin paths to update
+     */
+
+    public function site_transient_update_plugins__removeEEPluginsFromUpdates( $value )
+    {
+
+        $pluginsToDisable = array(
+            'espresso-calendar/espresso-calendar.php',
+            'espresso-members/espresso-members.php',
+            'espresso-multiple/espresso-multi-registration.php',
+            'espresso-premissions-basic/espresso-permissions.php',
+            'espresso-premissions-pro/espresso-permissions-pro.php',
+            'espresso-recurring/espresso-recurring-events.php',
+            'espresso-social/espresso-social.php',
+            'espresso-ticketing/espresso-ticketing.php',
+            'event-espresso/espresso.php'
+        );
+
+        foreach( $pluginsToDisable as $key => $pluginPath ){
+
+            unset( $value->response[$pluginPath] );
+
+        }
+
+        return $value;
+
+    }/* site_transient_update_plugins__removeEEPluginsFromUpdates() */
 
 }
 

@@ -398,3 +398,17 @@ p.error{
 textarea#event_desc, textarea#conf_mail, #category_desc_new, textarea#description, textarea#email_text, textarea#category_desc{
     min-height: 250px;
 }
+
+/* Stats changes */
+.event-stats-form{
+    padding: 10px;
+    background: #fbfbfb;
+}
+
+    .event-stats-form tr td{
+        padding: 8px 8px 8px 0;
+    }
+
+    .event-stats-form tr td input[type="text"]{
+        min-width: 100px;
+    }

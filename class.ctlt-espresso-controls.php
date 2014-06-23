@@ -491,7 +491,8 @@ class CTLT_Espresso_Controls {
      *
      */
     public function admin_scripts() {
-        wp_enqueue_script( 'ctlt-espresso-box-hider-js', CTLT_ESPRESSO_CONTROLS_JS_URL . 'ctlt-espresso-box-hider.js', array( 'jquery' ), '1.0.0', true );
+        wp_enqueue_script( 'ctlt-espresso-box-hider-js', CTLT_ESPRESSO_CONTROLS_JS_URL . 'ctlt-espresso-box-hider.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ), '1.0.0', true );
+        wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
     }
     
 

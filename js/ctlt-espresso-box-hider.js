@@ -93,3 +93,15 @@ jQuery(document).ready( function() {
     });
 
 })(jQuery);
+
+(function($) {
+
+    if( !$( 'body' ).hasClass( 'toplevel_page_event-espresso-reports' ) ){
+        return;
+    }
+
+    $( 'input[name="attendees_events_start"], input[name="attendees_events_end"], input[name="events_events_start"], input[name="events_events_end"], input[name="admin_events_start"], input[name="admin_events_end"]' ).datepicker({
+        dateFormat: "yy-mm-dd"
+    });
+
+})(jQuery);

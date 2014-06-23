@@ -22,9 +22,9 @@ class CTLT_Espresso_Reports {
 
         <div class="wrap"><div id="icon-tools" class="icon32"></div>
             <h2>Event Reports</h2>
-            <p>This page is for generating UBC reports about events and attendees. To create or modify an event, select the Event Espresso button at left. For questions about generating both reports and events, consult the UBC wiki page: http://wiki.ubc.ca.</p>
+            <p>This page is for generating UBC reports about events and attendees. To create or modify an event, select the Event Espresso button at left. For questions about generating both reports and events, consult the UBC wiki page: <a href="http://wiki.ubc.ca/Sandbox:Event_Espresso" title="">http://wiki.ubc.ca/Sandbox:Event_Espresso</a>.</p>
             <hr />
-            <form method="post" action="">
+            <form class="event-stats-form" method="post" action="">
                 <h3>Attendees Summary</h3>
                 <p>Exports list of unique registrants for selected events. Includes name, email, job title (student, faculty, staff, and other), institution, faculty, and department.</p>
                 <table>
@@ -60,7 +60,7 @@ class CTLT_Espresso_Reports {
                 <p> <?php submit_button( 'Export to Excel' ); ?> </p>
             </form>
             <hr />
-            <form method="post" action="">
+            <form class="event-stats-form" method="post" action="">
                 <h3>Events Summary</h3>
                 <p>Exports list of event summaries. Includes name, category, start date and time, end date and time, number of registrants, and names of coordinators.</p>
                 <table>
@@ -92,7 +92,7 @@ class CTLT_Espresso_Reports {
                 <p> <?php submit_button( 'Export to Excel' ); ?> </p>
             </form>
             <hr />
-            <form method="post" action="">
+            <form class="event-stats-form" method="post" action="">
                 <h3>Administrative Details</h3>
                 <p>Exports document of administrative details for a selected event.</p>
                 <table>
@@ -117,7 +117,7 @@ class CTLT_Espresso_Reports {
                 <p> <?php submit_button( 'Export to Excel' ); ?> </p>
             </form>
             <hr />
-            <form method="post" action="">
+            <form class="event-stats-form" method="post" action="">
                 <h3>Events Attended Report</h3>
                 <p>Exports a list of all events registered by all people sharing the information entered below.</p>
                 <table>

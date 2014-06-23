@@ -37,6 +37,8 @@ jQuery(document).ready( function() {
     jQuery('#add-register-times > legend').text("Registration Times");
     jQuery( 'label[for="add-reg-start"]' ).text( 'Registration Start Time (i.e. 9:00 AM)' );
     jQuery( 'label[for="registration_endT"]' ).text( 'Registration End Time (i.e. 5:30 PM)' );
+    jQuery( 'label[for="add-start-time"]' ).text( 'Event Start Time (i.e. 10:30 AM)' );
+    jQuery( 'label[for="add-end-time"]' ).text( 'Event Start Time (i.e. 4:45 PM)' );
 
     // Tidy up, make reg dates and reg times equal height
     var regDateHeight = jQuery( '#add-reg-dates' ).height();

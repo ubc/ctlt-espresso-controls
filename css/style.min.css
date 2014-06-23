@@ -323,8 +323,34 @@ margin-top: 10px;
 }
 
 #event-additional-information .inside > p,
-#event-additional-information .ctlt-espresso-controls-textarea{
+#event-additional-information .ctlt-espresso-controls-textarea,
+#event-additional-requirements .equip-note,
+#event-handouts .uploader{
     padding: 10px;
     background: #fbfbfb;
     margin-bottom: 10px;
+}
+
+#event-additional-requirements .ctlt-left.uni-comp,
+#event-additional-requirements .ctlt-left.projectors{
+    margin: 0;
+    width: 45%;
+    float: left;
+    margin-right: 2%;
+    margin-bottom: 2%;
+}
+
+#event-additional-requirements .ctlt-left.speakers{
+    width: 95%;
+}
+
+#event-additional-requirements .equip-note{
+    width: 97%;
+}
+
+#venue-manager,
+#virt-location{
+    padding: 10px;
+    background: #fbfbfb;
+    margin: 0 10px 0 0;
 }

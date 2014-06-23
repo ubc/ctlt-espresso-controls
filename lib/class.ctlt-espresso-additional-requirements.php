@@ -169,7 +169,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
 	public function the_computers() {
 		?>
         <div class="ctlt-text-block">
-            <div class="ctlt-left">
+            <div class="ctlt-left uni-comp">
                 <?php $checked = isset( self::$presenter_equipment['id'] ) ? self::$data[self::$presenter_equipment['id']] : ''; ?>
                 <label for="<?php echo self::$presenter_equipment['id']; ?>"><?php echo self::$presenter_equipment['checkbox_label']; ?></label><br />
                 <input type="<?php echo self::$presenter_equipment['type']; ?>" name="<?php echo self::$presenter_equipment['id']; ?>" id="<?php echo self::$presenter_equipment['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
@@ -250,7 +250,7 @@ class CTLT_Espresso_Additional_Requirements extends CTLT_Espresso_Metaboxes {
             </div>
 		<?php } ?>
 		</div>
-        <div class="ctlt-text-block">
+        <div class="ctlt-text-block equip-note">
             <?php $text = isset( self::$data[self::$presenter_equipment['notes']] ) ? self::$data[self::$presenter_equipment['notes']] : ''; ?>
             <label><?php echo self::$presenter_equipment['notes_label']; ?></label><br />
             <textarea class="ctlt-full-width" rows="2" name="<?php echo self::$presenter_equipment['notes'] ?>" id="<?php echo self::$presenter_equipment['notes'] ?>"><?php echo $text; ?></textarea>

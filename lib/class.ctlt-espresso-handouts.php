@@ -68,39 +68,38 @@ class CTLT_Espresso_Handouts extends CTLT_Espresso_Metaboxes {
 	public function the_file_upload() {
         $text = isset( self::$data[self::$handout_file['notes']] ) ? self::$data[self::$handout_file['notes']] : '';
 		?>
-            <p>
-				<label><?php echo self::$handout_file['name']; ?>:</label>
-				<div class="uploader">
-					<?php $attachment_id = isset( self::$data[self::$handout_file['id']] ) ? self::$data[self::$handout_file['id']] : null;?>
-					<?php $attachment_url = wp_get_attachment_url( $attachment_id ); ?>
-					<input class="ctlt-espresso-upload-button button" type="button" name="<?php echo self::$handout_file['id'] . '_button'; ?>" id="<?php echo self::$handout_file['id'] . '_button'; ?>" value="Upload" />
- 					<input class="ctlt-espresso-upload" type="text" value="<?php echo $attachment_url !== false ? $attachment_url : null; ?>" />
- 					<input class="ctlt-espresso-target-attachment-id" type="hidden" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" value="<?php echo $attachment_id; ?>"/>
-				</div>
-				<?php //$this->add_download_link(); ?>
-            </p>
-            <p>
-                <?php $checked = isset( self::$handout_policy['id'] ) ? self::$data[self::$handout_policy['id']] : ''; ?>
-                <label for="<?php echo self::$handout_policy['id']; ?>"><?php echo self::$handout_policy['checkbox_label']; ?></label><br />
-                <input type="<?php echo self::$handout_policy['type']; ?>" name="<?php echo self::$handout_policy['id']; ?>" id="<?php echo self::$handout_policy['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
-            </p>
-            <p>
-				<label><?php echo self::$sign_file['name']; ?>:</label>
-				<div class="uploader">
-					<?php $attachment_id = isset( self::$data[self::$sign_file['id']] ) ? self::$data[self::$sign_file['id']] : null;?>
-					<?php $attachment_url = wp_get_attachment_url( $attachment_id ); ?>
-					<input class="ctlt-espresso-upload-button button" type="button" name="<?php echo self::$sign_file['id'] . '_button'; ?>" id="<?php echo self::$sign_file['id'] . '_button'; ?>" value="Upload" />
- 					<input class="ctlt-espresso-upload" type="text" value="<?php echo $attachment_url !== false ? $attachment_url : null; ?>" />
- 					<input class="ctlt-espresso-target-attachment-id" type="hidden" name="<?php echo self::$sign_file['id']; ?>" id="<?php echo self::$sign_file['id']; ?>" value="<?php echo $attachment_id; ?>"/>
-				</div>
-				<?php //$this->add_download_link(); ?>
-            </p>
-            <p>
-                <div class="ctlt-espresso-controls-textarea">
-                    <label>Handouts and Signs Notes:</label><br />
-                    <textarea class="ctlt-full-width" rows="2" name="<?php echo self::$handout_file['notes'] ?>" id="<?php echo self::$handout_file['notes'] ?>"><?php echo $text; ?></textarea>
-                </div>
-            </p>
+            
+			<div class="uploader handout-file">
+				<p><label><?php echo self::$handout_file['name']; ?>:</label></p>
+				<?php $attachment_id = isset( self::$data[self::$handout_file['id']] ) ? self::$data[self::$handout_file['id']] : null;?>
+				<?php $attachment_url = wp_get_attachment_url( $attachment_id ); ?>
+				<input class="ctlt-espresso-upload-button button" type="button" name="<?php echo self::$handout_file['id'] . '_button'; ?>" id="<?php echo self::$handout_file['id'] . '_button'; ?>" value="Upload" />
+					<input class="ctlt-espresso-upload" type="text" value="<?php echo $attachment_url !== false ? $attachment_url : null; ?>" />
+					<input class="ctlt-espresso-target-attachment-id" type="hidden" name="<?php echo self::$handout_file['id']; ?>" id="<?php echo self::$handout_file['id']; ?>" value="<?php echo $attachment_id; ?>"/>
+			</div>
+
+            <div class="uploader display-public">
+	            <p>
+	                <?php $checked = isset( self::$handout_policy['id'] ) ? self::$data[self::$handout_policy['id']] : ''; ?>
+	                <label for="<?php echo self::$handout_policy['id']; ?>"><?php echo self::$handout_policy['checkbox_label']; ?></label><br />
+	                <input type="<?php echo self::$handout_policy['type']; ?>" name="<?php echo self::$handout_policy['id']; ?>" id="<?php echo self::$handout_policy['id']; ?>" <?php checked( $checked, 'yes' ); ?>>
+	            </p>
+            </div>
+            
+			<div class="uploader sign-file">
+				<p><label><?php echo self::$sign_file['name']; ?>:</label></p>
+				<?php $attachment_id = isset( self::$data[self::$sign_file['id']] ) ? self::$data[self::$sign_file['id']] : null;?>
+				<?php $attachment_url = wp_get_attachment_url( $attachment_id ); ?>
+				<input class="ctlt-espresso-upload-button button" type="button" name="<?php echo self::$sign_file['id'] . '_button'; ?>" id="<?php echo self::$sign_file['id'] . '_button'; ?>" value="Upload" />
+					<input class="ctlt-espresso-upload" type="text" value="<?php echo $attachment_url !== false ? $attachment_url : null; ?>" />
+					<input class="ctlt-espresso-target-attachment-id" type="hidden" name="<?php echo self::$sign_file['id']; ?>" id="<?php echo self::$sign_file['id']; ?>" value="<?php echo $attachment_id; ?>"/>
+			</div>
+
+            
+            <div class="uploader handout-notes ctlt-espresso-controls-textarea">
+                <p><label>Handouts and Signs Notes:</label></p>
+                <textarea class="ctlt-full-width" rows="2" name="<?php echo self::$handout_file['notes'] ?>" id="<?php echo self::$handout_file['notes'] ?>"><?php echo $text; ?></textarea>
+            </div>
 		<?php
 	}
 

@@ -124,6 +124,15 @@ hr {
     margin: 0;
 }
 
+#event-room-setup .inside > div{
+    padding: 10px;
+    background: #fbfbfb;
+}
+
+    #event-room-setup .ctlt-espresso-controls-textarea{
+        margin-top: 10px;
+    }
+
 #event-category, #member-options, #featured-image-options, #event-discounts, #event-questions, #event-questions-additional, #event-pricing, #event-meta {
     display: none !important;
 }
@@ -382,4 +391,8 @@ margin-top: 10px;
 
 .wrap h2 .title-note-text{
     font-size: 12px;
+}
+
+textarea#event_desc, textarea#conf_mail, #category_desc_new, textarea#description, textarea#email_text, textarea#category_desc{
+    min-height: 250px;
 }

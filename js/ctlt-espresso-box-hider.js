@@ -48,7 +48,9 @@ jQuery(document).ready( function() {
     var regDateHeight = jQuery( '#add-reg-dates' ).height();
     jQuery( '#add-register-times' ).css( 'height', regDateHeight );
 
-    jQuery( '#event_reg_theme > h2' ).html( 'Event Overview <span class="title-note-square">&nbsp;</span><span class="title-note-text"> &nbsp; indicates recommended (but not required) fields.</span>' );
+    var originalH2HTML = jQuery( '#event_reg_theme > h2' ).html();
+
+    jQuery( '#event_reg_theme > h2' ).html( originalH2HTML + ' <span class="title-note-square">&nbsp;</span><span class="title-note-text"> &nbsp; indicates recommended (but not required) fields.</span>' );
     
 } );
 

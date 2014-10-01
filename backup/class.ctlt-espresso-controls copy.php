@@ -71,35 +71,8 @@ class CTLT_Espresso_Controls {
         add_action( 'admin_menu', array( $this, 'ctlt_espresso_export_to_excel' ) );
 		add_action( 'admin_init', array( $this, 'init_ctlt_espresso_controls' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_stylesheets' ) );
-
-        // Remove EE plugins from updates
-        add_filter( 'site_transient_update_plugins', array( $this, 'site_transient_update_plugins__removeEEPluginsFromUpdates' ), 999, 1 );
-
-        add_action( 'wp-hybrid-clf_before_container', array( $this, 'clf_before_container__addNoticeAboutUserDetailsMissing' ) );
-
-        add_filter( 'wp_mail_from', array( $this, 'lc_new_mail_from' ) );
-        add_filter( 'wp_mail_from_name', array( $this, 'lc_new_mail_from_name' ) );
-	
-    }
+	}
     
-    function lc_new_mail_from( $email )
-    {
-
-        $email = 'events.ctlt@ubc.ca';
-
-        return $email;
-
-    }
-
-    function lc_new_mail_from_name( $name )
-    {
-
-        $name = 'CTLT Events';
-
-        return $name;
-
-     }
-
     /*
     * register_ctlt_espresso_reports_page function
     * Registers the Espresso Reports menu page
@@ -515,9 +488,7 @@ class CTLT_Espresso_Controls {
      *
      */
     public function admin_scripts() {
-        wp_enqueue_script( 'selectize', CTLT_ESPRESSO_CONTROLS_JS_URL . 'selectize.js', array( 'jquery' ), '1.0.0', true );
-        wp_enqueue_script( 'ctlt-espresso-box-hider-js', CTLT_ESPRESSO_CONTROLS_JS_URL . 'ctlt-espresso-box-hider.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'selectize' ), '1.0.0', true );
-        wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+        wp_enqueue_script( 'ctlt-espresso-box-hider-js', CTLT_ESPRESSO_CONTROLS_JS_URL . 'ctlt-espresso-box-hider.js', array( 'jquery' ), '1.0.0', true );
     }
     
 
@@ -555,58 +526,7 @@ class CTLT_Espresso_Controls {
 		return array_column( $results, 'meta_value', 'meta_key' );
 	}
 
-    /**
-     * Disable plugin update notifications for the event espresso plugins as they're hacked for our uses...
-     *
-     *
-     * @since 0.1
-     *
-     * @param object $value Object containing which plugin paths to update
-     * @return object $value Updated Object containing which plugin paths to update
-     */
-
-    public function site_transient_update_plugins__removeEEPluginsFromUpdates( $value )
-    {
-
-        $pluginsToDisable = array(
-            'espresso-calendar/espresso-calendar.php',
-            'espresso-members/espresso-members.php',
-            'espresso-multiple/espresso-multi-registration.php',
-            'espresso-premissions-basic/espresso-permissions.php',
-            'espresso-premissions-pro/espresso-permissions-pro.php',
-            'espresso-recurring/espresso-recurring-events.php',
-            'espresso-social/espresso-social.php',
-            'espresso-ticketing/espresso-ticketing.php',
-            'event-espresso/espresso.php'
-        );
-
-        foreach( $pluginsToDisable as $key => $pluginPath ){
-
-            unset( $value->response[$pluginPath] );
-
-        }
-
-        return $value;
-
-    }/* site_transient_update_plugins__removeEEPluginsFromUpdates() */
-
-
-    /**
-     * Add the notice to the front end as well as the back end when we don't have details about the user
-     *
-     * @since 0.1
-     *
-     * @param null
-     * @return null
-     */
-    public static function clf_before_container__addNoticeAboutUserDetailsMissing()
-    {
-
-        
-
-    }/* clf_before_container__addNoticeAboutUserDetailsMissing() */
-
-}/* class */
+}
 
 /**
  * This file is part of the array_column library

@@ -42,7 +42,7 @@ jQuery(document).ready( function() {
     jQuery( 'label[for="add-reg-start"]' ).text( 'Registration Start Time (i.e. 9:00 AM)' );
     jQuery( 'label[for="registration_endT"]' ).text( 'Registration End Time (i.e. 5:30 PM)' );
     jQuery( 'label[for="add-start-time"]' ).text( 'Event Start Time (i.e. 10:30 AM)' );
-    jQuery( 'label[for="add-end-time"]' ).text( 'Event Start Time (i.e. 4:45 PM)' );
+    jQuery( 'label[for="add-end-time"]' ).text( 'Event End Time (i.e. 4:45 PM)' );
 
     // Tidy up, make reg dates and reg times equal height
     var regDateHeight = jQuery( '#add-reg-dates' ).height();
@@ -66,6 +66,8 @@ jQuery(document).ready( function() {
 
     // Prevent the registration end date from being after when the event has finished
     $( '#end_date, #registration_end, #registration_start, #start_date' ).datepicker({
+
+         dateFormat: 'yy-mm-dd',
 
         onClose: function( selectedDate ){
             
@@ -104,6 +106,27 @@ jQuery(document).ready( function() {
 
     $( 'input[name="attendees_events_start"], input[name="attendees_events_end"], input[name="events_events_start"], input[name="events_events_end"], input[name="admin_events_start"], input[name="admin_events_end"]' ).datepicker({
         dateFormat: "yy-mm-dd"
+    });
+
+})(jQuery);
+
+(function($) {
+    
+    if( !$( 'body' ).hasClass( 'event-espresso_page_events' ) ){
+        return;
+    }
+
+    $( '#venue_id' ).selectize({
+        maxItems: 1,
+        onChange: function( value ){
+
+            if (!value.length) return;
+
+            jQuery(".eebox").fadeOut( 10, function(){
+                jQuery("#eebox_"+value).show();
+            } );
+
+        }
     });
 
 })(jQuery);
